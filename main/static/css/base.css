@@ -1,0 +1,12 @@
+
+#navitems{
+    font-weight: bold;
+    font-size: larger;
+} 
+
+nav .navbar-nav li a{
+    color: white !important;
+}
+nav .navbar-nav li a:hover{
+    color: lightblue !important;
+}
