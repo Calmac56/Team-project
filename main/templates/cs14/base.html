@@ -45,9 +45,19 @@
                     <li class="nav-item">
                        <a class="nav-link" href="#">Profile</a>
                      </li>
+                     
+                    {% if user.is_authenticated %}
+                     <li class="nav-item">
+                      <a class="nav-link" href="{% url 'cs14:logout'%}" >Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'cs14:register'%}" >Register</a>
+                    </li>
                      <li class="nav-item">
                        <a class="nav-link" href="{% url 'cs14:login'%}" >Login</a>
                      </li>
+                    {% endif %}
                 </div>
             </nav>
             <div>
