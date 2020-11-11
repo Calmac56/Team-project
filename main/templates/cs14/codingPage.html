@@ -1,0 +1,37 @@
+{% extends 'cs14/base.html' %}
+{% load static %}
+
+
+{% block head_block %}
+<link rel="stylesheet" href="{% static "css/codingPage.css"%}" type="text/css">
+{% endblock %}
+
+
+{% block title_block %}
+CODEEEEE
+{% endblock %}
+
+{% block body_block %}
+<form name="form" action="{% url 'cs14:sendCode' %}" method="POST">
+    {% csrf_token %}
+    <textarea id="codeArea" name="codeArea" rows="20" cols="140">
+        {% if code %}
+        {{ code }}
+        {% endif %}
+    </textarea>
+    <br/>
+    <input type="Submit" value="Submit" name="Submit">
+</form>
+
+<br/>
+
+{% if results %}
+    <div id="results">
+        {% for r in results %}
+            
+            <h5>Test {{ forloop.counter }}:  {{ r }}</h5>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock %}
