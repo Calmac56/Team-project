@@ -23,7 +23,7 @@
                         </div>
                         {{form.username}}
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3" >
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
@@ -60,7 +60,11 @@
                 </form>
             </div>
 
-            {{ form.errors }}
+            {% for key, value in form.errors.items %}
+            {% for error in value %}
+            <li>{{ error }}</li>
+           {% endfor %}
+          {% endfor %}
     
             <div class="mt-4">
                 <div class="d-flex justify-content-center links">
