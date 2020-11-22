@@ -1,12 +1,96 @@
+/*
+styling for each element is indented if it is contained
+within the last element indented 1 less than itself.
 
-#navitems{
-    font-weight: bold;
-    font-size: larger;
-} 
+global tag styling like h1 and p are done at the bottom.
+*/
 
-nav .navbar-nav li a{
-    color: white !important;
+body {
+    margin: 0;
+    font-family: 'Source Sans Pro', sans-serif;
 }
-nav .navbar-nav li a:hover{
-    color: lightblue !important;
+
+    .body_container {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            min-height: 100px;
+            padding-bottom: 5px;
+        }
+
+            .logo {
+                display: flex;
+                width: 140px;
+                margin-right: 40px;
+                align-items: flex-end;
+            }
+
+            .logo_img {
+                width: 100%;
+                height: auto;
+            }
+
+            .title {
+                display: flex;
+                width: 50%;
+                align-items: flex-end;
+            }
+
+            .nav_bar {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: flex-end;
+                flex-wrap: wrap;
+                width: 50%;
+            }
+
+            .nav_element {
+                display: flex;
+                width: auto;
+                height: auto;
+            }
+
+            .nav_splitter {
+                display: flex;
+                width: 1px;
+                height: 15px;
+                margin: 5px 7px 4px 7px;
+                background-color: rgb(160, 160, 160);
+            }
+
+
+            .nav_link {
+                color: black;
+                font-size: 20px;
+                font-size: calc(100% + 0.3vw);
+                font-weight: 300;
+                text-transform: lowercase;
+                text-decoration: none;
+            }
+
+            .nav_link:hover {
+                color: grey;
+            }
+
+        .content {
+            display: flex;
+            height: 500px;
+            width: 100%;
+            background-color: gray;
+        }
+
+h1 {
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 50px;
+    font-size: calc(100% + 1.8vw);
 }
