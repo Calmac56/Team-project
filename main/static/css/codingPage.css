@@ -1,8 +1,176 @@
-form {
-    margin: 5% 0px auto;
-    text-align: center;
+.description {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 24px;
 }
 
-#results {
-    text-align: center;
+.timer {
+    display: flex;
+    height: 20px;
+    width: 100%;
+    background-color: rgb(112, 106, 98);
 }
+
+.codeContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 60vh;
+    min-height: 300px;
+    overflow: hidden;
+}
+
+    .codeEditor {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        height: 100%;
+        background-color: rgb(34, 34, 34);
+        border-right: rgb(54, 54, 54) solid 1px;
+    }
+
+        .typerContainer {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: 100%;
+            overflow: scroll;
+        }
+            .editorLines {
+                display: inline-block;
+                width: 50px;
+                height: 100%;
+                border-right: rgb(54, 54, 54) solid 1px;
+                color: rgb(80, 80, 80);
+                font-family: 'IBM Plex Mono', monospace;
+                text-align: right;
+                font-size: 14px;
+                padding: 4px; 
+            }
+
+            .codeTyper {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                color: white;
+                font-family: 'IBM Plex Mono', monospace;
+                font-size: 14px;
+                white-space: pre-wrap;
+                padding: 4px;   
+            }
+
+            .codeTyper:focus,  .editorTopBarForm:focus{
+                outline: none;
+            }
+
+        .editorTopBar {
+            display: flex;
+            padding-left: 4px;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            height: 20px;
+            background-color: rgb(48, 48, 48);
+            box-shadow: 0px 0px 10px 1px rgb(27, 27, 27);
+            font-weight: 300;
+            color: rgb(129, 129, 129);
+            z-index: 1;
+        }
+
+            .editorTitle {
+                display: flex;
+                width: 100%;
+            }
+
+            .editorTopBarForm {
+                height: 100%;
+                background-color: rgb(56, 56, 56);
+                color: rgb(129, 129, 129);
+                border: none;
+                margin-right: 2px;
+                font-family: 'IBM Plex Mono', monospace;
+            }
+
+            .editorTopBarForm:hover {
+                background-color: rgb(71, 71, 71);
+            }
+
+    .codeIo {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        height: 100%;
+    }
+
+        .codeInput {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border: rgb(54, 54, 54) solid 1px;
+        }
+
+        .codeOutput {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border: rgb(54, 54, 54) solid 1px;
+        }
+
+        @media screen and (max-width: 1000px) {
+            .codeIo {   
+                flex-direction: row;
+                width: 100%;
+                height: 30%;
+            }
+
+            .codeContainer {
+                flex-direction: column;
+            }
+
+            .codeEditor {
+                width: 100%;
+                height: 70%;
+            }
+        }
+
+textarea {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(34, 34, 34);
+    border: none;
+    color: white;  
+    resize: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    padding: 4px;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #41414100; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(51, 51, 51); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(51, 51, 51); 
+  }
