@@ -25,8 +25,15 @@ def sendCode(request):
         compileCode("temp.py", "python")
         run("temp.py", "python")
         results = test("temp.txt", "testFile1.txt")
+        return_text = ""
 
-    return render(request, 'cs14/codingPage.html', {'results':[str(results)], 'code':temp})
+        if(results):
+            return_text = "Passed"
+        else:
+            return_text = "Fail"
+
+    return HttpResponse(return_text)
+
 def register(request):
     if request.user.is_authenticated:
         return redirect('cs14:index')
