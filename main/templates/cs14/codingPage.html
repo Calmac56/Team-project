@@ -3,7 +3,26 @@
 
 
 {% block head_block %}
-<link rel="stylesheet" href="{% static "css/codingPage.css"%}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+<script>
+    var Code = '';
+
+    function doPost(){
+    var CSRFtoken = '{{ csrf_token }}';
+    var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&codeArea=" + Code;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    xhr.send(data);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            document.getElementById('output').value = xhr.responseText;
+        }
+    }
+};
+</script>
 {% endblock %}
 
 
@@ -12,26 +31,48 @@ CODEEEEE
 {% endblock %}
 
 {% block body_block %}
-<form name="form" action="{% url 'cs14:sendCode' %}" method="POST">
-    {% csrf_token %}
-    <textarea id="codeArea" name="codeArea" rows="20" cols="140">
-        {% if code %}
-        {{ code }}
-        {% endif %}
-    </textarea>
-    <br/>
-    <input type="Submit" value="Submit" name="Submit">
-</form>
-
-<br/>
-
-{% if results %}
-    <div id="results">
-        {% for r in results %}
-            
-            <h5>Test {{ forloop.counter }}:  {{ r }}</h5>
-        {% endfor %}
+<div class="description">
+    <h2>Task Description</h2>
+    <p>You must complete this task. Yas!</p>
+    </br>
+</div>
+<div class="timer">
+    TIMERRRRR
+</div>
+<div class="codeContainer">
+    <div class="codeEditor">
+        <div class="editorTopBar">
+            <div class="editorTitle">CODE</div>
+            <select class="editorTopBarForm">
+                <option value="java">JAVA</option>
+                <option value="python">PYTHON</option>
+                <option value="c">C</option>
+                <option value="c#">C#</option>
+            </select>
+            <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
+        </div>
+        <div class="typerContainer">
+            <div class="editorLines" id="lineCount"></div>
+            <div class="codeTyper" contenteditable="true" id="codeArea" name="codeArea" spellcheck="false"></div>
+        </div>
     </div>
-{% endif %}
-
+    <div class="codeIo">
+        <div class="codeInput">
+            <div class="editorTopBar">
+                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" value="USE CUSTOM INPUT"></div>
+            </div>
+            <textarea class="inputArea" name="inputArea" rows="20" cols="140"></textarea>
+        </div>
+        <div class="codeOutput">
+            <div class="editorTopBar">
+                <div class="editorTitle">OUTPUT</div>
+            </div>
+            <textarea readonly class="outputArea" name="outputArea" id="output" rows="20" cols="140"></textarea>
+        </div>
+    </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="{% static 'js/lineNum.js'%}"></script>
+<script src="{% static 'js/tabIndent.js'%}"></script>
 {% endblock %}
