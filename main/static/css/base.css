@@ -1,12 +1,123 @@
+/*
+styling for each element is indented if it is contained
+within the last element indented 1 less than itself.
 
-#navitems{
-    font-weight: bold;
-    font-size: larger;
-} 
+global tag styling like h1 and p are done at the bottom.
+*/
 
-nav .navbar-nav li a{
-    color: white !important;
+body {
+    margin: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: rgb(76, 85, 88);
 }
-nav .navbar-nav li a:hover{
-    color: lightblue !important;
+
+    .bodyContainer {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            min-height: 100px;
+            padding-bottom: 5px;
+        }
+
+            .logo {
+                display: flex;
+                width: 140px;
+                margin-right: 40px;
+                align-items: flex-end;
+            }
+
+            .logoImg {
+                width: 100%;
+                height: auto;
+            }
+
+            .title {
+                display: flex;
+                width: 50%;
+                align-items: flex-end;
+            }
+
+            .navBar {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: flex-end;
+                flex-wrap: wrap;
+                width: 50%;
+            }
+
+            .navElement {
+                display: flex;
+                width: auto;
+                height: auto;
+            }
+
+            .navSplitter {
+                display: flex;
+                width: 1px;
+                height: 15px;
+                margin: 5px 7px 4px 7px;
+                background-color: rgb(160, 160, 160);
+            }
+
+
+            .navLink {
+                color: rgb(211, 223, 233);
+                font-size: 20px;
+                font-size: calc(100% + 0.3vw);
+                font-weight: 300;
+                text-transform: lowercase;
+                text-decoration: none;
+            }
+
+            .navLink:hover {
+                color: grey;
+            }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height:300px;
+            background-color: rgb(44, 44, 44);
+            color: rgb(36, 36, 36);
+            box-shadow: 0px 0px 10px 1px rgba(39, 39, 39, 0.3);
+        }
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+h1 {
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 50px;
+    font-size: calc(100% + 1.8vw);
+    color: rgb(211, 223, 233);
+}
+
+h2 {
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 25px;
+    font-size: calc(100% + 0.7vw);
+    color: rgb(172, 183, 192);
+}
+
+p {
+    font-weight: 300;
+    margin: 0px;
+    color: rgb(172, 183, 192);
+    font-size: calc(100% + 0.05vw);
 }
