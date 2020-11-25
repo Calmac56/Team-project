@@ -42,14 +42,18 @@ INSTALLED_APPS = [
     'cs14',
 ]
 
+AUTHENTICATION_BACKENDS = ["sesame.backends.ModelBackend", 'django.contrib.auth.backends.ModelBackend']
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'sesame.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -124,3 +128,4 @@ USE_TZ = True
 STATICFILES_DIRS =[STATIC_DIR,]
 
 STATIC_URL = '/static/'
+SESAME_MAX_AGE = 1209600

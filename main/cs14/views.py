@@ -2,10 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from cs14.compile import *
 from django.contrib.auth.forms import UserCreationForm
-from cs14.forms import CreateUserForm
+from cs14.forms import CreateUserForm, CreateLoginLink
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from sesame.utils import get_query_string
+from django.core.mail import send_mail
 
 def index(request):
     return render(request, 'cs14/index.html')
@@ -42,9 +46,32 @@ def register(request):
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
+                theuser = form.save(commit=False)
+                theuser.username = form.cleaned_data.get('email')
+                password = User.objects.make_random_password()
+                print(theuser.username)
+                print(password)
+                theuser.set_password(password)
+                user = form.cleaned_data.get('email')
                 messages.success(request, 'Account was created for ' + user)
+               
+                home = 'http://127.0.0.1:8000/'
+                
+                theuser.save()
+                user2 = User.objects.get(username=user)
+                uniquelink = get_query_string(user2)
+                link = home + uniquelink
+                themessage = 'Username: ' + theuser.username + '\nPassword: ' + password + '\nUnique login link:' + link
+                userstring = str(user)
+                send_mail(
+                    'User account created for avaloq',
+                    themessage,
+                    'register@avaloq.com',
+                    [userstring],
+                    fail_silently=False,
+
+                )
+                
                 return redirect('cs14:login')
         
     context = {'form': form}
@@ -72,3 +99,4 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('cs14:login')
+
