@@ -49,25 +49,20 @@ def register(request):
                 theuser = form.save(commit=False)
                 theuser.username = form.cleaned_data.get('email')
                 password = User.objects.make_random_password()
-                print(theuser.username)
-                print(password)
                 theuser.set_password(password)
-                user = form.cleaned_data.get('email')
-                messages.success(request, 'Account was created for ' + user)
-               
+                username = form.cleaned_data.get('email')
+                messages.success(request, 'Account was created for ' + username)
                 home = 'http://127.0.0.1:8000/'
-                
                 theuser.save()
-                user2 = User.objects.get(username=user)
-                uniquelink = get_query_string(user2)
+                user = User.objects.get(username=username)
+                uniquelink = get_query_string(user)
                 link = home + uniquelink
-                themessage = 'Username: ' + theuser.username + '\nPassword: ' + password + '\nUnique login link:' + link
-                userstring = str(user)
+                themessage = 'Dear ' + theuser.first_name + '\n' + 'An avaloq coding test account has been created for you with following credentials\n' + 'Username: ' + theuser.username + '\nPassword: ' + password + '\nUnique login link: ' + link + "\nUnique login link is valid for 2 weeks"
                 send_mail(
                     'User account created for avaloq',
                     themessage,
-                    'register@avaloq.com',
-                    [userstring],
+                    'avaloqt@gmail.com',
+                    [str(username)],
                     fail_silently=False,
 
                 )
