@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'gmailapi_backend',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -42,12 +43,8 @@ INSTALLED_APPS = [
     'cs14',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'avaloqt@gmail.com'
-EMAIL_HOST_PASSWORD = '[\#>>b6e8{k?Y!,5'
+EMAIL_BACKEND = 'gmailapi_backend.mail.GmailBackend'
+
 
 AUTHENTICATION_BACKENDS = ["sesame.backends.ModelBackend", 'django.contrib.auth.backends.ModelBackend']
 
@@ -62,6 +59,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
 ]
+
+GMAIL_API_CLIENT_ID = '802823469441-scku01nfbt0m45trsndl8uf2e29pl80q.apps.googleusercontent.com'
+GMAIL_API_CLIENT_SECRET = 'T9UNzrW_kHRV4ESjT8hopYLd'
+GMAIL_API_REFRESH_TOKEN = '1//03NIwzmLtu2dvCgYIARAAGAMSNwF-L9IrrFYbLm6mInEgoWTOCBgxxySb8fNvcF-GuioePgSpWFd2vZCWYfjl91lu3KdipqZJ4BU'
 
 ROOT_URLCONF = 'main.urls'
 
