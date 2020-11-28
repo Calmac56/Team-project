@@ -56,11 +56,14 @@
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
           </div>
-        {% else %}
-          <div class="navElement">
-            <a class="navLink" href="{% url 'cs14:register'%}" >Register</a>
-          </div>
+          {% if isAdmin %}
           <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:register'%}" >Generate User</a>
+          </div>
+          {% endif %}
+        {% else %}
+          
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:login'%}" >Login</a>
           </div>

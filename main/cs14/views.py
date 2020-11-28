@@ -77,7 +77,6 @@ def register(request):
                 
                 return redirect('cs14:register')
     else:
-        print("No permission")
         return redirect('cs14:index')
 
         
