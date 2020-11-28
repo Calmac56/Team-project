@@ -1,14 +1,10 @@
-body,
-html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-   
-}
+
 .user_card {
     width: 350px;
     margin-top: 20px;
-    margin-bottom: auto;
+    margin-bottom: 20px;
+    margin-right: auto;
+    margin-left: auto;
     background: #74cfbf;
     position: relative;
     display: flex;

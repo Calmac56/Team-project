@@ -1,72 +1,83 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="{% static "css/base.css"%}" type="text/css">
-        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-        <style>
-          body{
-            background-color: grey;
-          }
-        </style>
-        {% block head_block %}
-        {% endblock %}
+  <head>
+    <link rel="stylesheet" href="{% static 'css/base.css'%}" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&family=Roboto&family=Source+Sans+Pro:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    {% block head_block %}
+    {% endblock %}
 
-    
+  
 
-    
+  
 
-    <meta charset="UTF-8">
-    <title>
-        {% block title_block %}
-        Avaloq testing system
-        {% endblock %}
-    </title>
+  <meta charset="UTF-8">
+  <title>
+    {% block title_block %}
+    Avaloq testing system
+    {% endblock %}
+  </title>
 </head>
 <body>
-    <div id="background">
-        <div id="content">
-            <div>
-            <nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color:#4169e1">
-                <a class="navbar-brand" href="/"><img src="{% static "images/avaloq.png"%}" style="width: 80x; height: 40px;"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                 <!-- Creates each link to all pages on the site depending on whether the user is logged in or not -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                  <ul class="navbar-nav ml-auto mx-auto" id="navitems" >
-                    <li class="nav-item">
-                      <a class="nav-link" href="/" >Home </a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="nav-link" href="#">Profile</a>
-                     </li>
-                     
-                    {% if user.is_authenticated %}
-                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'cs14:logout'%}" >Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'cs14:register'%}" >Register</a>
-                    </li>
-                     <li class="nav-item">
-                       <a class="nav-link" href="{% url 'cs14:login'%}" >Login</a>
-                     </li>
-                    {% endif %}
-                </div>
-            </nav>
-            <div>
-              {% block body_block %}
-              {% endblock %}
-            </div>
+  <!--body_container is the main middle column holding all
+  elements of the website-->
+  <div class="bodyContainer">
+    <div class="header">
+      <!--logo holder; needs updated to contain real logo-->
+      <div class="logo">
+          <img src="{% static "images/avaloq.png"%}" class="logoImg">
+      </div>
+      <!--page title holder; should containt block as so title
+      is give for each page-->
+      <div class="title">
+          <h1>Avaloq</h1>
+      </div>
 
+      <!--nav bar holder, conatining a nav_element for each link, and
+      nav_splitter for a visual splitter between links. nav_link styles
+      the link. Contains if statement for navbar to change depending on
+      if user is logged in or not-->
+      <div class="navBar">
+        <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:index'%}" >Home</a>
         </div>
+        <div class="navSplitter"></div>
+        {% if user.is_authenticated %}
+          <div class="navElement">
+            <a class="navLink" href="" >Profile</a>
+          </div>
+          <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
+          </div>
+          {% if isAdmin %}
+          <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:register'%}" >Generate User</a>
+          </div>
+          {% endif %}
+        {% else %}
+          
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:login'%}" >Login</a>
+          </div>
+        {% endif %}
+      </div>
     </div>
+    <div class="content">
+        {% block body_block %}
+        {% endblock %}
+    </div>
+    <div class="footer">
+
+    </div>
+  </div>
 
 </body>
 </html>
