@@ -7,22 +7,24 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
 <script>
     var Code = '';
+    var Language = 'java';
 
     function doPost(){
-    var CSRFtoken = '{{ csrf_token }}';
-    var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&codeArea=" + Code;
+        var CSRFtoken = '{{ csrf_token }}';
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    xhr.send(data);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            document.getElementById('output').value = xhr.responseText;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send(data);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                document.getElementById('output').value = xhr.responseText;
+            }
         }
-    }
 };
 </script>
+
 {% endblock %}
 
 
@@ -43,7 +45,7 @@ CODEEEEE
     <div class="codeEditor">
         <div class="editorTopBar">
             <div class="editorTitle">CODE</div>
-            <select class="editorTopBarForm">
+            <select id='languageSelector' class="editorTopBarForm">
                 <option value="java">JAVA</option>
                 <option value="python">PYTHON</option>
                 <option value="c">C</option>
@@ -74,4 +76,5 @@ CODEEEEE
 
 <script src="{% static 'js/lineNum.js'%}"></script>
 <script src="{% static 'js/tabIndent.js'%}"></script>
+<script src="{% static 'js/codeUpdate.js'%}"></script>
 {% endblock %}
