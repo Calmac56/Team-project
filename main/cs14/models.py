@@ -23,10 +23,10 @@ class Task(models.Model):
     description = models.CharField(max_length = 4095)
     testcases = models.CharField(max_length = 255)
     expectedout = models.CharField(max_length = 255)
-    creator = models.ForeignKey(GeneralUser, on_delete=models.CASCADE)
+    creator = models.ForeignKey(Admin, on_delete=models.CASCADE)
 
 class Results(models.Model):
-    userID =  models.ForeignKey(GeneralUser, on_delete=models.CASCADE)
+    userID =  models.ForeignKey(Candidate, on_delete=models.CASCADE)
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     tests_passed = models.IntegerField()
     tests_failed = models.IntegerField()
