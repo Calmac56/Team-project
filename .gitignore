@@ -7,3 +7,5 @@ main/db.sqlite3
 main/cs14/migrations/
 main/cs14/__pycache__/
 *.pyc
+main/static/python/__pycache__/
+
