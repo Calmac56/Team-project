@@ -8,6 +8,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from sesame.utils import get_query_string
+from django.core.mail import send_mail
+from cs14.models import Candidate, Admin
+
 import os
 
 def index(request):
@@ -71,7 +77,7 @@ def register(request):
                 home = 'http://127.0.0.1:8000/'
                 theuser.save()
                 user = User.objects.get(username=username)
-                thecanditate = Candidate.objects.get_or_create(user=user, first_name=user.first_name, last_name=user.last_name)
+                thecanditate = Candidate.objects.get_or_create(user=user)
                 uniquelink = get_query_string(user)
                 link = home + uniquelink
                 themessage = 'Dear ' + theuser.first_name + '\n' + 'An avaloq coding test account has been created for you with following credentials\n' + 'Username: ' + theuser.username + '\nPassword: ' + password + '\nUnique login link: ' + link + "\nUnique login link is valid for 2 weeks"
