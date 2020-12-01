@@ -6,17 +6,9 @@ from cs14.forms import CreateUserForm, CreateLoginLink
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import os
-=======
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from sesame.utils import get_query_string
-from django.core.mail import send_mail
-from cs14.models import Candidate, Admin
->>>>>>> 42e1dfa6f571d708329980da30d34a2088687382
 
 def index(request):
     print(settings.MEDIA_DIR)
