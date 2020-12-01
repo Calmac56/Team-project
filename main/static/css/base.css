@@ -105,6 +105,7 @@ h1 {
     margin: 0px !important;
     font-family: 'Roboto', sans-serif !important;
     font-size: 50px !important;
+    font-weight: 600 !important;
     font-size: calc(100% + 1.8vw) !important;
     color: rgb(211, 223, 233) !important;
 }
