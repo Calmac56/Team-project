@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'gmailapi_backend',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -42,15 +43,26 @@ INSTALLED_APPS = [
     'cs14',
 ]
 
+EMAIL_BACKEND = 'gmailapi_backend.mail.GmailBackend'
+
+
+AUTHENTICATION_BACKENDS = ["sesame.backends.ModelBackend", 'django.contrib.auth.backends.ModelBackend']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'sesame.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
+
+GMAIL_API_CLIENT_ID = '802823469441-scku01nfbt0m45trsndl8uf2e29pl80q.apps.googleusercontent.com'
+GMAIL_API_CLIENT_SECRET = 'T9UNzrW_kHRV4ESjT8hopYLd'
+GMAIL_API_REFRESH_TOKEN = '1//03NIwzmLtu2dvCgYIARAAGAMSNwF-L9IrrFYbLm6mInEgoWTOCBgxxySb8fNvcF-GuioePgSpWFd2vZCWYfjl91lu3KdipqZJ4BU'
 
 ROOT_URLCONF = 'main.urls'
 
@@ -65,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cs14.context_processors.isAdmin'
             ],
         },
     },
@@ -124,6 +137,10 @@ USE_TZ = True
 STATICFILES_DIRS =[STATIC_DIR,]
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+=======
+SESAME_MAX_AGE = 1209600
+>>>>>>> 42e1dfa6f571d708329980da30d34a2088687382

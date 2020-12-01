@@ -7,7 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&family=Roboto&family=Source+Sans+Pro:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     {% block head_block %}
     {% endblock %}
 
@@ -29,12 +31,12 @@
     <div class="header">
       <!--logo holder; needs updated to contain real logo-->
       <div class="logo">
-          <img src="Logo-Avaloq.png" class="logoImg">
+          <img src="{% static "images/avaloq.png"%}" class="logoImg">
       </div>
       <!--page title holder; should containt block as so title
       is give for each page-->
       <div class="title">
-          <h1>Page Title</h1>
+          <h1>Avaloq</h1>
       </div>
 
       <!--nav bar holder, conatining a nav_element for each link, and
@@ -54,11 +56,14 @@
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
           </div>
-        {% else %}
-          <div class="navElement">
-            <a class="navLink" href="{% url 'cs14:register'%}" >Register</a>
-          </div>
+          {% if isAdmin %}
           <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:register'%}" >Generate User</a>
+          </div>
+          {% endif %}
+        {% else %}
+          
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:login'%}" >Login</a>
           </div>
