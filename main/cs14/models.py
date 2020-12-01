@@ -1,30 +1,22 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 
 # Create your models here.
-
-class Candidate(models.Model):
+class Admin (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length = 255) 
-    last_name = models.CharField(max_length = 255)
-    userID = models.IntegerField(primary_key=True)
-    admin = False
-    #email and password in user model?
-
     def __str__(self):
         return self.user.username
 
-
-class Admin(models.Model):
+class Candidate (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length = 255) 
-    last_name = models.CharField(max_length = 255)
-    userID = models.IntegerField(primary_key=True)
-    admin = True
-    #email and password in user model?
-
     def __str__(self):
         return self.user.username
+
+class Reviewer (models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.user.username
+
 
 class Task(models.Model):
     taskID = models.IntegerField(primary_key=True)
