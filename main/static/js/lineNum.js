@@ -1,8 +1,10 @@
 var codeArea = document.getElementById('codeArea');
 
 codeArea.onkeyup = function(){
-    Code = document.getElementById('codeArea').innerText;
-    var linesLength =  Code.split(/\r\n|\r|\n/).length
+    Code = codeArea.innerText;
+    var linesLength = Code.split(/\r\n|\r|\n/).length;
+    var dLine = Code.split(/\r\n\n|\r|\n\n/).length;
+    linesLength = linesLength - dLine + 2;
     var lineBuffer = "";
     var lines = "";
 
