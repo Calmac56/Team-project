@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
-from cs14.models import Candidate, Admin
+from cs14.models import Candidate, Admin, Results
 
 import os
 
@@ -121,3 +121,27 @@ def logoutUser(request):
     logout(request)
     return redirect('cs14:login')
 
+def results(request):
+
+    result = None
+
+    if 'search' in request.GET:
+        searched  = request.GET['search']
+        try:
+            theuser =  User.objects.get(username = searched)
+            try:
+                candidate = Candidate.objects.get(user = theuser)
+                try:
+                    result = Results.objects.filter(userID = candidate)
+                except Results.DoesNotExist:
+                    result=None
+            
+            except Candidate.DoesNotExist:
+                result = None
+           
+        except User.DoesNotExist:
+            result = None
+
+
+
+    return render(request, 'cs14/results.html', {'results':result})

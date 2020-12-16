@@ -1,0 +1,28 @@
+{% extends 'cs14/base.html' %}
+{% load static %}
+
+{% block head_block %}
+<link rel="stylesheet" href="{% static "css/results.css"%}" type="text/css">
+{% endblock %}
+
+
+{% block title_block %}
+Candidate results
+{% endblock %}
+
+{% block body_block %}
+
+<form class="form-inline my-2 my-lg-0" id="searchform">
+    <input class="form-control mr-sm-2" type="search" placeholder=" Candidate search" aria-label="Search" name="search" >
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+{% if results != None %}
+{% for result in results %}
+<p>Test {{result.taskID.taskID}}</p>
+{% endfor %}
+{% else %}
+<p> User does not exist or no tests have been completed</p>
+{% endif %}
+{% endblock %}
+
