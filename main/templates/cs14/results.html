@@ -3,6 +3,8 @@
 
 {% block head_block %}
 <link rel="stylesheet" href="{% static "css/results.css"%}" type="text/css">
+
+
 {% endblock %}
 
 
@@ -17,12 +19,67 @@ Candidate results
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 
+<br>
 {% if results != None %}
 {% for result in results %}
-<p>Test {{result.taskID.taskID}}</p>
+<p>Test {{result.taskID.taskID}} 
+<script>
+    function viewMore(id) {
+
+
+ 
+  var btnText = document.getElementById(id);
+  var text = id.toString();
+  
+  const slug = text.substring(text.indexOf('n') + 1);
+  var moreText = document.getElementById("more" + slug);
+
+
+  if (moreText.style.display === "none") {
+    btnText.innerHTML = "Hide results";
+    moreText.style.display = "inline";
+  } else {
+
+    btnText.innerHTML = "View results";
+    moreText.style.display = "none";
+  }
+}
+
+</script>
+<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" id="myBtn{{result.taskID.taskID}}">View results</button> </p>
+<span id="more{{result.taskID.taskID}}" style="display: None;"> 
+
+    <table class="tg">
+    <thead>
+      <tr>
+        <th class="tg-0lax">Task ID</th>
+        <th class="tg-0lax"> Tests Passed</th>
+        <th class="tg-0lax">Tests Failed</th>
+        <th class="tg-0lax">Pass Percentage</th>
+        <th class="tg-0lax">Time taken</th>
+        <th class="tg-0lax"> Complexity </th>
+        <th class="tg-0lax">Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tg-0lax">{{result.taskID.taskID}}</td>
+        <td class="tg-0lax">{{result.tests_passed}}</td>
+        <td class="tg-0lax">{{result.tests_failed}}</td>
+        <td class="tg-0lax">{{result.passpercentage}}</td>
+        <td class="tg-0lax">{{result.timetaken}}</td>
+        <td class="tg-0lax">{{result.complexity}}</td>
+        <td class="tg-0lax"> View code</td>
+      </tr>
+    </tbody>
+    </table>
+    </span>
+<br>
 {% endfor %}
 {% else %}
 <p> User does not exist or no tests have been completed</p>
 {% endif %}
 {% endblock %}
+
+
 

@@ -6,3 +6,12 @@
 p{
     text-align: center;
 }
+
+.tg  {border-collapse:collapse;border-spacing:0; margin: auto;}
+    .tg td{border-color:white;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      overflow:hidden;padding:10px 5px;word-break:normal; color: white;}
+
+
+.tg th{border-color:white;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal; color:white}
+.tg .tg-0lax{text-align:left;vertical-align:top}
