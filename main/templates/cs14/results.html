@@ -22,7 +22,7 @@ Candidate results
 <br>
 {% if results != None %}
 {% for result in results %}
-<p>Test {{result.taskID.taskID}} 
+<p>Test {{result.taskID.taskID}} &nbsp;
 <script>
     function viewMore(id) {
 
@@ -59,6 +59,7 @@ Candidate results
         <th class="tg-0lax">Time taken</th>
         <th class="tg-0lax"> Complexity </th>
         <th class="tg-0lax">Code</th>
+        <th class="tg-0lax">Description</th>
       </tr>
     </thead>
     <tbody>
@@ -70,6 +71,7 @@ Candidate results
         <td class="tg-0lax">{{result.timetaken}}</td>
         <td class="tg-0lax">{{result.complexity}}</td>
         <td class="tg-0lax"> View code</td>
+        <td class="tg-0lax">{{result.taskID.description}}</td>
       </tr>
     </tbody>
     </table>

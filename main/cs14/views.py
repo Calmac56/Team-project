@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
-from cs14.models import Candidate, Admin, Results
+from cs14.models import Candidate, Admin, Results, Reviewer
 
 import os
 
@@ -73,7 +73,7 @@ def register(request):
                 password = User.objects.make_random_password()
                 theuser.set_password(password)
                 username = form.cleaned_data.get('email')
-                messages.success(request, 'Account was created for ' + username)
+                
                 home = 'http://127.0.0.1:8000/'
                 theuser.save()
                 user = User.objects.get(username=username)
@@ -92,7 +92,7 @@ def register(request):
                 
                 return redirect('cs14:register')
     else:
-        return redirect('cs14:index')
+        return redirect('cs14:login')
 
         
     context = {'form': form}
@@ -124,6 +124,17 @@ def logoutUser(request):
 def results(request):
 
     result = None
+
+    try:
+        if request.user.is_authenticated:
+            auser = Reviewer.objects.get(user=request.user)
+        else:
+            auser = None
+    except Reviewer.DoesNotExist:
+        auser = None
+
+    if auser == None:
+        return redirect('cs14:login')
 
     if 'search' in request.GET:
         searched  = request.GET['search']
