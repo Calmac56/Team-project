@@ -62,6 +62,14 @@
             <a class="navLink" href="{% url 'cs14:register'%}" >Generate User</a>
           </div>
           {% endif %}
+
+          {% if isReviewer %}
+          <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:results'%}" >View Results</a>
+          </div>
+
+        {% endif %}
         {% else %}
           
           <div class="navElement">
