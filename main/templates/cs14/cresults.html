@@ -9,15 +9,11 @@
 
 
 {% block title_block %}
-Candidate results
+Your results
 {% endblock %}
 
 {% block body_block %}
 
-<form class="form-inline my-2 my-lg-0" id="searchform">
-    <input class="form-control mr-sm-2" type="search" placeholder=" Candidate search" aria-label="Search" name="search" >
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
 
 <br>
 {% if results != None %}
@@ -78,10 +74,8 @@ Candidate results
     </span>
 <br>
 {% endfor %}
-{% elif searched  %}
-<p> User does not exist or no tests have been completed</p>
+{% else %}
+<p> You have not yet completed any coding tests, no results to display.</p>
 {% endif %}
 {% endblock %}
-
-
 
