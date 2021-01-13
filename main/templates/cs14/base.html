@@ -70,6 +70,13 @@
           </div>
 
         {% endif %}
+        {% if isCandidate %}
+        <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:cresults'%}" >My Results</a>
+          </div>
+
+        {% endif %}
         {% else %}
           
           <div class="navElement">
