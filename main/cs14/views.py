@@ -77,7 +77,9 @@ def register(request):
                 home = 'http://127.0.0.1:8000/'
                 theuser.save()
                 user = User.objects.get(username=username)
-                thecanditate = Candidate.objects.get_or_create(user=user)
+                thecand = Candidate(user=user)
+                thecand.save()
+                
                 uniquelink = get_query_string(user)
                 link = home + uniquelink
                 themessage = 'Dear ' + theuser.first_name + '\n' + 'An avaloq coding test account has been created for you with following credentials\n' + 'Username: ' + theuser.username + '\nPassword: ' + password + '\nUnique login link: ' + link + "\nUnique login link is valid for 2 weeks"
@@ -124,6 +126,7 @@ def logoutUser(request):
 def results(request):
 
     result = None
+    searchcompleted = False
 
     try:
         if request.user.is_authenticated:
@@ -138,14 +141,15 @@ def results(request):
 
     if 'search' in request.GET:
         searched  = request.GET['search']
+        searchcompleted = True
         try:
             theuser =  User.objects.get(username = searched)
             try:
                 candidate = Candidate.objects.get(user = theuser)
-                try:
-                    result = Results.objects.filter(userID = candidate)
-                except Results.DoesNotExist:
-                    result=None
+                result = Results.objects.filter(userID = candidate)
+                if not result:
+                    result = None
+
             
             except Candidate.DoesNotExist:
                 result = None
@@ -155,4 +159,38 @@ def results(request):
 
 
 
-    return render(request, 'cs14/results.html', {'results':result})
+    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted})
+
+def cresults(request):
+    result = None
+    
+    try:
+        if request.user.is_authenticated:
+            auser = Candidate.objects.get(user=request.user)
+        else:
+            auser = None
+    except Candidate.DoesNotExist:
+        auser = None
+
+    if auser == None:
+        return redirect('cs14:login')
+
+  
+    searched  = request.user.username
+    try:
+        theuser =  User.objects.get(username = searched)
+        try:
+            candidate = Candidate.objects.get(user = theuser)
+            
+            result = Results.objects.filter(userID = candidate)
+            if not result:
+                result = None
+
+            
+        except Candidate.DoesNotExist:
+            result = None
+           
+    except User.DoesNotExist:
+        result = None
+    
+    return render(request, 'cs14/cresults.html', {'results':result})

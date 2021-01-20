@@ -4,7 +4,9 @@
 
 {% block head_block %}
 <link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/a11y-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>-->
 <script>
     var Code = '';
     var Language = 'java';
@@ -22,7 +24,7 @@
                 document.getElementById('output').value = xhr.responseText;
             }
         }
-};
+    };
 </script>
 
 {% endblock %}
@@ -35,11 +37,25 @@ CODEEEEE
 {% block body_block %}
 <div class="description">
     <h2>Task Description</h2>
-    <p>You must complete this task. Yas!</p>
+    <p>Print the integers from one to 5.
+        <br>
+        EXPECTED OUTPUT: 1\n 2\n 3\n 4\n 5\n
+    </p>
     </br>
 </div>
-<div class="timer">
-    TIMERRRRR
+<div class="timerContainer">
+    <div class="timeTop">
+        <div class="timeL">
+            <p id="time"></p>
+        </div>
+        <div class="timeR">
+            <p>5:00</p>
+        </div>
+    </div>
+    <div class="timeBottom">
+        <div class="timer">
+        </div>
+    </div>
 </div>
 <div class="codeContainer">
     <div class="codeEditor">
@@ -54,8 +70,7 @@ CODEEEEE
             <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
         </div>
         <div class="typerContainer">
-            <div class="editorLines" id="lineCount"></div>
-            <div class="codeTyper" contenteditable="true" id="codeArea" name="codeArea" spellcheck="false"></div>
+            <div class="codeTyper" id="codeArea" name="codeArea"></div>
         </div>
     </div>
     <div class="codeIo">
@@ -74,8 +89,52 @@ CODEEEEE
     </div>
 </div>
 
-<script src="{% static 'js/codeUpdate.js'%}"></script>
-<script src="{% static 'js/lineNum.js'%}"></script>
-<script src="{% static 'js/tabIndent.js'%}"></script>
+<script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
+<script src="https://pagecdn.io/lib/ace/1.4.12/theme-tomorrow_night.js"></script>
+<script>
+  var editor = ace.edit("codeArea");
+  editor.setTheme("ace/theme/tomorrow_night");
+  editor.getSession().setMode("ace/mode/java");
+  onLoadFunction = editor => {
+    editor.renderer.setPadding(8)
+  }
+
+  editor.getSession().on('change', function () {
+       Code = editor.getSession().getValue();
+   });
+</script>
+<script>
+    function startTimer(duration, display) {
+        var r = document.querySelector(':root');
+        var timer = duration, minutes, seconds;
+        var durationtot = duration;
+        var bar = 0;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+
+            durationtot = durationtot - 1;
+            bar = (duration-durationtot)/duration*100;
+            r.style.setProperty('--timer', bar.toString() + '%');
+
+            
+        }, 1000);
+    }
+
+    window.onload = function () {
+        var fiveMinutes = 60 * 5,
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+    };
+</script>
 <script src="{% static 'js/codeUpdate.js'%}"></script>
 {% endblock %}

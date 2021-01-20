@@ -31,7 +31,7 @@
     <div class="header">
       <!--logo holder; needs updated to contain real logo-->
       <div class="logo">
-          <img src="{% static "images/avaloq.png"%}" class="logoImg">
+
       </div>
       <!--page title holder; should containt block as so title
       is give for each page-->
@@ -67,6 +67,13 @@
           <div class="navSplitter"></div>
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:results'%}" >View Results</a>
+          </div>
+
+        {% endif %}
+        {% if isCandidate %}
+        <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:cresults'%}" >My Results</a>
           </div>
 
         {% endif %}
