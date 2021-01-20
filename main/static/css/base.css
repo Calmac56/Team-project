@@ -4,11 +4,23 @@ within the last element indented 1 less than itself.
 
 global tag styling like h1 and p are done at the bottom.
 */
+:root {
+    --div-color: rgb(29,31,33);
+    --background-color: rgb(70, 70, 70);
+    --highlight-color: rgb(148, 183, 212);
+    --highlight-color2: rgb(103, 110, 141);
+    --alt-color: rgb(44,44,44);
+    --alt-color2: rgb(46, 78, 39);
+    --text-color: rgb(163, 162, 162);
+    --text-alt-color: rgb(219, 219, 219);
+    --timer: 0%;
+}
+  
 
 body {
     margin: 0 !important;
     font-family: 'Source Sans Pro', sans-serif !important;
-    background-color: rgb(76, 85, 88) !important;
+    background-color: var(--background-color) !important;
 }
 
     .bodyContainer {
@@ -31,7 +43,7 @@ body {
 
             .logo {
                 display: flex;
-                width: 140px;
+                width: auto;
                 margin-right: 40px;
                 align-items: flex-end;
             }
@@ -67,12 +79,12 @@ body {
                 width: 1px;
                 height: 15px;
                 margin: 5px 7px 4px 7px;
-                background-color: rgb(160, 160, 160);
+                background-color: var(--font-color);
             }
 
 
             .navLink {
-                color: rgb(211, 223, 233);
+                color: var(--text-color);
                 font-size: 20px;
                 font-size: calc(100% + 0.3vw);
                 font-weight: 300;
@@ -81,7 +93,7 @@ body {
             }
 
             .navLink:hover {
-                color: grey;
+                color: var(--text-alt-color);
             }
 
         .content {
@@ -89,8 +101,8 @@ body {
             flex-direction: column;
             width: 100%;
             min-height:300px;
-            background-color: rgb(44, 44, 44);
-            color: rgb(36, 36, 36);
+            background-color: var(--div-color);
+            color: var(--text-color);
             box-shadow: 0px 0px 10px 1px rgba(39, 39, 39, 0.3);
             
         }
@@ -107,7 +119,7 @@ h1 {
     font-size: 50px !important;
     font-weight: 600 !important;
     font-size: calc(100% + 1.8vw) !important;
-    color: rgb(211, 223, 233) !important;
+    color: var(--text-color) !important;
 }
 
 h2 {
@@ -116,7 +128,7 @@ h2 {
     font-weight: 800 !important;
     font-size: 25px !important;
     font-size: calc(100% + 0.7vw) !important;
-    color: rgb(172, 183, 192) !important;
+    color: var(--text-color) !important;
 }
 
 h3{
@@ -126,6 +138,6 @@ h3{
 p {
     font-weight: 300 !important;
     margin: 0px !important;
-    color: rgb(172, 183, 192) !important;
+    color: var(--text-color) !important;
     font-size: calc(100% + 0.05vw) !important;
 }

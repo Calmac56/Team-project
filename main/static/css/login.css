@@ -11,15 +11,14 @@ html {
     margin-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
-    background: #74cfbf;
     position: relative;
     display: flex;
     justify-content: center;
     flex-direction: column;
     padding: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
     border-radius: 5px;
 
 }
@@ -29,13 +28,13 @@ html {
 }
 
 #form-title{
-    color: #fff;
+    color: var(--text-color);
     
 }
 
 .login_btn {
     width: 100%;
-    background: #33ccff !important;
+    background: var(--highlight-color) !important;
     color: white !important;
 }
 .login_btn:focus {
@@ -46,7 +45,7 @@ html {
     padding: 0 2rem;
 }
 .input-group-text {
-    background: #f7ba5b !important;
+    background: var(--highlight-color2) !important;
     color: white !important;
     border: 0 !important;
     border-radius: 0.25rem 0 0 0.25rem !important;
@@ -62,8 +61,8 @@ h3{
 }
 
 #messages{
-    background-color: grey;
-    color: #fff;
+    /*background-color: grey;*/
+    color: var(--text-color);
     padding: 10px;
     margin-top: 10px;
 }
