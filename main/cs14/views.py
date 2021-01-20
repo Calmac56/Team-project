@@ -39,18 +39,22 @@ def sendCode(request):
             elif language == 'java':
                 filename+= '.java'
             print(request.POST.get('codeArea'))
-            with open(os.path.join(USER_DIR, username, testname, filename), 'w') as f:
-                f.write(request.POST.get('codeArea'))
+            with open(os.path.join(USER_DIR, username, testname, filename), 'w+') as f:
+                f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
             results = test(testname, username, language)
         else:
             return None
     
         return_text = ""
-        if(all(results)):
-            return_text = "Passed"
-        else:
-            return_text = "Fail"
+        print(results)
+        for result in results:
+            if type(result) == type(True):
+                return_text+= str(result)
+            elif type(result) == type("abc"):
+                return_text+= str(result)
+            else:
+                return_text+= str(result.decode("ASCII"))
     print(request.GET.get('codeArea'))
     return HttpResponse(return_text)
 
