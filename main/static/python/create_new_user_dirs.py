@@ -15,7 +15,7 @@ def create_new_user(username):
         print('Cant create user folder')
 
 
-create_new_user('MarkHarris')
+create_new_user('mark')
 
 
     

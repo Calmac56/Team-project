@@ -13,12 +13,15 @@ def compileCode(filename, language):
         compile_command = ("javac -d " + filename[:-5] + " " + filename + ".java").split()
         print(" ".join(compile_command))
     if language == "python":
-        return
-    try:
-        subprocess.call(compile_command)
-        print('Compiled')
-    except:
-        print('could not compile code')
+        return ['worked']
+    
+    proc = subprocess.Popen(compile_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, error = proc.communicate()
+    
+    if proc.returncode != 0:
+        return ['error', error]
+    else:
+        return ['worked', output]
     
 def run(filename, language, input_file):
     run_command = ""
@@ -29,9 +32,17 @@ def run(filename, language, input_file):
     input_data = ''
     with open(input_file, 'r') as f:
         input_data += f.read().strip()
+        
     run_command.append(input_data)
-    out = subprocess.check_output(run_command)
-    return out
+    print(run_command)
+    proc = subprocess.Popen(run_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, error = proc.communicate()
+    if proc.returncode != 0:
+        return ['error', error]
+    else:
+        return ['worked', output]
+    
+
 
 
 def add_language_extension(filename, language):
@@ -46,21 +57,33 @@ def add_language_extension(filename, language):
 def test(testname, username, language):
     filename = os.path.join(USER_DIR, username, testname, 'main')
     testfolder = os.path.join(TEST_DIR, testname)
-    try:
-        compileCode(filename, language)
-    except:
-        raise Exception('Compilation Error')
+    
+    comp = compileCode(filename, language)
+    
+    if comp[0] != "worked":
+        print("comp err")
+        return [comp[1].strip()]
+    
+    
     
     test_cases = os.listdir(os.path.join(testfolder, 'input'))
 
     outputs = []
 
     for i, test_case in enumerate(test_cases):
-        print(test_case)
-        output = run(filename, language, os.path.join(testfolder, 'input', test_case.strip())).decode('ascii')
-        with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
-            data = f.read()
-            outputs.append(data.strip() == output.strip())
+        out_str = "Test Case " + str(i+1) + ":\n"
+        output = run(filename, language, os.path.join(testfolder, 'input', test_case.strip()))
+        if output[0] == 'error':
+            out_str+=output[1].decode('ascii')
+        else:
+            #out_str += output[1].decode('ascii')
+            with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
+                data = f.read()
+                out_str +=str((data.strip() == output[1].strip()))+"\n"
+                out_str += output[1].strip().decode("ASCII") + "\n"
+        
+        outputs.append(out_str + "\n")
+    print(outputs)          
     return outputs
 
 
