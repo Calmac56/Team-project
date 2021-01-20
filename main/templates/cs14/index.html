@@ -1,2 +1,34 @@
 {% extends 'cs14/base.html' %}
 {% load static %}
+{% block head_block %}
+<link rel="stylesheet" href="{% static 'css/index.css'%}" type="text/css">
+{% endblock %}
+
+{% block title2_block %}
+Home
+{% endblock %}
+
+{% block body_block %}
+
+{% if user.is_authenticated %}
+<h2>Welcome to Avaloq coding tests, {{user.first_name}}</h2>
+{% else %}
+<h2>Welcome to Avaloq coding tests</h2>
+{% endif %}
+
+<p> This is a site designed to test your programming knowledge for jobs related to Avaloq. This will be done via a variety of small programming problems of varying difficulty.
+Each problem will have test cases that can be run against it that will test how well your solution solves the problem. These can be run an infinite number of times. You may also create 
+your own test cases to test against your solution. The problems that are assigned to you can be viewed on your profile page which is <a href="{% url 'cs14:login'%}">here</a>
+</p>
+
+
+<h2> Tutorial on using the site </h2>
+<br>
+<h3> Profile page</h3>
+<p> This is the page where you will go to acsess the specific taks that are assigned to you and where you can view results from previous tasks that you have completed. An example of this page is shown below:
+    <br> 
+    <img src="{% static "images/profile.png"%}" class=images>
+    <br>
+    The page shows a list of the tasks that you need to complete and will tell you the amount of time you have been given for each task
+</p>
+{% endblock %}

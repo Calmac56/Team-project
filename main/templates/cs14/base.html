@@ -36,7 +36,11 @@
       <!--page title holder; should containt block as so title
       is give for each page-->
       <div class="title">
-          <h1>Avaloq</h1>
+          <h1> 
+            {% block title2_block %}
+            Avaloq
+          {% endblock %}
+        </h1>
       </div>
 
       <!--nav bar holder, conatining a nav_element for each link, and
@@ -67,6 +71,13 @@
           <div class="navSplitter"></div>
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:results'%}" >View Results</a>
+          </div>
+
+        {% endif %}
+        {% if isCandidate %}
+        <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:cresults'%}" >My Results</a>
           </div>
 
         {% endif %}
