@@ -57,6 +57,10 @@ html {
     outline: 0px !important;
 }
 
+h3{
+    color: white !important;
+}
+
 #messages{
     background-color: grey;
     color: #fff;

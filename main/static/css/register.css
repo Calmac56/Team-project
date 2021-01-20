@@ -23,7 +23,7 @@
 }
 
 #form-title{
-    color: #fff;
+    color: #fff !important;
 }
 .login_btn {
     width: 100%;
