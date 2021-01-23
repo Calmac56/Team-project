@@ -198,3 +198,6 @@ def cresults(request):
         result = None
     
     return render(request, 'cs14/cresults.html', {'results':result})
+
+def creview(request):
+    return render(request, 'cs14/codereview.html')

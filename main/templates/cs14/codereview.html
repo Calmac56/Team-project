@@ -1,0 +1,85 @@
+{% extends 'cs14/base.html' %}
+{% load static %}
+
+
+{% block head_block %}
+<link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
+<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/a11y-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>-->
+
+
+{% endblock %}
+
+
+{% block title_block %}
+CODEEEEE
+{% endblock %}
+
+{% block body_block %}
+<div class="description">
+    <h2>Task Description</h2>
+    <p>Print the integers from one to 5.
+        <br>
+        EXPECTED OUTPUT: 1\n 2\n 3\n 4\n 5\n
+    </p>
+    </br>
+</div>
+<div class="timerContainer">
+    <div class="timeTop">
+        <div class="timeL">
+            <p id="time"></p>
+        </div>
+        
+    </div>
+    
+</div>
+<div class="codeContainer">
+    <div class="codeEditor">
+        <div class="editorTopBar">
+            <div class="editorTitle">CODE</div>
+            <select id='languageSelector' class="editorTopBarForm">
+                <option value="java">JAVA</option>
+                <option value="python">PYTHON</option>
+                <option value="c">C</option>
+                <option value="c#">C#</option>
+            </select>
+            <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
+        </div>
+        <div class="typerContainer">
+            <div class="codeTyper" id="codeArea" name="codeArea"></div>
+        </div>
+    </div>
+    <div class="codeIo">
+        <div class="codeInput">
+            <div class="editorTopBar">
+                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" value="USE CUSTOM INPUT"></div>
+            </div>
+            <textarea class="inputArea" name="inputArea" rows="20" cols="140"></textarea>
+        </div>
+        <div class="codeOutput">
+            <div class="editorTopBar">
+                <div class="editorTitle">OUTPUT</div>
+            </div>
+            <textarea readonly class="outputArea" name="outputArea" id="output" rows="20" cols="140"></textarea>
+        </div>
+    </div>
+</div>
+
+<script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
+<script src="https://pagecdn.io/lib/ace/1.4.12/theme-tomorrow_night.js"></script>
+<script>
+  var editor = ace.edit("codeArea");
+  editor.setTheme("ace/theme/tomorrow_night");
+  editor.getSession().setMode("ace/mode/java");
+  onLoadFunction = editor => {
+    editor.renderer.setPadding(8)
+  }
+
+  editor.getSession().on('change', function () {
+       Code = editor.getSession().getValue();
+   });
+</script>
+
+<script src="{% static 'js/codeUpdate.js'%}"></script>
+{% endblock %}
