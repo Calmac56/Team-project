@@ -76,14 +76,12 @@ def test(testname, username, language):
         if output[0] == 'error':
             out_str+=output[1].decode('ascii')
         else:
-            #out_str += output[1].decode('ascii')
             with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
                 data = f.read()
-                out_str +=str((data.strip() == output[1].strip()))+"\n"
+                out_str += str(data.strip() == output[1].strip().decode("ASCII")) +"\n"
                 out_str += output[1].strip().decode("ASCII") + "\n"
         
-        outputs.append(out_str + "\n")
-    print(outputs)          
+        outputs.append(out_str + "\n") 
     return outputs
 
 
