@@ -14,6 +14,7 @@ from sesame.utils import get_query_string
 from django.core.mail import send_mail
 from cs14.models import Candidate, Admin, Results, Reviewer
 
+import datetime
 import os
 
 def index(request):
@@ -39,9 +40,18 @@ def sendCode(request):
             elif language == 'java':
                 filename+= '.java'
             print(request.POST.get('codeArea'))
-            with open(os.path.join(USER_DIR, username, testname, filename), 'w+') as f:
+
+            filepath = os.path.join(USER_DIR, username, testname)
+
+            try:
+                os.makedirs(os.path.join(filepath, 'history'))
+            except FileExistsError:
+                pass
+            with open(os.path.join(filepath, filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
+            with open(os.path.join(filepath, 'history',str(datetime.datetime.now()) + '.txt'), 'w+') as f:
+                f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
             results = test(testname, username, language)
         else:
             return None
