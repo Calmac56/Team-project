@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from static.python.compile import *
+from static.python.compile import * #compilation functions
 from django.contrib.auth.forms import UserCreationForm
 from cs14.forms import CreateUserForm, CreateLoginLink
 from django.contrib import messages
@@ -42,19 +42,24 @@ def sendCode(request):
             with open(os.path.join(USER_DIR, username, testname, filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
-            results = test(testname, username, language)
+            results_output, passes, fails = test(testname, username, language)
+            
+
         else:
             return None
     
         return_text = ""
-        print(results)
-        for result in results:
+        print(results_output)
+        print("Tests passed: ", passes)
+        print("Tests failed: ", fails)
+        for result in results_output:
             if type(result) == type(True):
                 return_text+= str(result)
             elif type(result) == type("abc"):
                 return_text+= str(result)
             else:
                 return_text+= str(result.decode("ASCII"))
+        return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
     print(request.GET.get('codeArea'))
     return HttpResponse(return_text)
 

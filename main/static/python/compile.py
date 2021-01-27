@@ -87,12 +87,12 @@ def test(testname, username, language):
                 out_str += str(result) +"\n"
                 out_str += output[1].strip().decode("ASCII") + "\n"
         outputs.append(out_str + "\n")
+        
         if result:
             passes += 1
         else:
             fails +=1
-    print ("passes: ", passes) 
-    return outputs
+    return outputs, passes, fails
 
 
 
