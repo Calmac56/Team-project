@@ -10,10 +10,10 @@
 <script>
     var Code = '';
     var Language = 'java';
-
+    var Submission = 'false'
     function doPost(){
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code);
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&submission=" + Submission;
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
@@ -68,6 +68,7 @@ CODEEEEE
                 <option value="c#">C#</option>
             </select>
             <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
+            <button id='submitButton' type="button" class="editorTopBarForm">SUBMIT</button>
         </div>
         <div class="typerContainer">
             <div class="codeTyper" id="codeArea" name="codeArea"></div>
@@ -137,4 +138,5 @@ CODEEEEE
     };
 </script>
 <script src="{% static 'js/codeUpdate.js'%}"></script>
+<script src="{% static 'js/submitCode.js'%}"></script>
 {% endblock %}

@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
-from cs14.models import Candidate, Admin, Results, Reviewer
+from cs14.models import Candidate, Admin, Results, Reviewer, Task
 
 import os
 
@@ -28,8 +28,13 @@ def sendCode(request):
     if(request.method == 'POST'):
         if request.user.is_authenticated:
             USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+
+            userObj = User.objects.get(username=request.user)
+            candidate = Candidate.objects.get(user=userObj)
+
             username = request.user.get_username()
             language = request.POST.get('language').lower()
+            submission = request.POST.get('submission')
             print(language)
             filename = 'main'
             testname = 'test1'
@@ -52,6 +57,15 @@ def sendCode(request):
         print(results_output)
         print("Tests passed: ", passes)
         print("Tests failed: ", fails)
+
+        #Store test results in DB
+        if submission:
+            # ----------------------READ----------------------------------------------
+            # still need to properly add complexity, passpercentage, time taken (timer), code
+            # current values are for test purposes
+            testTask = Task.objects.get(taskID=1)
+            Results.objects.get_or_create(userID=candidate, taskID=testTask, passpercentage = int(passes/(passes+fails)), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", code="test")
+
         for result in results_output:
             if type(result) == type(True):
                 return_text+= str(result)
