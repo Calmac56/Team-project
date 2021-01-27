@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
 from cs14.models import Candidate, Admin, Results, Reviewer
+import shutil
 
 import datetime
 import os
@@ -67,6 +68,43 @@ def sendCode(request):
                 return_text+= str(result.decode("ASCII"))
     print(request.GET.get('codeArea'))
     return HttpResponse(return_text)
+
+def testCode(request):
+    results = []
+    if(request.method == 'POST'):
+        if request.user.is_authenticated:
+            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+            username = request.session['scandidate']
+            language = request.POST.get('language').lower()
+            
+            
+            filename = 'main'
+            testname = 'test1'
+            if language == 'python':
+                filename += '.py'
+            elif language == 'java':
+                filename+= '.java'
+            
+            filepath = os.path.join(USER_DIR, username, testname)
+            os.makedirs(os.path.join(filepath, 'temp'))
+            with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
+                f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
+            results = test2(testname, username, language)
+            shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+        else:
+            return None
+        return_text = ""
+        print(results)
+        for result in results:
+            if type(result) == type(True):
+                return_text+= str(result)
+            elif type(result) == type("abc"):
+                return_text+= str(result)
+            else:
+                return_text+= str(result.decode("ASCII"))
+    print(request.GET.get('codeArea'))
+    return HttpResponse(return_text)
+
 
 def register(request):
     try:

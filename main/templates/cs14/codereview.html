@@ -8,7 +8,25 @@
 <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/a11y-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 <link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>-->
+<script>
+    var Code = '';
+    var Language = 'java';
 
+    function doPost(){
+        var CSRFtoken = '{{ csrf_token }}';
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'cs14:testCode' %}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send(data);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                document.getElementById('output').value = xhr.responseText;
+            }
+        }
+    };
+</script>
 
 {% endblock %}
 
