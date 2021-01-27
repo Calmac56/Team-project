@@ -150,6 +150,7 @@ def results(request):
             theuser =  User.objects.get(username = searched)
             try:
                 candidate = Candidate.objects.get(user = theuser)
+                request.session['scandidate'] = request.GET['search']
                 result = Results.objects.filter(userID = candidate)
                 if not result:
                     result = None
@@ -199,5 +200,32 @@ def cresults(request):
     
     return render(request, 'cs14/cresults.html', {'results':result})
 
+
 def creview(request):
-    return render(request, 'cs14/codereview.html')
+    if request.user.is_authenticated:
+        lines = []
+        username = request.user.get_username()
+        if Candidate.objects.filter(user=User.objects.get(username=username)).exists():
+            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+            finaldir = os.path.join(USER_DIR, username)
+            finaldir2 = os.path.join(finaldir, 'test1')
+            with open(os.path.join(finaldir2, 'main.py'), "r") as f:
+                lines = f.readlines()
+        elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
+            username = request.session.get('scandidate')
+            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+            finaldir = os.path.join(USER_DIR, username)
+            finaldir2 = os.path.join(finaldir, 'test1')
+            with open(os.path.join(finaldir2, 'main.py'), "r") as f:
+                lines = f.readlines()
+
+        else:
+            return redirect('cs14:home')
+    
+    else:
+        return redirect('cs14:login')
+
+                
+
+
+    return render(request, 'cs14/codereview.html', {'code':lines})

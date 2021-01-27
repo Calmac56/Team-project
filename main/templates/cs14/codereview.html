@@ -4,6 +4,7 @@
 
 {% block head_block %}
 <link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
+<link rel="stylesheet" href="{%static 'css/codereview.css' %}" type="text/css">
 <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/a11y-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 <link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>-->
@@ -17,6 +18,10 @@ CODEEEEE
 {% endblock %}
 
 {% block body_block %}
+<div class="slidecontainer">
+    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+  </div>
+
 <div class="description">
     <h2>Task Description</h2>
     <p>Print the integers from one to 5.
@@ -47,7 +52,7 @@ CODEEEEE
             <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
         </div>
         <div class="typerContainer">
-            <div class="codeTyper" id="codeArea" name="codeArea"></div>
+            <div class="codeTyper" id="codeArea" name="codeArea">{% for item in code %}{{item}}{% endfor %}</div>
         </div>
     </div>
     <div class="codeIo">
