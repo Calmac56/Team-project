@@ -97,7 +97,10 @@ def testCode(request):
     if(request.method == 'POST'):
         if request.user.is_authenticated:
             USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-            username = request.session['scandidate']
+            if Reviewer.objects.filter(user=request.user):
+                username = request.session['scandidate']
+            else:
+                username = request.user.username
             language = request.POST.get('language').lower()
             
             
@@ -274,6 +277,11 @@ def cresults(request):
 
 def creview(request,id):
    
+    task = Task.objects.filter(taskID=id)
+    taskDec = task[0].description
+    taskout = task[0].expectedout
+
+
     
     if request.user.is_authenticated:
         lines = []
@@ -305,5 +313,5 @@ def creview(request,id):
                 
 
 
-    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language})
+    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
 
