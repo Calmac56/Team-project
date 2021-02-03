@@ -64,8 +64,8 @@ def sendCode(request):
             # still need to properly add complexity, passpercentage, time taken (timer), code
             # current values are for test purposes
             testTask = Task.objects.get(taskID=1)
-            Results.objects.get_or_create(userID=candidate, taskID=testTask, passpercentage = int(passes/(passes+fails)), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", code="test")
-
+            result = Results(userID=candidate, taskID=testTask, passpercentage = int(passes/(passes+fails)), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language="test")
+            result.save()
         for result in results_output:
             if type(result) == type(True):
                 return_text+= str(result)
