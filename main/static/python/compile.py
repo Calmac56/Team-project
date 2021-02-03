@@ -73,6 +73,7 @@ def test(testname, username, language):
     #Results for run
     passes = 0
     fails = 0
+    result = 0
 
     for i, test_case in enumerate(test_cases):
         out_str = "Test Case " + str(i+1) + ":\n" 
@@ -88,7 +89,7 @@ def test(testname, username, language):
                 out_str += output[1].strip().decode("ASCII") + "\n"
         outputs.append(out_str + "\n")
         
-        if result:
+        if result != 0:
             passes += 1
         else:
             fails +=1

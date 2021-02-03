@@ -16,6 +16,7 @@ from cs14.models import Candidate, Admin, Results, Reviewer, Task
 
 import datetime
 import os
+import shutil
 
 def index(request):
     print(settings.MEDIA_DIR)
@@ -72,8 +73,14 @@ def sendCode(request):
             # still need to properly add complexity, passpercentage, time taken (timer), code
             # current values are for test purposes
             testTask = Task.objects.get(taskID=1)
-            result = Results(userID=candidate, taskID=testTask, passpercentage = int(passes/(passes+fails)), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language="test")
-            result.save()
+
+            if Results.objects.filter(userID=candidate, taskID=testTask):
+                pass
+            else:
+                Results.objects.create(userID=candidate, passpercentage =0, taskID=testTask, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
+            
+            Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
+            
         for result in results_output:
             if type(result) == type(True):
                 return_text+= str(result)
