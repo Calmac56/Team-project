@@ -289,20 +289,27 @@ def creview(request,id):
         if Candidate.objects.filter(user=User.objects.get(username=username)).exists():
             theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
             language = theresult[0].language
-            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-            finaldir = os.path.join(USER_DIR, username)
-            finaldir2 = os.path.join(finaldir, 'test1')
-            with open(os.path.join(finaldir2, 'main.py'), "r") as f:
-                lines = f.readlines()
+            try:
+                USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+                finaldir = os.path.join(USER_DIR, username)
+                finaldir2 = os.path.join(finaldir, 'test' + str(id))
+                with open(os.path.join(finaldir2, 'main.py'), "r") as f:
+                    lines = f.readlines()
+            except FileNotFoundError:
+                lines = "The coding file could not be found, backend error"
         elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
             username = request.session.get('scandidate')
             theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
             language = theresult[0].language
-            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-            finaldir = os.path.join(USER_DIR, username)
-            finaldir2 = os.path.join(finaldir, 'test1')
-            with open(os.path.join(finaldir2, 'main.py'), "r") as f:
-                lines = f.readlines()
+            try:
+                USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+                finaldir = os.path.join(USER_DIR, username)
+                testname = "test" + str(id)
+                finaldir2 = os.path.join(finaldir, testname)
+                with open(os.path.join(finaldir2, 'main.py'), "r") as f:
+                    lines = f.readlines()
+            except FileNotFoundError:
+                lines = "The coding file could not be found, backend error"
 
         else:
             return redirect('cs14:home')
