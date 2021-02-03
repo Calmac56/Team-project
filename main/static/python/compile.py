@@ -69,20 +69,30 @@ def test(testname, username, language):
     test_cases = os.listdir(os.path.join(testfolder, 'input'))
 
     outputs = []
+    
+    #Results for run
+    passes = 0
+    fails = 0
 
     for i, test_case in enumerate(test_cases):
-        out_str = "Test Case " + str(i+1) + ":\n"
+        out_str = "Test Case " + str(i+1) + ":\n" 
         output = run(filename, language, os.path.join(testfolder, 'input', test_case.strip()))
         if output[0] == 'error':
             out_str+=output[1].decode('ascii')
         else:
             with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
                 data = f.read()
-                out_str += str(data.strip() == output[1].strip().decode("ASCII")) +"\n"
+                #test case result
+                result = data.strip() == output[1].strip().decode("ASCII")
+                out_str += str(result) +"\n"
                 out_str += output[1].strip().decode("ASCII") + "\n"
+        outputs.append(out_str + "\n")
         
-        outputs.append(out_str + "\n") 
-    return outputs
+        if result:
+            passes += 1
+        else:
+            fails +=1
+    return outputs, passes, fails
 
 def test2(testname, username, language):
     filename = os.path.join(USER_DIR, username, testname, 'temp', 'main')

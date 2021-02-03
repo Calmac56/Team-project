@@ -33,4 +33,4 @@ class Results(models.Model):
     passpercentage = models.IntegerField() #have made this int, but should be calculated
     timetaken = models.IntegerField()
     complexity = models.CharField(max_length = 31)
-    code = models.CharField(max_length = 255)
+    language = models.CharField(max_length = 255)
