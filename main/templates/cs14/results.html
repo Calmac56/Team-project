@@ -72,7 +72,7 @@ Candidate results
         <td class="tg-0lax">{{result.timetaken}}</td>
         <td class="tg-0lax">{{result.complexity}}</td>
         <td class="tg-0lax">{{result.taskID.description}}</td>
-        <td class="tg-0lax"> <a href="{% url 'cs14:creview'%}">View code</a></td>
+        <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
       </tr>
     </tbody>
     </table>

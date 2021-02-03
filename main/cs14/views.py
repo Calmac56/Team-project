@@ -79,7 +79,7 @@ def sendCode(request):
             else:
                 Results.objects.create(userID=candidate, passpercentage =0, taskID=testTask, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
             
-            Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
+            Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
             
         for result in results_output:
             if type(result) == type(True):
@@ -272,11 +272,15 @@ def cresults(request):
     return render(request, 'cs14/cresults.html', {'results':result})
 
 
-def creview(request):
+def creview(request,id):
+   
+    
     if request.user.is_authenticated:
         lines = []
         username = request.user.get_username()
         if Candidate.objects.filter(user=User.objects.get(username=username)).exists():
+            theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
+            language = theresult[0].language
             USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
             finaldir = os.path.join(USER_DIR, username)
             finaldir2 = os.path.join(finaldir, 'test1')
@@ -284,6 +288,8 @@ def creview(request):
                 lines = f.readlines()
         elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
             username = request.session.get('scandidate')
+            theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
+            language = theresult[0].language
             USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
             finaldir = os.path.join(USER_DIR, username)
             finaldir2 = os.path.join(finaldir, 'test1')
@@ -299,4 +305,5 @@ def creview(request):
                 
 
 
-    return render(request, 'cs14/codereview.html', {'code':lines})
+    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language})
+

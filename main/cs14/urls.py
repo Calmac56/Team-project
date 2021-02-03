@@ -12,6 +12,6 @@ urlpatterns = [
 	path('logout/', views.logoutUser, name='logout'),
 	path('results/', views.results, name='results'),
 	path('myresults/', views.cresults, name='cresults'),
-	path('codereview/', views.creview, name='creview'),
+	path('codereview/<int:id>/', views.creview, name='creview'),
 	path('testCode', views.testCode, name='testCode'),
 ]

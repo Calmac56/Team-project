@@ -105,4 +105,11 @@ CODEEEEE
 </script>
 
 <script src="{% static 'js/codeUpdate.js'%}"></script>
+<script>
+var languageSelector = document.getElementById('languageSelector');
+languageSelector.value = "{{language}}";
+
+editor.getSession().setMode("ace/mode/" + "{{language}}".toLowerCase());
+
+</script>
 {% endblock %}
