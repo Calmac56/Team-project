@@ -14,6 +14,7 @@ from sesame.utils import get_query_string
 from django.core.mail import send_mail
 from cs14.models import Candidate, Admin, Results, Reviewer, Task
 
+import datetime
 import os
 
 def index(request):
@@ -44,7 +45,14 @@ def sendCode(request):
             elif language == 'java':
                 filename+= '.java'
             print(request.POST.get('codeArea'))
-            with open(os.path.join(USER_DIR, username, testname, filename), 'w+') as f:
+
+            filepath = os.path.join(USER_DIR, username, testname)
+
+            try:
+                os.makedirs(os.path.join(filepath, 'history'))
+            except FileExistsError:
+                pass
+            with open(os.path.join(filepath, filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
             results_output, passes, fails = test(testname, username, language)
@@ -76,6 +84,43 @@ def sendCode(request):
         return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
     print(request.GET.get('codeArea'))
     return HttpResponse(return_text)
+
+def testCode(request):
+    results = []
+    if(request.method == 'POST'):
+        if request.user.is_authenticated:
+            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+            username = request.session['scandidate']
+            language = request.POST.get('language').lower()
+            
+            
+            filename = 'main'
+            testname = 'test1'
+            if language == 'python':
+                filename += '.py'
+            elif language == 'java':
+                filename+= '.java'
+            
+            filepath = os.path.join(USER_DIR, username, testname)
+            os.makedirs(os.path.join(filepath, 'temp'))
+            with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
+                f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
+            results = test2(testname, username, language)
+            shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+        else:
+            return None
+        return_text = ""
+        print(results)
+        for result in results:
+            if type(result) == type(True):
+                return_text+= str(result)
+            elif type(result) == type("abc"):
+                return_text+= str(result)
+            else:
+                return_text+= str(result.decode("ASCII"))
+    print(request.GET.get('codeArea'))
+    return HttpResponse(return_text)
+
 
 def register(request):
     try:
@@ -169,6 +214,7 @@ def results(request):
             theuser =  User.objects.get(username = searched)
             try:
                 candidate = Candidate.objects.get(user = theuser)
+                request.session['scandidate'] = request.GET['search']
                 result = Results.objects.filter(userID = candidate)
                 if not result:
                     result = None
@@ -217,3 +263,33 @@ def cresults(request):
         result = None
     
     return render(request, 'cs14/cresults.html', {'results':result})
+
+
+def creview(request):
+    if request.user.is_authenticated:
+        lines = []
+        username = request.user.get_username()
+        if Candidate.objects.filter(user=User.objects.get(username=username)).exists():
+            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+            finaldir = os.path.join(USER_DIR, username)
+            finaldir2 = os.path.join(finaldir, 'test1')
+            with open(os.path.join(finaldir2, 'main.py'), "r") as f:
+                lines = f.readlines()
+        elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
+            username = request.session.get('scandidate')
+            USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+            finaldir = os.path.join(USER_DIR, username)
+            finaldir2 = os.path.join(finaldir, 'test1')
+            with open(os.path.join(finaldir2, 'main.py'), "r") as f:
+                lines = f.readlines()
+
+        else:
+            return redirect('cs14:home')
+    
+    else:
+        return redirect('cs14:login')
+
+                
+
+
+    return render(request, 'cs14/codereview.html', {'code':lines})
