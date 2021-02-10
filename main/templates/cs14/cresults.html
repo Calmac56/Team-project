@@ -54,8 +54,9 @@ Your results
         <th class="tg-0lax">Pass Percentage</th>
         <th class="tg-0lax">Time taken</th>
         <th class="tg-0lax"> Complexity </th>
-        <th class="tg-0lax">Code</th>
         <th class="tg-0lax">Description</th>
+        <th class="tg-0lax">Code</th>
+        
       </tr>
     </thead>
     <tbody>
@@ -66,8 +67,9 @@ Your results
         <td class="tg-0lax">{{result.passpercentage}}</td>
         <td class="tg-0lax">{{result.timetaken}}</td>
         <td class="tg-0lax">{{result.complexity}}</td>
-        <td class="tg-0lax"> View code</td>
+        
         <td class="tg-0lax">{{result.taskID.description}}</td>
+        <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
       </tr>
     </tbody>
     </table>

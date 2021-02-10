@@ -4,17 +4,20 @@
 
 {% block head_block %}
 <link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
-
+<link rel="stylesheet" href="{%static 'css/codereview.css' %}" type="text/css">
+<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/a11y-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>-->
 <script>
     var Code = '';
     var Language = 'java';
-    var Submission = 'false'
+
     function doPost(){
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&submission=" + Submission;
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
+        xhr.open("POST", "{% url 'cs14:testCode' %}", true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send(data);
         xhr.onreadystatechange = function() {
@@ -25,6 +28,29 @@
     };
 </script>
 
+
+<script>
+    $('myRange').tooltip()
+    function updateInputBox() {
+        var CSRFtoken = '{{ csrf_token }}';
+        var value = document.getElementById('myRange').value;
+        var valstring = value.toString()
+        var data =  'csrfmiddlewaretoken=' + CSRFtoken + '&number=' + valstring + '&taskID=' + {{taskID}};
+        var xhp = new XMLHttpRequest();
+        xhp.open("POST", "{% url 'cs14:rhistory' %}", true);
+        xhp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhp.send(data);
+        xhp.onreadystatechange = function() {
+            if (xhp.readyState === 4) {
+                editor.getSession().setValue( xhp.responseText);
+            }
+        }
+        
+        };
+</script>
+
+
+
 {% endblock %}
 
 
@@ -33,11 +59,17 @@ CODEEEEE
 {% endblock %}
 
 {% block body_block %}
+<div class="slidecontainer">
+    <input type="range" min="0" max="{{slideval}}" value="{{slideval}}" class="slider" id="myRange" onchange="updateInputBox()">
+  </div>
+
+
+
 <div class="description">
     <h2>Task Description</h2>
-    <p>Print the integers from one to 5.
+    <p>{{taskDec}}
         <br>
-        EXPECTED OUTPUT: 1\n 2\n 3\n 4\n 5\n
+        EXPECTED OUTPUT: {{taskout}}
     </p>
     </br>
 </div>
@@ -46,14 +78,9 @@ CODEEEEE
         <div class="timeL">
             <p id="time"></p>
         </div>
-        <div class="timeR">
-            <p>5:00</p>
-        </div>
+        
     </div>
-    <div class="timeBottom">
-        <div class="timer">
-        </div>
-    </div>
+    
 </div>
 <div class="codeContainer">
     <div class="codeEditor">
@@ -66,10 +93,9 @@ CODEEEEE
                 <option value="c#">C#</option>
             </select>
             <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
-            <button id='submitButton' type="button" class="editorTopBarForm">SUBMIT</button>
         </div>
         <div class="typerContainer">
-            <div class="codeTyper" id="codeArea" name="codeArea"></div>
+            <div class="codeTyper" id="codeArea" name="codeArea">{% for item in code %}{{item}}{% endfor %}</div>
         </div>
     </div>
     <div class="codeIo">
@@ -102,39 +128,17 @@ CODEEEEE
        Code = editor.getSession().getValue();
    });
 </script>
-<script>  
-    function startTimer(duration, display) {
-        var r = document.querySelector(':root');
-        var timer = duration, minutes, seconds;
-        var durationtot = duration;
-        var bar = 0;
-        setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
 
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            display.textContent = minutes + ":" + seconds;
-
-            if (--timer < 0) {
-                timer = duration;
-            }
-
-            durationtot = durationtot - 1;
-            bar = (duration-durationtot)/duration*100;
-            r.style.setProperty('--timer', bar.toString() + '%');
-
-            
-        }, 1000);
-    }
-
-    window.onload = function () {
-        var fiveMinutes = 60 * 5,
-            display = document.querySelector('#time');
-        startTimer(fiveMinutes, display);
-    };
-</script>
 <script src="{% static 'js/codeUpdate.js'%}"></script>
-<script src="{% static 'js/submitCode.js'%}"></script>
+<script>
+var languageSelector = document.getElementById('languageSelector');
+languageSelector.value = "{{language}}";
+
+editor.getSession().setMode("ace/mode/" + "{{language}}".toLowerCase());
+Language = "{{language}}"
+
+</script>
+
+
+
 {% endblock %}
