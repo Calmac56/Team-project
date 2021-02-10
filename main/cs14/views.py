@@ -24,7 +24,7 @@ def index(request):
 
 def codingPage(request):
     return render(request, 'cs14/codingPage.html')
-#@csrf_exempt
+    
 def sendCode(request):
     results = []
     if(request.method == 'POST'):
@@ -81,6 +81,7 @@ def sendCode(request):
             
             Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
             
+
         for result in results_output:
             if type(result) == type(True):
                 return_text+= str(result)

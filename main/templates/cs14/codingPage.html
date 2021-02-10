@@ -22,6 +22,9 @@
                 document.getElementById('output').value = xhr.responseText;
             }
         }
+        if (Submission == 'true'){
+            window.location.replace("{% url 'cs14:cresults' %}");
+        }
     };
 </script>
 
@@ -65,8 +68,8 @@ CODEEEEE
                 <option value="c">C</option>
                 <option value="c#">C#</option>
             </select>
-            <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
-            <button id='submitButton' type="button" class="editorTopBarForm">SUBMIT</button>
+            <button id='runButton' type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
+            <button id='submitButton' type="button" onclick="doPost()" class="editorTopBarForm">SUBMIT</button>
         </div>
         <div class="typerContainer">
             <div class="codeTyper" id="codeArea" name="codeArea"></div>
