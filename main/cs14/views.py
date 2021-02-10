@@ -13,11 +13,7 @@ from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
 from cs14.models import Candidate, Admin, Results, Reviewer, Task
-<<<<<<< HEAD
 import json
-
-=======
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
 
 import datetime
 import os
@@ -60,12 +56,9 @@ def sendCode(request):
                 pass
             with open(os.path.join(filepath, filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
-<<<<<<< HEAD
             with open(os.path.join(filepath, 'history',str(datetime.datetime.now()) + '.txt'), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
-=======
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
 
             results_output, passes, fails = test(testname, username, language)
             
@@ -298,11 +291,8 @@ def creview(request,id):
         taskout = "Could not get expected output"
 
 
-<<<<<<< HEAD
     timelinelength = 0
-=======
     
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
     if request.user.is_authenticated:
         lines = []
         username = request.user.get_username()
@@ -316,14 +306,11 @@ def creview(request,id):
                 USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
                 finaldir = os.path.join(USER_DIR, username)
                 finaldir2 = os.path.join(finaldir, 'test' + str(id))
-<<<<<<< HEAD
                 historydir = os.path.join(finaldir2, 'history')
                 onlyfiles = [f for f in os.listdir(historydir) if os.path.isfile(os.path.join(historydir, f))]
                 timelinelength = len(onlyfiles) - 1
                 
                 
-=======
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
                 with open(os.path.join(finaldir2, 'main.py'), "r") as f:
                     lines = f.readlines()
             except FileNotFoundError:
@@ -340,12 +327,9 @@ def creview(request,id):
                 finaldir = os.path.join(USER_DIR, username)
                 testname = "test" + str(id)
                 finaldir2 = os.path.join(finaldir, testname)
-<<<<<<< HEAD
                 histdir = os.path.join(finaldir2, 'history')
                 onlyfiles = [f for f in os.listdir(histdir) if os.path.isfile(os.path.join(histdir, f))]
                 timelinelength = len(onlyfiles) - 1
-=======
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
                 with open(os.path.join(finaldir2, 'main.py'), "r") as f:
                     lines = f.readlines()
             except FileNotFoundError:
@@ -360,7 +344,6 @@ def creview(request,id):
                 
 
 
-<<<<<<< HEAD
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout, 'slideval':timelinelength, 'taskID':id})
 
 
@@ -419,7 +402,5 @@ def rhistory(request):
                 except FileNotFoundError:
                     codeline = "The coding file could not be found, backend error"
                     return HttpResponse(codeline)
-=======
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
 

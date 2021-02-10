@@ -14,8 +14,5 @@ urlpatterns = [
 	path('myresults/', views.cresults, name='cresults'),
 	path('codereview/<int:id>/', views.creview, name='creview'),
 	path('testCode', views.testCode, name='testCode'),
-<<<<<<< HEAD
 	path('rhistory', views.rhistory, name='rhistory'),
-=======
->>>>>>> 6c09f6baa324d4867bf10c33998b797806ba0dfc
 ]
