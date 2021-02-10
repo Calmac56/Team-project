@@ -4,9 +4,7 @@
 
 {% block head_block %}
 <link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
-<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/a11y-dark.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-<link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>-->
+
 <script>
     var Code = '';
     var Language = 'java';
@@ -104,7 +102,7 @@ CODEEEEE
        Code = editor.getSession().getValue();
    });
 </script>
-<script>
+<script>  
     function startTimer(duration, display) {
         var r = document.querySelector(':root');
         var timer = duration, minutes, seconds;
