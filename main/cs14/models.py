@@ -17,13 +17,16 @@ class Reviewer (models.Model):
     def __str__(self):
         return self.user.username
 
-
 class Task(models.Model):
     taskID = models.IntegerField(primary_key=True)
     description = models.CharField(max_length = 4095)
     testcases = models.CharField(max_length = 255)
     expectedout = models.CharField(max_length = 255)
     creator = models.ForeignKey(Admin, on_delete=models.CASCADE)
+
+class UserTask (models.Model):
+    userID =  models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 class Results(models.Model):
     userID =  models.ForeignKey(Candidate, on_delete=models.CASCADE)
@@ -33,4 +36,4 @@ class Results(models.Model):
     passpercentage = models.IntegerField() #have made this int, but should be calculated
     timetaken = models.IntegerField()
     complexity = models.CharField(max_length = 31)
-    code = models.CharField(max_length = 255)
+    language = models.CharField(max_length = 255)
