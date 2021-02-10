@@ -276,10 +276,15 @@ def cresults(request):
 
 
 def creview(request,id):
-   
-    task = Task.objects.filter(taskID=id)
-    taskDec = task[0].description
-    taskout = task[0].expectedout
+
+
+    try:
+        task = Task.objects.filter(taskID=id)
+        taskDec = task[0].description
+        taskout = task[0].expectedout
+    except:
+        taskDec = "Could not get task description"
+        taskout = "Could not get expected output"
 
 
     
@@ -288,7 +293,10 @@ def creview(request,id):
         username = request.user.get_username()
         if Candidate.objects.filter(user=User.objects.get(username=username)).exists():
             theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
-            language = theresult[0].language
+            try:
+                language = theresult[0].language
+            except:
+                language = "python"
             try:
                 USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
                 finaldir = os.path.join(USER_DIR, username)
@@ -300,7 +308,10 @@ def creview(request,id):
         elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
             username = request.session.get('scandidate')
             theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
-            language = theresult[0].language
+            try:
+                language = theresult[0].language
+            except:
+                language = "python"
             try:
                 USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
                 finaldir = os.path.join(USER_DIR, username)
