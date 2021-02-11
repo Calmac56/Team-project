@@ -22,8 +22,27 @@ def index(request):
     print(settings.MEDIA_DIR)
     return render(request, 'cs14/index.html')
 
+def getCookie(request, cookie, default_val=None):
+    val = request.session.get(cookie)
+    if not val:
+        return default_val
+
+    return val
+
 def codingPage(request):
-    return render(request, 'cs14/codingPage.html')
+    context = {}
+
+    context['language'] = getCookie(request, 'language', default_val='java')
+    context['code'] = getCookie(request, 'code', default_val='')
+
+    return render(request, 'cs14/codingPage.html', context=context)
+
+def codingPageCookie(request):
+    request.session['language'] = request.POST.get('language').lower()
+    request.session['code'] = request.POST.get('code')
+
+    return HttpResponse('saved')
+
     
 def sendCode(request):
     results = []
@@ -37,6 +56,7 @@ def sendCode(request):
             username = request.user.get_username()
             language = request.POST.get('language').lower()
             submission = request.POST.get('submission')
+            print(submission)
             print(language)
             filename = 'main'
             testname = 'test1'
@@ -68,7 +88,9 @@ def sendCode(request):
         print("Tests failed: ", fails)
 
         #Store test results in DB
-        if submission:
+        if submission == 'true':
+            del request.session['language']
+            del request.session['code']
             # ----------------------READ----------------------------------------------
             # still need to properly add complexity, passpercentage, time taken (timer), code
             # current values are for test purposes

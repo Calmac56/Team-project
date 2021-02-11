@@ -6,10 +6,10 @@
 <link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
 
 <script>
-    var Code = '';
-    var Language = 'java';
-    var Submission = 'false'
-    function doPost(){
+    var Code = `{{ code }}`;
+    var Language = '{{ language }}';
+
+    function doPost(Submission){
         var CSRFtoken = '{{ csrf_token }}';
         var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&submission=" + Submission;
 
@@ -25,6 +25,16 @@
         if (Submission == 'true'){
             window.location.replace("{% url 'cs14:cresults' %}");
         }
+    };
+
+    function updateCookies(){
+        var CSRFtoken = '{{ csrf_token }}';
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&code=" + encodeURIComponent(Code);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'cs14:codingPageCookie' %}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send(data);
     };
 </script>
 
@@ -50,7 +60,7 @@ CODEEEEE
             <p id="time"></p>
         </div>
         <div class="timeR">
-            <p>5:00</p>
+            <p id="timeFull"></p>
         </div>
     </div>
     <div class="timeBottom">
@@ -68,8 +78,8 @@ CODEEEEE
                 <option value="c">C</option>
                 <option value="c#">C#</option>
             </select>
-            <button id='runButton' type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
-            <button id='submitButton' type="button" onclick="doPost()" class="editorTopBarForm">SUBMIT</button>
+            <button id='runButton' type="button" onclick="doPost('false')" class="editorTopBarForm">RUN</button>
+            <button id='submitButton' type="button" onclick="doPost('true')" class="editorTopBarForm">SUBMIT</button>
         </div>
         <div class="typerContainer">
             <div class="codeTyper" id="codeArea" name="codeArea"></div>
@@ -93,51 +103,21 @@ CODEEEEE
 
 <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
 <script src="https://pagecdn.io/lib/ace/1.4.12/theme-tomorrow_night.js"></script>
-<script>
-  var editor = ace.edit("codeArea");
-  editor.setTheme("ace/theme/tomorrow_night");
-  editor.getSession().setMode("ace/mode/java");
-  onLoadFunction = editor => {
-    editor.renderer.setPadding(8)
-  }
+<script src="{% static 'js/editorSettings.js'%}"></script>
 
-  editor.getSession().on('change', function () {
-       Code = editor.getSession().getValue();
-   });
-</script>
-<script>  
-    function startTimer(duration, display) {
-        var r = document.querySelector(':root');
-        var timer = duration, minutes, seconds;
-        var durationtot = duration;
-        var bar = 0;
-        setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
-
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            display.textContent = minutes + ":" + seconds;
-
-            if (--timer < 0) {
-                timer = duration;
-            }
-
-            durationtot = durationtot - 1;
-            bar = (duration-durationtot)/duration*100;
-            r.style.setProperty('--timer', bar.toString() + '%');
-
-            
-        }, 1000);
-    }
-
-    window.onload = function () {
-        var fiveMinutes = 60 * 5,
-            display = document.querySelector('#time');
-        startTimer(fiveMinutes, display);
-    };
-</script>
-<script src="{% static 'js/codeUpdate.js'%}"></script>
+<script src="{% static 'js/timer.js'%}"></script>
+<script src="{% static 'js/codeLanguageUpdate.js'%}"></script>
 <script src="{% static 'js/submitCode.js'%}"></script>
+
+<script>
+    editor.getSession().setValue(Code);
+    editor.getSession().setMode("ace/mode/" + Language.toLowerCase());
+    
+    window.onload = function () {
+        var tasktime = 10; // replace this with time in seconds from context dictionary
+        display = document.querySelector('#time');
+        displayFull = document.querySelector('#timeFull');
+        startTimer(tasktime, display, displayFull);
+    };  
+</script>
 {% endblock %}
