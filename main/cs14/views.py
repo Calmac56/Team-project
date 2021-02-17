@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
-from cs14.models import Candidate, Admin, Results, Reviewer, Task
+from cs14.models import Candidate, Admin, Results, Reviewer, Task, UserTask
 import json
 
 import datetime
@@ -427,3 +427,43 @@ def rhistory(request):
                     return HttpResponse(codeline)
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
 
+
+def profile(request):
+    name = request.user.get_username  # change this to full name
+
+    tasks = []
+    
+    try:
+        if request.user.is_authenticated:
+            auser = Candidate.objects.get(user=request.user)
+        else:
+            auser = None
+    except Candidate.DoesNotExist:
+        auser = None
+
+    if auser == None:
+        return redirect('cs14:login')
+
+  
+    searched  = request.user.username
+    try:
+        theuser =  User.objects.get(username = searched)
+        try:
+            candidate = Candidate.objects.get(user = theuser)
+            
+            taskobjs = UserTask.objects.filter(userID = candidate)
+
+            for task in taskobjs:
+                tasks.append(task.taskID)
+
+            if not tasks:
+                tasks = None
+
+            
+        except Candidate.DoesNotExist:
+            tasks = None
+           
+    except User.DoesNotExist:
+        tasks = None
+    
+    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks})
