@@ -23,6 +23,7 @@ class Task(models.Model):
     testcases = models.CharField(max_length = 255)
     expectedout = models.CharField(max_length = 255)
     creator = models.ForeignKey(Admin, on_delete=models.CASCADE)
+    time = models.IntegerField(default=300) #time in seconds
 
 class UserTask (models.Model):
     userID =  models.ForeignKey(Candidate, on_delete=models.CASCADE)
