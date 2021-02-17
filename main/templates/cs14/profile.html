@@ -21,7 +21,7 @@
     {% for task in tasks %}
         <div class="taskContainer">
             <p>{{task.description}}</p>
-            <a class="navLink" href="{% url 'cs14:code'%}">Go to Task</a>
+            <a class="navLink" href="{% url 'cs14:code task.taskID'%}">Go to Task</a>
         </div>
         <hr>
     {% endfor %}
