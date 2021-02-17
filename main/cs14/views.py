@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from static.python.compile import * #compilation functions
+from static.python.getuserdir import *
 from django.contrib.auth.forms import UserCreationForm
 from cs14.forms import CreateUserForm, CreateLoginLink
 from django.contrib import messages
@@ -323,7 +324,6 @@ def creview(request,id):
         taskout = "Could not get expected output"
 
 
-    timelinelength = 0
     
     if request.user.is_authenticated:
         lines = []
@@ -334,19 +334,8 @@ def creview(request,id):
                 language = theresult[0].language
             except:
                 language = "python"
-            try:
-                USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-                finaldir = os.path.join(USER_DIR, username)
-                finaldir2 = os.path.join(finaldir, 'test' + str(id))
-                historydir = os.path.join(finaldir2, 'history')
-                onlyfiles = [f for f in os.listdir(historydir) if os.path.isfile(os.path.join(historydir, f))]
-                timelinelength = len(onlyfiles) - 1
-                
-                
-                with open(os.path.join(finaldir2, 'main.py'), "r") as f:
-                    lines = f.readlines()
-            except FileNotFoundError:
-                lines = "The coding file could not be found, backend error"
+            
+            timelinelength, lines = getlines(id, username)
         elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
             username = request.session.get('scandidate')
             theresult = Results.objects.filter(userID=Candidate.objects.filter(user=User.objects.get(username=username)).exists(), taskID=id)
@@ -354,18 +343,7 @@ def creview(request,id):
                 language = theresult[0].language
             except:
                 language = "python"
-            try:
-                USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-                finaldir = os.path.join(USER_DIR, username)
-                testname = "test" + str(id)
-                finaldir2 = os.path.join(finaldir, testname)
-                histdir = os.path.join(finaldir2, 'history')
-                onlyfiles = [f for f in os.listdir(histdir) if os.path.isfile(os.path.join(histdir, f))]
-                timelinelength = len(onlyfiles) - 1
-                with open(os.path.join(finaldir2, 'main.py'), "r") as f:
-                    lines = f.readlines()
-            except FileNotFoundError:
-                lines = "The coding file could not be found, backend error"
+            timelinelength, lines = getlines(id, username)
 
         else:
             return redirect('cs14:home')
@@ -390,49 +368,14 @@ def rhistory(request):
      
             
             if Candidate.objects.filter(user=User.objects.get(username=username)).exists():
+                codeline = gethistory(username,id, value)
                 
-                try:
-                    USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-                    finaldir = os.path.join(USER_DIR, username)
-                    finaldir2 = os.path.join(finaldir, 'test' + str(id))
-                    historydir = os.path.join(finaldir2, 'history')
-                    onlyfiles = [f for f in os.listdir(historydir) if os.path.isfile(os.path.join(historydir, f))]
-                    timelinelength = len(onlyfiles)
-                    historylist = []
-                    for i in range(timelinelength):
-                        with open(os.path.join(historydir, onlyfiles[i]), "r") as f:
-                            lines = f.readlines()
-                        historylist.append(lines)
-                    
-               
-                    codeline = ''.join(historylist[int(value)])
-
-                    
-                    return HttpResponse(codeline)
-                except FileNotFoundError:
-                    codeline = "The coding file could not be found, backend error"
-                    return HttpResponse(codeline)
+                
+                return HttpResponse(codeline)
             elif Reviewer.objects.filter(user=User.objects.get(username=username)).exists():
                 username = request.session.get('scandidate')
-                try:
-                    USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
-                    finaldir = os.path.join(USER_DIR, username)
-                    testname = "test" + str(id)
-                    finaldir2 = os.path.join(finaldir, testname)
-                    historydir = os.path.join(finaldir2, 'history')
-                    onlyfiles = [f for f in os.listdir(historydir) if os.path.isfile(os.path.join(historydir, f))]
-                    timelinelength = len(onlyfiles)
-                    historylist = []
-                    for i in range(timelinelength):
-                        with open(os.path.join(historydir, onlyfiles[i]), "r") as f:
-                            lines = f.readlines()
-                        historylist.append(lines)
-                    
-               
-                    codeline = ''.join(historylist[int(value)])
-                    return HttpResponse(codeline)
-                except FileNotFoundError:
-                    codeline = "The coding file could not be found, backend error"
-                    return HttpResponse(codeline)
+                codeline = gethistory(username,id, value)
+
+                return HttpResponse(codeline)
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
 
