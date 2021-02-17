@@ -30,11 +30,20 @@ def getCookie(request, cookie, default_val=None):
 
     return val
 
-def codingPage(request):
+def codingPage(request, id):
     context = {}
+    try:
+        task = Task.objects.filter(taskID=id)
+        taskDec = task[0].description
+        taskout = task[0].expectedout
+    except:
+        taskDec = "Could not get task description"
+        taskout = "Could not get expected output"
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
+    context['taskDec'] = taskDec
+    context['taskout'] = taskout
 
     return render(request, 'cs14/codingPage.html', context=context)
 
