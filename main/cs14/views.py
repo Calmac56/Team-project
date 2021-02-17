@@ -31,6 +31,7 @@ def getCookie(request, cookie, default_val=None):
 
     return val
 
+@login_required
 def codingPage(request, id):
     context = {}
     try:
