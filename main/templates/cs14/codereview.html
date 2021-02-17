@@ -28,17 +28,42 @@
     };
 </script>
 
+
+<script>
+    $('myRange').tooltip()
+    function updateInputBox() {
+        var CSRFtoken = '{{ csrf_token }}';
+        var value = document.getElementById('myRange').value;
+        var valstring = value.toString()
+        var data =  'csrfmiddlewaretoken=' + CSRFtoken + '&number=' + valstring + '&taskID=' + {{taskID}};
+        var xhp = new XMLHttpRequest();
+        xhp.open("POST", "{% url 'cs14:rhistory' %}", true);
+        xhp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhp.send(data);
+        xhp.onreadystatechange = function() {
+            if (xhp.readyState === 4) {
+                editor.getSession().setValue( xhp.responseText);
+            }
+        }
+        
+        };
+</script>
+
+
+
 {% endblock %}
 
 
 {% block title_block %}
-CODEEEEE
+Code Review
 {% endblock %}
 
 {% block body_block %}
 <div class="slidecontainer">
-    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    <input type="range" min="0" max="{{slideval}}" value="{{slideval}}" class="slider" id="myRange" onchange="updateInputBox()">
   </div>
+
+
 
 <div class="description">
     <h2>Task Description</h2>
@@ -113,4 +138,7 @@ editor.getSession().setMode("ace/mode/" + "{{language}}".toLowerCase());
 Language = "{{language}}"
 
 </script>
+
+
+
 {% endblock %}

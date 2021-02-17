@@ -15,4 +15,5 @@ urlpatterns = [
 	path('myresults/', views.cresults, name='cresults'),
 	path('codereview/<int:id>/', views.creview, name='creview'),
 	path('testCode', views.testCode, name='testCode'),
+	path('rhistory', views.rhistory, name='rhistory'),
 ]
