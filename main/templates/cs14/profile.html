@@ -1,0 +1,32 @@
+{% extends 'cs14/base.html' %}
+{% load static %}
+
+
+{% block head_block %}
+
+{% endblock %}
+
+
+{% block title_block %}
+    Profile
+{% endblock %}
+
+{% block title2_block %}
+    {{ name }}
+{% endblock %}
+
+{% block body_block %}
+
+{% if tasks != None %}
+    {% for task in tasks %}
+        <div class="taskContainer">
+            <p>{{task.description}}</p>
+            <a class="navLink" href="{% url 'cs14:code'%}">Go to Task</a>
+        </div>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>You have no coding tasks to complete.</p>
+{% endif %}
+
+{% endblock %}
