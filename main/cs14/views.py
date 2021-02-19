@@ -76,6 +76,7 @@ def sendCode(request):
             with open(os.path.join(filepath, filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
+            #run the test from compile.py
             results_output, passes, fails = test(testname, username, language)
             
 
