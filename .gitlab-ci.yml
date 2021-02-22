@@ -3,5 +3,6 @@ build:
   tags:
     - docker
   script:
-    - python --version
     - ls
+    - python --version
+    
