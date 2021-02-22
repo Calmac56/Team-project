@@ -7,6 +7,8 @@ build:
     - python --version
     
 test:
+  tags:
+    - docker
   script:
     - cd main
     - python manage.py test cs14.tests
