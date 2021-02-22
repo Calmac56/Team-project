@@ -3,9 +3,10 @@ build:
   tags:
     - docker
   script:
-    - ls
     - pip3 install -r requirements.txt
     - python --version
+    
+test:
+  script:
     - cd main
     - python manage.py test cs14.tests
-    
