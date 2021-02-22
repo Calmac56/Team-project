@@ -4,3 +4,4 @@ build:
     - docker
   script:
     - python --version
+    -ls
