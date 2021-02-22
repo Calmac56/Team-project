@@ -1,5 +1,6 @@
+image: python
 build:
   tags:
-    - shell
+    - docker
   script:
-    - python manage.py test cs14.tests
+    - python --version
