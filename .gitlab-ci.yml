@@ -1,7 +1,13 @@
 image: python
-before_script:
+
+stages:
+  - build
+  - test
+build:
   tags:
     - docker
+  stage:
+    - build
   script:
     - pip3 install -r requirements.txt
     - python --version
@@ -9,6 +15,8 @@ before_script:
 test:
   tags:
     - docker
+  stage:
+    - test
   script:
     - cd main
     - python manage.py test cs14.tests
