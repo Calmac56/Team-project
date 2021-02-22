@@ -1,5 +1,5 @@
 image: python
-build:
+before_script:
   tags:
     - docker
   script:
