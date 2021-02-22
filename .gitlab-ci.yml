@@ -3,20 +3,19 @@ image: python
 stages:
   - build
   - test
+  
 build:
+  stage: build
   tags:
     - docker
-  stage:
-    - build
   script:
     - pip3 install -r requirements.txt
     - python --version
     
 test:
+  stage: test
   tags:
     - docker
-  stage:
-    - test
   script:
     - cd main
     - python manage.py test cs14.tests
