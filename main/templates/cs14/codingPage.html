@@ -8,10 +8,15 @@
 <script>
     var Code = `{{ code }}`;
     var Language = '{{ language }}';
+    var CustomInput = ""
+    
+
 
     function doPost(Submission){
+        var CustomInputCB = document.getElementById("customInputCB").checked;
+
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&submission=" + Submission;
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission;
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
@@ -88,9 +93,9 @@ CODEEEEE
     <div class="codeIo">
         <div class="codeInput">
             <div class="editorTopBar">
-                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" value="USE CUSTOM INPUT"></div>
+                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" id="customInputCB" value="USE CUSTOM INPUT"></div>
             </div>
-            <textarea class="inputArea" name="inputArea" rows="20" cols="140"></textarea>
+            <textarea class="inputArea" id="inputArea" name="inputArea" rows="20" cols="140"></textarea>
         </div>
         <div class="codeOutput">
             <div class="editorTopBar">

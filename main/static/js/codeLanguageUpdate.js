@@ -1,4 +1,5 @@
 var languageSelector = document.getElementById('languageSelector');
+var inputBox = document.getElementById('inputArea');
 
 for(var i, j = 0; i = languageSelector.options[j]; j++) {
     if(i.value == Language) {
@@ -18,3 +19,8 @@ languageSelector.onchange = function(){
     editor.getSession().setMode("ace/mode/" + Language.toLowerCase());
     updateCookies();
 }; 
+
+inputBox.onkeyup = function(){
+    CustomInput = inputBox.value;
+
+};
