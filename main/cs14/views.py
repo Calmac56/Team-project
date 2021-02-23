@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from static.python.compile import * #compilation functions
 from static.python.getuserdir import *
 from django.contrib.auth.forms import UserCreationForm
-from cs14.forms import CreateUserForm, CreateLoginLink
+from .forms import CreateUserForm, CreateLoginLink, Profile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,9 +13,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
-from cs14.models import Candidate, Admin, Results, Reviewer, Task, UserTask
+from cs14.models import Candidate, Admin, Results, Reviewer, Task, UserTask, Profile
 import json
-
 import datetime
 import os
 import shutil
@@ -91,6 +90,7 @@ def sendCode(request):
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
 
+            #run the test from compile.py
             results_output, passes, fails = test(testname, username, language)
             
 
@@ -419,4 +419,13 @@ def profile(request):
     except User.DoesNotExist:
         tasks = None
     
-    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks})
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST, request.FILES or None)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+    else:
+        form = CreateUserForm()
+
+    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks, 'form':form})

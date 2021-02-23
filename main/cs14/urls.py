@@ -1,5 +1,8 @@
 from django.urls import path
 from cs14 import views
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 app_name = 'cs14'
 
@@ -18,3 +21,5 @@ urlpatterns = [
 	path('testCode', views.testCode, name='testCode'),
 	path('rhistory', views.rhistory, name='rhistory'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
