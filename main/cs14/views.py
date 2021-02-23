@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from static.python.compile import *
 from django.contrib.auth.forms import UserCreationForm
-from cs14.forms import CreateUserForm, CreateLoginLink
+from .forms import CreateUserForm, CreateLoginLink, ProfileForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -12,7 +12,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from sesame.utils import get_query_string
 from django.core.mail import send_mail
-from cs14.models import Candidate, Admin, Results, Reviewer
+from cs14.models import Candidate, Admin, Results, Reviewer, Profile
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 import datetime
 import os
@@ -208,3 +213,16 @@ def cresults(request):
         result = None
     
     return render(request, 'cs14/cresults.html', {'results':result})
+
+def userprofile(request):
+    if request.method == 'POST':
+        form = Profile(request.POST, request.FILES or None)
+        if form.is_valid():
+            profile = form.save(commit=False)  # returning an model instance which has not been saved to DB yet
+            profile.user = request.user
+            profile.save()
+    else:
+        form = Profile()
+
+    return render(request, 'cs14/profile.html',{'form':form})
+
