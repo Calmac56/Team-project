@@ -139,4 +139,5 @@ STATICFILES_DIRS =[STATIC_DIR]
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = MEDIA_DIR
-MEDIA_URL = '/images/'
+MEDIA_URL = '/media/'
+LOGIN_URL='/cs14/login'
