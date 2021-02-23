@@ -27,7 +27,9 @@ def run_container(filename, input_file):
         runCont = subprocess.Popen(["sudo", "docker", "container", "start", "-a", containerID], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         #get outputs or errors
         output, error = runCont.communicate()
-        if runCont.returncode != 0:
+
+        
+        if len(error) != 0:
             return['error', error]
         else:
             return['worked', output]
@@ -79,7 +81,8 @@ def test(testname, username, language):
     return outputs, passes, fails
 
 def test2(testname, username, language):
-    filename = os.path.join(USER_DIR, username, testname, 'temp', 'main')
+    filename = os.path.join(USER_DIR, username, testname, 'temp',  add_language_extension('main', language))
+  
     testfolder = os.path.join(TEST_DIR, testname)
     
     
@@ -92,6 +95,7 @@ def test2(testname, username, language):
         output = run_container(filename, os.path.join(testfolder, 'input', test_case.strip()))
         if output[0] == 'error':
             out_str+=output[1].decode('ascii')
+            print(out_str)
         else:
             with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
                 data = f.read()
@@ -100,7 +104,6 @@ def test2(testname, username, language):
         
         outputs.append(out_str + "\n") 
     return outputs
-
 
 
 

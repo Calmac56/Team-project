@@ -59,11 +59,14 @@ Code Review
 {% endblock %}
 
 {% block body_block %}
+
 <div class="slidecontainer">
     <input type="range" min="0" max="{{slideval}}" value="{{slideval}}" class="slider" id="myRange" onchange="updateInputBox()">
   </div>
 
-
+<script>
+    updateInputBox()
+</script>
 
 <div class="description">
     <h2>Task Description</h2>
@@ -95,7 +98,7 @@ Code Review
             <button type="button" onclick="doPost()" class="editorTopBarForm">RUN</button>
         </div>
         <div class="typerContainer">
-            <div class="codeTyper" id="codeArea" name="codeArea">{% for item in code %}{{item}}{% endfor %}</div>
+            <div class="codeTyper" id="codeArea" name="codeArea"></div>
         </div>
     </div>
     <div class="codeIo">
