@@ -44,7 +44,7 @@ def add_language_extension(filename, language):
         raise Exception('language not supported')
 
 
-def test(testname, username, language):
+def test(testname, username, language, input=None): 
     #note----Name here is hardcoded
     filename = os.path.join(USER_DIR, username, testname, add_language_extension('main', language))
     #testing adding language extension
@@ -55,32 +55,43 @@ def test(testname, username, language):
 
     outputs = []
     
+    if input==None:
+        testingInput = 'noncustom'
+    else:
+        testingInput = input
+
+
     #Results for run
     passes = 0
     fails = 0
     result = 0
-
-    for i, test_case in enumerate(test_cases):
-        out_str = "Test Case " + str(i+1) + ":\n" 
-        output = run_container(filename, os.path.join(testfolder, 'input', test_case.strip()))
-        if output[0] == 'error':
-            out_str+=output[1].decode('ascii')
-        else:
-            with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
-                data = f.read()
-                #test case result
-                result = data.strip() == output[1].strip().decode("ASCII")
-                out_str += str(result) +"\n"
-                out_str += output[1].strip().decode("ASCII") + "\n"
-        outputs.append(out_str + "\n")
+    if testingInput == 'noncustom':
+        for i, test_case in enumerate(test_cases):
+            out_str = "Test Case " + str(i+1) + ":\n"
+            testingInput = os.path.join(testfolder, 'input', test_case.strip())
+            output = run_container(filename, testingInput)
+            if output[0] == 'error':
+                out_str+=output[1].decode('ascii')
+            else:
+                with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
+                    data = f.read()
+                    #test case result
+                    result = data.strip() == output[1].strip().decode("ASCII")
+                    out_str += str(result) +"\n"
+                    out_str += output[1].strip().decode("ASCII") + "\n"
+            outputs.append(out_str + "\n")
         
-        if result != 0:
-            passes += 1
-        else:
-            fails +=1
-    return outputs, passes, fails
+            if result != 0:
+                passes += 1
+            else:
+                fails +=1
+        return outputs, passes, fails
+    else:
+        output = run_container(filename, testingInput)
+        #add error handling
+        return ["Custom testing", output[1]]
 
-def test2(testname, username, language):
+def test2(testname, username, language, input=None):
     filename = os.path.join(USER_DIR, username, testname, 'temp',  add_language_extension('main', language))
   
     testfolder = os.path.join(TEST_DIR, testname)

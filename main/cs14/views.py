@@ -89,9 +89,21 @@ def sendCode(request):
             with open(os.path.join(filepath, 'history',str(datetime.datetime.now()) + '.txt'), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
 
-
-            #run the test from compile.py
-            results_output, passes, fails = test(testname, username, language)
+            #Custom input functionality
+            customInputCB = request.POST.get('customInputCB')
+            if customInputCB == 'true':
+                customInputText = request.POST.get('inputArea')
+                print("input text: ", customInputText)
+                try:
+                    tempInputFile = os.path.join(USER_DIR, username, 'tempInput.txt')
+                    with open(tempInputFile, 'w') as f:
+                        f.write(customInputText)
+                    #run the test from compile.py
+                    results_output = test(testname, username, language, tempInputFile)
+                except FileExistsError:
+                    pass
+            else:
+                results_output, passes, fails = test(testname, username, language)
             
 
         else:
@@ -99,34 +111,41 @@ def sendCode(request):
     
         return_text = ""
         print(results_output)
-        print("Tests passed: ", passes)
-        print("Tests failed: ", fails)
-
+        
         #Store test results in DB
-        if submission == 'true':
-            del request.session['language']
-            del request.session['code']
-            # ----------------------READ----------------------------------------------
-            # still need to properly add complexity, passpercentage, time taken (timer), code
-            # current values are for test purposes
-            testTask = Task.objects.get(taskID=1)
+        if customInputCB == 'true':
+            return_text = "Custom output: \n" + results_output[1].decode('utf-8')
 
-            if Results.objects.filter(userID=candidate, taskID=testTask):
-                pass
-            else:
-                Results.objects.create(userID=candidate, passpercentage =0, taskID=testTask, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
-            
-            Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
-            
+        else:
+            #Let user know they can't submit with custom input
+            print("Tests passed: ", passes)
+            print("Tests failed: ", fails)
 
-        for result in results_output:
-            if type(result) == type(True):
-                return_text+= str(result)
-            elif type(result) == type("abc"):
-                return_text+= str(result)
-            else:
-                return_text+= str(result.decode("ASCII"))
-        return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
+
+            if submission == 'true':
+                del request.session['language']
+                del request.session['code']
+                # ----------------------READ----------------------------------------------
+                # still need to properly add complexity, passpercentage, time taken (timer), code
+                # current values are for test purposes
+                testTask = Task.objects.get(taskID=1)
+
+                if Results.objects.filter(userID=candidate, taskID=testTask):
+                    pass
+                else:
+                    Results.objects.create(userID=candidate, passpercentage =0, taskID=testTask, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
+                
+                Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
+                
+
+            for result in results_output:
+                if type(result) == type(True):
+                    return_text+= str(result)
+                elif type(result) == type("abc"):
+                    return_text+= str(result)
+                else:
+                    return_text+= str(result.decode("ASCII"))
+            return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
     print(request.GET.get('codeArea'))
     return HttpResponse(return_text)
 
