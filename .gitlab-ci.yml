@@ -10,4 +10,5 @@ build:
   script:
       - cd main
       - python manage.py test cs14.tests
-
+      - python manage.py test cs14.reviewtests
+    
