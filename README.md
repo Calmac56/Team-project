@@ -19,7 +19,8 @@ pip install -r requirements.txt
 Create the database. <br>
 CD into the "main" directory and run the following commands.<br>
 ``
-python manage.py makemigrations
+python manage.py makemigrations `` <br>
+``
 python manage.py migrate
 ``
 
@@ -39,7 +40,7 @@ python manage.py createsuperuser
 
 **Step 6**
 Run the site. <br>
-Run the following terminal command
+Run the following terminal command <br>
 ``
 python manage.py runserver
 ``
