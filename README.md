@@ -1,5 +1,5 @@
 **Prerequisites**
-- A linux distro or WSL
+- A linux distro or WSL2
 - An up to date install of Docker. Docker can be found here: https://www.docker.com/products/docker-desktop
 
 **Step 1** <br>
