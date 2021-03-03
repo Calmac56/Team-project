@@ -28,7 +28,7 @@ python manage.py migrate
 Populate the database. <br>
 Run the following populate command <br>
 ``
-Insert command here
+python manage.py loaddata db.json
 ``
 
 **Step 5** <br>
