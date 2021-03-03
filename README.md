@@ -38,7 +38,7 @@ Run the following terminal command <br>
 python manage.py createsuperuser
 ``
 
-**Step 6**
+**Step 6** <br>
 Run the site. <br>
 Run the following terminal command <br>
 ``
