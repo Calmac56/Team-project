@@ -4,6 +4,7 @@ build:
   stage: build
   tags:
     - docker
+    - dind
   before_script:
     - pip3 install -r requirements.txt
     - python --version
