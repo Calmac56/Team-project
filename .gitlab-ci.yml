@@ -1,7 +1,4 @@
-image: gitlab/dind
-
-services:
-  - docker:dind
+image: python
   
 build:
   stage: build
