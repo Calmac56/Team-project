@@ -13,7 +13,7 @@ def run_container(filename, input_file):
     #RUNS AND COMPILES FILE IN CONTAINER
 
     #create a container from the specified image
-    proc = subprocess.Popen(["sudo", "docker","create", dimage], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(["docker","create", dimage], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     encoded_containerID, error = proc.communicate()
     if proc.returncode != 0:
         return ['Error creating container', error]
@@ -21,8 +21,8 @@ def run_container(filename, input_file):
         containerID = encoded_containerID.decode("utf-8")[:12]
         print("ContID: ", containerID)
         #copy the files to run (and compile if necessary) to the container
-        subprocess.run(["sudo", "docker", "cp", filename, containerID + ":" + "/testing"])
-        subprocess.run(["sudo", "docker", "cp", input_file, containerID + ":" + "/input"])
+        subprocess.run([ "docker", "cp", filename, containerID + ":" + "/testing"])
+        subprocess.run(["docker", "cp", input_file, containerID + ":" + "/input"])
         #run the container
         runCont = subprocess.Popen(["sudo", "docker", "container", "start", "-a", containerID], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         #get outputs or errors
