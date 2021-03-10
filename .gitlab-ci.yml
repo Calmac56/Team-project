@@ -7,6 +7,7 @@ build:
   before_script:
     - pip3 install -r requirements.txt
     - python --version
+    - apt-get install docker-ce docker-ce-cli containerd.io
   script:
       - cd main
       - python manage.py test cs14.tests
