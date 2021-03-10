@@ -5,6 +5,7 @@ build:
   tags:
     - docker
   before_script:
+    - apt-get update
     - apt-get install docker.io
     - pip3 install -r requirements.txt
     - python --version
