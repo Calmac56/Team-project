@@ -5,9 +5,10 @@ build:
   tags:
     - docker
   before_script:
+    - apt-get install docker.io
     - pip3 install -r requirements.txt
     - python --version
-    - docker run --privileged -d docker:dind
+   
   script:
       - cd main
       - python manage.py test cs14.tests
