@@ -7,9 +7,11 @@ import shutil
 import os
 from django.conf import settings
 
+
 class resultsTest(TestCase):
     @classmethod
-    def setUpClass(self):
+    def setUpTestData(self):
+     
         test_user = User.objects.create_user(username='testuser')
         test_user.set_password('testpassword')
         test_user.save()
@@ -35,10 +37,12 @@ class resultsTest(TestCase):
       
         self.assertEquals(list(response.context['results'].values_list()), list(Results.objects.filter(userID=candidate).values_list()))
 
+ 
+
 class reviewTest(TestCase):
 
     @classmethod
-    def setUpClass(self):
+    def setUpTestData(self):
         test_user = User.objects.create_user(username='testuser')
         test_user.set_password('testpassword')
         test_user.save()
