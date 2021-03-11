@@ -7,11 +7,12 @@ build:
   tags:
     - docker
   before_script:
-    - apk add build-base python-dev py-pip jpeg-dev zlib-dev
-    - $LIBRARY_PATH=/lib:/usr/lib
+    
     - apk add --update --no-cache python3 
     - ln -sf python3 /usr/bin/python
     - python3 -m ensurepip
+    - apk add build-base python3-dev py-pip jpeg-dev zlib-dev
+    - $LIBRARY_PATH=/lib:/usr/lib
     - pip3 install --no-cache --upgrade pip setuptools
     - pip3 install -r requirements.txt
     - python --version
