@@ -1,13 +1,13 @@
-image: python
+image: docker
   
 build:
   stage: build
   tags:
     - docker
   before_script:
-    - apt-get update -y
-    - apt-get install docker.io -y
-    - service docker start
+  
+    - apt-get install  python3 -y 
+    - apt-get install python3-pip -y
     - pip3 install -r requirements.txt
     - python --version
     
