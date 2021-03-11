@@ -1,4 +1,4 @@
-image: python
+image: docker
 
 
 
@@ -7,7 +7,10 @@ build:
   tags:
     - docker
   before_script:
-    - docker run -ti -v /var/run/docker.sock:/var/run/docker.sock docker
+    - apk add --update --no-cache python3 
+    - ln -sf python3 /usr/bin/python
+    - python3 -m ensurepip
+    - pip3 install --no-cache --upgrade pip setuptools
     - pip3 install -r requirements.txt
     - python --version
     
