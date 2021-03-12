@@ -1,12 +1,23 @@
-image: python
+image: docker:18-git
 
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
 
+services:
+  - docker:18-dind
 build:
   stage: build
   tags:
     - docker
   before_script:
     
+    - apk add --update --no-cache python3 
+    - ln -sf python3 /usr/bin/python
+    - python3 -m ensurepip
+    - apk add build-base python3-dev py-pip jpeg-dev zlib-dev
+    - env LIBRARY_PATH=/lib:/usr/lib
+    - pip3 install --no-cache --upgrade pip setuptools
     - pip3 install -r requirements.txt
     - python --version
     
@@ -16,5 +27,3 @@ build:
       - python3 manage.py test cs14.tests
       - python3 manage.py test cs14.reviewtests
      
-
-
