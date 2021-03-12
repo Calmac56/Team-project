@@ -2,12 +2,15 @@ import subprocess
 from pathlib import Path
 import os
 
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 MEDIA_DIR = os.path.join(BASE_DIR,'media')
 USER_DIR = os.path.join(MEDIA_DIR, 'users')
 TEST_DIR = os.path.join(MEDIA_DIR, 'tests')
 #DOCKER IMAGE BEING USED
 dimage = "coding-image" 
+
 
 def run_container(filename, input_file):
     #RUNS AND COMPILES FILE IN CONTAINER
@@ -24,10 +27,22 @@ def run_container(filename, input_file):
         subprocess.run([ "docker", "cp", filename, containerID + ":" + "/testing"])
         subprocess.run(["docker", "cp", input_file, containerID + ":" + "/input"])
         #run the container
-        runCont = subprocess.Popen(["docker", "container", "start", "-a", containerID], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        runCont = subprocess.Popen(["docker", "container", "start", "-a", containerID, ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+       
+
+    
         #get outputs or errors
         output, error = runCont.communicate()
+        exitstatus = subprocess.Popen(["docker", "inspect", containerID, "--format='{{.State.ExitCode}}'"], stdout=subprocess.PIPE)
+        exitcode = exitstatus.communicate()[0]
+     
+        if exitcode.decode().strip() == "'124'":
+            output = "Time limit exceeded".encode()
 
+        if len(output) > 2000:
+            output = "Output exceeds size limit".encode()
+    
+      
         
         if len(error) != 0:
             return['error', error]
@@ -45,6 +60,7 @@ def add_language_extension(filename, language):
 
 
 def test(testname, username, language, input=None): 
+
     #note----Name here is hardcoded
     filename = os.path.join(USER_DIR, username, testname, add_language_extension('main', language))
     #testing adding language extension
@@ -69,7 +85,9 @@ def test(testname, username, language, input=None):
         for i, test_case in enumerate(test_cases):
             out_str = "Test Case " + str(i+1) + ":\n"
             testingInput = os.path.join(testfolder, 'input', test_case.strip())
+
             output = run_container(filename, testingInput)
+            
             if output[0] == 'error':
                 out_str+=output[1].decode('ascii')
             else:
