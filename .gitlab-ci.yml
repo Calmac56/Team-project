@@ -37,6 +37,9 @@ build:
     - cd static
     - cd python
     - docker build -t coding-image .
+    - cd ..
+    - cd ..
+    - cd ..
     
    
   script:
