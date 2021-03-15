@@ -8,7 +8,7 @@ import os
 from django.conf import settings
 
 
-class resultsTest(TestCase):
+class resultsTest(TestCase):   #Results page testing class
     @classmethod
     def setUpTestData(self):
      
@@ -40,7 +40,7 @@ class resultsTest(TestCase):
         Results.objects.create(userID=candidate2, passpercentage=80,taskID=testTask, tests_passed=4, tests_failed=1, timetaken=1, complexity="test", language="java")
         Results.objects.create(userID=candidate2, passpercentage=60,taskID=testTask2, tests_passed=3, tests_failed=2, timetaken=1, complexity="test", language="java")
         
-    def test_candidate_result(self):
+    def test_candidate_result(self):  #Tests if correct result shows up for out test candidate
         c = Client()
         user= c.login(username='testuser', password='testpassword')
         candidate = Candidate.objects.get(user=user)
@@ -50,7 +50,7 @@ class resultsTest(TestCase):
         self.assertEquals(list(response.context['results'].values_list()), list(Results.objects.filter(userID=candidate).values_list()))
         print("Candidate result ok")
     
-    def test_reviewer_result(self):
+    def test_reviewer_result(self):  #Tests if correct result shows up for out test candidate to our reviewer
 
         c = Client()
         user = c.login(username='testReviewer', password='testpassword')
@@ -59,7 +59,7 @@ class resultsTest(TestCase):
         self.assertEquals(list(response.context['results'].values_list()), list(Results.objects.filter(userID=candidate).values_list()))
         print("Reviewer results ok")
     
-    def test_candidate_numresult(self):
+    def test_candidate_numresult(self):  #Tests if correct number of results shows up to our test candidate
         c = Client()
         user= c.login(username='testuser2', password='testpassword')
         candidate = Candidate.objects.get(user=user)
@@ -67,7 +67,7 @@ class resultsTest(TestCase):
         self.assertEqual(len(response.context['results']), 2)
         print("Number of candidate results ok")
        
-    def test_reviewer_numresult(self):
+    def test_reviewer_numresult(self):    #Tests if correct number of results shows four our test candidate to reviewers
         c = Client()
         user = c.login(username='testReviewer', password='testpassword')
         candidate = Candidate.objects.get(user=User.objects.get(username='testuser'))
@@ -102,7 +102,7 @@ class reviewTest(TestCase):
         
       
     
-    def test_inital_page(self):
+    def test_inital_page(self):  #Tests if the inital code review page shows the correct code for test candidate
         
         
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
@@ -110,7 +110,7 @@ class reviewTest(TestCase):
         self.assertEqual(['print("Hello world from calum")'], code)
         print("Intial review page ok")
 
-    def test_run(self):
+    def test_run(self):   #Tests if we can run code on our code review page and that it gives correct output
       
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
         theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"]})
@@ -120,7 +120,7 @@ class reviewTest(TestCase):
         self.assertTrue(contains)
         print("Code execution on review page ok")
 
-    def test_timeline(self):
+    def test_timeline(self):  #Tests if the timeline woprks and gives the correct output   
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
         theresp = self.c.post('/cs14/rhistory', {'number':0, 'taskID': 1})
         theresp = theresp.content.decode('ascii')
