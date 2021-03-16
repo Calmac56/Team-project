@@ -44,6 +44,5 @@ build:
    
   script:
       - cd main
-      - python3 manage.py test cs14.tests
       - python3 manage.py test cs14.reviewtests
      
