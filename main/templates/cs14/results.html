@@ -16,16 +16,25 @@ Candidate results
 <script>
   $.get('/cs14/getresultsession', function(data) {
     var options = document.getElementById('selectbox')
+    if (data != ""){
+    options.remove(0);
     for(var i =0; i<options.length; i++){
       if (options[i].value===data) {
         options[i].selected= true;
         break;
     }
+  }
+}
+  else{
+
+    options[0].selected = true;
+    
+  }
 
     
     
 
-    }
+    
     
     
 });
@@ -40,6 +49,7 @@ Candidate results
 
 <form class="form-inline my-2 my-lg-0" id="searchform">
   <select class="js-example-basic-single" name="state" id='selectbox' onchange="this.form.submit()" >
+  <option value="defaultop" id="default" selected="selected">Select a candidate </option>
   {% for candidate in candidates %}
   <option value="{{candidate.user.username}}">{{candidate.user.username}}</option>
   {% endfor %}
