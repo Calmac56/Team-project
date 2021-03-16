@@ -55,7 +55,7 @@ class resultsTest(TestCase):   #Results page testing class
         c = Client()
         user = c.login(username='testReviewer', password='testpassword')
         candidate = Candidate.objects.get(user=User.objects.get(username='testuser'))
-        response = c.get('/cs14/results/', {'search':'testuser'})
+        response = c.get('/cs14/results/', {'state':'testuser'})
         self.assertEquals(list(response.context['results'].values_list()), list(Results.objects.filter(userID=candidate).values_list()))
         print("Reviewer results ok")
     
@@ -71,7 +71,7 @@ class resultsTest(TestCase):   #Results page testing class
         c = Client()
         user = c.login(username='testReviewer', password='testpassword')
         candidate = Candidate.objects.get(user=User.objects.get(username='testuser'))
-        response = c.get('/cs14/results/', {'search':'testuser2'})
+        response = c.get('/cs14/results/', {'state':'testuser2'})
         self.assertEquals(len(response.context['results']), 2)
         print("Number of reviewer results ok")
  
@@ -123,8 +123,8 @@ class reviewTest(TestCase):
     def test_timeline(self):  #Tests if the timeline woprks and gives the correct output   
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
         theresp = self.c.post('/cs14/rhistory', {'number':0, 'taskID': 1})
-        theresp = theresp.content.decode('ascii')
-        self.assertEqual('print("Hello world")', theresp)
+        test = theresp.content.decode('ascii')
+        self.assertEqual('print("Hello world")', test)
         print("Timeline ok")
 
     @classmethod

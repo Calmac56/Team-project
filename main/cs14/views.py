@@ -258,10 +258,17 @@ def logoutUser(request):
     logout(request)
     return redirect('cs14:login')
 
+def getresultsession(request):
+    if not request.is_ajax():
+        return redirect('cs14:index')
+
+    return HttpResponse(request.session['scandidate'])
+
 def results(request):
 
     result = None
     searchcompleted = False
+    allcandiates = Candidate.objects.all()
 
     try:
         if request.user.is_authenticated:
@@ -273,15 +280,29 @@ def results(request):
 
     if auser == None:
         return redirect('cs14:login')
+    
 
-    if 'search' in request.GET:
-        searched  = request.GET['search']
-        searchcompleted = True
+   
+    if request.session.get('scandidate'):
+        theuser =  User.objects.get(username = request.session.get('scandidate'))
+        candidate = Candidate.objects.get(user = theuser)
+        result = Results.objects.filter(userID = candidate)
+        
+        if not result:
+            result = None
+    
+    
+    
+
+    if 'state' in request.GET:
+        searched  = request.GET['state']
+        
+        
         try:
             theuser =  User.objects.get(username = searched)
             try:
                 candidate = Candidate.objects.get(user = theuser)
-                request.session['scandidate'] = request.GET['search']
+                request.session['scandidate'] = request.GET['state']
                 result = Results.objects.filter(userID = candidate)
                 if not result:
                     result = None
@@ -295,7 +316,7 @@ def results(request):
 
 
 
-    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted})
+    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted, 'candidates':allcandiates})
 
 def cresults(request):
     result = None

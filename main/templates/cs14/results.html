@@ -13,17 +13,47 @@ Candidate results
 {% endblock %}
 
 {% block body_block %}
+<script>
+  $.get('/cs14/getresultsession', function(data) {
+    var options = document.getElementById('selectbox')
+    for(var i =0; i<options.length; i++){
+      if (options[i].value===data) {
+        options[i].selected= true;
+        break;
+    }
+
+    
+    
+
+    }
+    
+    
+});
+</script>
+
+<script>
+  $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+
+</script>
 
 <form class="form-inline my-2 my-lg-0" id="searchform">
-    <input class="form-control mr-sm-2" type="search" placeholder=" Candidate search" aria-label="Search" name="search" >
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  <select class="js-example-basic-single" name="state" id='selectbox' onchange="this.form.submit()" >
+  {% for candidate in candidates %}
+  <option value="{{candidate.user.username}}">{{candidate.user.username}}</option>
+  {% endfor %}
+</select>
 </form>
+
 
 <br>
 {% if results != None %}
 {% for result in results %}
 <p>Test {{result.taskID.taskID}} &nbsp;
 <script>
+
+
     function viewMore(id) {
 
 
@@ -79,9 +109,10 @@ Candidate results
     </span>
 <br>
 {% endfor %}
-{% elif searched  %}
-<p> User does not exist or no tests have been completed</p>
+{% else %}
+<p> This candidate has not completed any coding tests</p>
 {% endif %}
+
 {% endblock %}
 
 
