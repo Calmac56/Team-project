@@ -67,8 +67,7 @@ def sendCode(request):
             username = request.user.get_username()
             language = request.POST.get('language').lower()
             submission = request.POST.get('submission')
-            print(submission)
-            print(language)
+        
             filename = 'main'
             testname = 'test1'
 
@@ -76,7 +75,7 @@ def sendCode(request):
                 filename += '.py'
             elif language == 'java':
                 filename+= '.java'
-            print(request.POST.get('codeArea'))
+            
 
             filepath = os.path.join(USER_DIR, username, testname)
 
@@ -146,7 +145,7 @@ def sendCode(request):
                 else:
                     return_text+= str(result.decode("ASCII"))
             return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
-    print(request.GET.get('codeArea'))
+  
     return HttpResponse(return_text)
 
 def testCode(request):
@@ -177,7 +176,7 @@ def testCode(request):
         else:
             return None
         return_text = ""
-        print(results)
+      
         for result in results:
             if type(result) == type(True):
                 return_text+= str(result)
@@ -185,7 +184,7 @@ def testCode(request):
                 return_text+= str(result)
             else:
                 return_text+= str(result.decode("ASCII"))
-    print(request.GET.get('codeArea'))
+    
     return HttpResponse(return_text)
 
 

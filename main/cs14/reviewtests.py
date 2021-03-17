@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 import shutil
 import os
 from django.conf import settings
+import time
 
 
 class resultsTest(TestCase):   #Results page testing class
@@ -98,6 +99,7 @@ class reviewTest(TestCase):
         self.user= self.c.login(username='testuser', password='testpassword')
         self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
         self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
+        time.sleep(1)
   
         
       

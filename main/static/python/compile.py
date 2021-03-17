@@ -64,7 +64,7 @@ def test(testname, username, language, input=None):
     #note----Name here is hardcoded
     filename = os.path.join(USER_DIR, username, testname, add_language_extension('main', language))
     #testing adding language extension
-    print("IN TEST ", filename)
+   
     testfolder = os.path.join(TEST_DIR, testname)
     
     test_cases = os.listdir(os.path.join(testfolder, 'input'))
@@ -118,21 +118,34 @@ def test2(testname, username, language, input=None):
     test_cases = os.listdir(os.path.join(testfolder, 'input'))
 
     outputs = []
+    if input==None:
+        testingInput = 'noncustom'
+    else:
+        testingInput = input
 
-    for i, test_case in enumerate(test_cases):
-        out_str = "Test Case " + str(i+1) + ":\n"
-        output = run_container(filename, os.path.join(testfolder, 'input', test_case.strip()))
-        if output[0] == 'error':
-            out_str+=output[1].decode('ascii')
-            print(out_str)
-        else:
-            with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
-                data = f.read()
-                out_str += str(data.strip() == output[1].strip().decode("ASCII")) +"\n"
-                out_str += output[1].strip().decode("ASCII") + "\n"
+    if testingInput == 'noncustom':
+
+        for i, test_case in enumerate(test_cases):
+            out_str = "Test Case " + str(i+1) + ":\n"
+            output = run_container(filename, os.path.join(testfolder, 'input', test_case.strip()))
+            if output[0] == 'error':
+                out_str+=output[1].decode('ascii')
+                
+            else:
+                with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
+                    data = f.read()
+                    out_str += str(data.strip() == output[1].strip().decode("ASCII")) +"\n"
+                    out_str += output[1].strip().decode("ASCII") + "\n"
         
-        outputs.append(out_str + "\n") 
-    return outputs
+            outputs.append(out_str + "\n")
+        return outputs
+
+    else:
+        output = run_container(filename, testingInput)
+        #add error handling
+        return ["Custom testing", output[1]]
+
+   
 
 
 
