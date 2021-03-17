@@ -226,8 +226,16 @@ def register(request):
                     fail_silently=False,
 
                 )
+
+                message = "User account created for " + str(username)
+
+                messages.add_message(request, messages.SUCCESS, message)
                 
                 return redirect('cs14:register')
+            
+            else:
+                 messages.add_message(request, messages.ERROR, 'Username already in use')
+
     else:
         return redirect('cs14:login')
 
