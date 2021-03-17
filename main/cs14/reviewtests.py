@@ -121,14 +121,6 @@ class reviewTest(TestCase):
         print("Intial review page ok")
 
    
-
-    def test_timeline(self):  #Tests if the timeline woprks and gives the correct output   
-        
-        theresp = self.c.post('/cs14/rhistory', {'number':'0', 'taskID': '1'})
-        test = theresp.content.decode('ascii')
-        self.assertEqual('print("Hello world")', test)
-        print("Timeline ok")
-
     @classmethod
     def tearDownClass(self):
         USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
