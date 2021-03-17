@@ -14,6 +14,13 @@ class CreateUserForm(UserCreationForm):
         self.fields['email'].required = True
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
+
+    def clean_email(self):
+        if User.objects.filter(email=self.cleaned_data['email']).exists():
+            print("exists")
+            raise forms.ValidationError("Email already in use")
+
+        return self.cleaned_data['email']
      
     class Meta:
         model = User

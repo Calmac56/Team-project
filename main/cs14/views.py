@@ -67,8 +67,7 @@ def sendCode(request):
             username = request.user.get_username()
             language = request.POST.get('language').lower()
             submission = request.POST.get('submission')
-            print(submission)
-            print(language)
+        
             filename = 'main'
             testname = 'test1'
 
@@ -76,7 +75,7 @@ def sendCode(request):
                 filename += '.py'
             elif language == 'java':
                 filename+= '.java'
-            print(request.POST.get('codeArea'))
+            
 
             filepath = os.path.join(USER_DIR, username, testname)
 
@@ -110,7 +109,7 @@ def sendCode(request):
             return None
     
         return_text = ""
-        print(results_output)
+       
         
         #Store test results in DB
         if customInputCB == 'true':
@@ -146,7 +145,7 @@ def sendCode(request):
                 else:
                     return_text+= str(result.decode("ASCII"))
             return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
-    print(request.GET.get('codeArea'))
+  
     return HttpResponse(return_text)
 
 def testCode(request):
@@ -172,20 +171,42 @@ def testCode(request):
             os.makedirs(os.path.join(filepath, 'temp'))
             with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
-            results = test2(testname, username, language)
-            shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+            
+            customInputCB = request.POST.get('customInputCB')
+            if customInputCB != 'true':
+                
+                results = test2(testname, username, language)
+            
+            if customInputCB == 'true':
+                customInputText = request.POST.get('inputArea')
+                try:
+                    tempInputFile = os.path.join(USER_DIR, username, 'tempInput.txt')
+                    with open(tempInputFile, 'w') as f:
+                        f.write(customInputText)
+                    #run the test from compile.py
+                    results = test2(testname, username, language, tempInputFile)
+                except FileExistsError:
+                    pass
+           
+            
         else:
             return None
         return_text = ""
-        print(results)
-        for result in results:
-            if type(result) == type(True):
-                return_text+= str(result)
-            elif type(result) == type("abc"):
-                return_text+= str(result)
-            else:
-                return_text+= str(result.decode("ASCII"))
-    print(request.GET.get('codeArea'))
+
+        shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+        if customInputCB == 'true':
+            return_text = "Custom output: \n" + results[1].decode('utf-8')
+        
+        else:
+      
+            for result in results:
+                if type(result) == type(True):
+                    return_text+= str(result)
+                elif type(result) == type("abc"):
+                    return_text+= str(result)
+                else:
+                    return_text+= str(result.decode("ASCII"))
+    
     return HttpResponse(return_text)
 
 
@@ -226,8 +247,16 @@ def register(request):
                     fail_silently=False,
 
                 )
+
+                message = "User account created for " + str(username)
+
+                messages.add_message(request, messages.SUCCESS, message)
                 
                 return redirect('cs14:register')
+            
+            else:
+                 messages.add_message(request, messages.ERROR, 'Username already in use')
+
     else:
         return redirect('cs14:login')
 
@@ -258,10 +287,17 @@ def logoutUser(request):
     logout(request)
     return redirect('cs14:login')
 
+def getresultsession(request):
+    if not request.is_ajax():
+        return redirect('cs14:index')
+
+    return HttpResponse(request.session['scandidate'])
+
 def results(request):
 
     result = None
     searchcompleted = False
+    allcandiates = Candidate.objects.all()
 
     try:
         if request.user.is_authenticated:
@@ -273,15 +309,29 @@ def results(request):
 
     if auser == None:
         return redirect('cs14:login')
+    
 
-    if 'search' in request.GET:
-        searched  = request.GET['search']
-        searchcompleted = True
+   
+    if request.session.get('scandidate'):
+        theuser =  User.objects.get(username = request.session.get('scandidate'))
+        candidate = Candidate.objects.get(user = theuser)
+        result = Results.objects.filter(userID = candidate)
+        
+        if not result:
+            result = None
+    
+    
+    
+
+    if 'state' in request.GET:
+        searched  = request.GET['state']
+        
+        
         try:
             theuser =  User.objects.get(username = searched)
             try:
                 candidate = Candidate.objects.get(user = theuser)
-                request.session['scandidate'] = request.GET['search']
+                request.session['scandidate'] = request.GET['state']
                 result = Results.objects.filter(userID = candidate)
                 if not result:
                     result = None
@@ -295,7 +345,7 @@ def results(request):
 
 
 
-    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted})
+    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted, 'candidates':allcandiates})
 
 def cresults(request):
     result = None
