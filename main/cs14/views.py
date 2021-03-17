@@ -109,7 +109,7 @@ def sendCode(request):
             return None
     
         return_text = ""
-        print(results_output)
+       
         
         #Store test results in DB
         if customInputCB == 'true':
@@ -171,19 +171,41 @@ def testCode(request):
             os.makedirs(os.path.join(filepath, 'temp'))
             with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
-            results = test2(testname, username, language)
-            shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+            
+            customInputCB = request.POST.get('customInputCB')
+            if customInputCB != 'true':
+                
+                results = test2(testname, username, language)
+            
+            if customInputCB == 'true':
+                customInputText = request.POST.get('inputArea')
+                try:
+                    tempInputFile = os.path.join(USER_DIR, username, 'tempInput.txt')
+                    with open(tempInputFile, 'w') as f:
+                        f.write(customInputText)
+                    #run the test from compile.py
+                    results = test2(testname, username, language, tempInputFile)
+                except FileExistsError:
+                    pass
+           
+            
         else:
             return None
         return_text = ""
+
+        shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+        if customInputCB == 'true':
+            return_text = "Custom output: \n" + results[1].decode('utf-8')
+        
+        else:
       
-        for result in results:
-            if type(result) == type(True):
-                return_text+= str(result)
-            elif type(result) == type("abc"):
-                return_text+= str(result)
-            else:
-                return_text+= str(result.decode("ASCII"))
+            for result in results:
+                if type(result) == type(True):
+                    return_text+= str(result)
+                elif type(result) == type("abc"):
+                    return_text+= str(result)
+                else:
+                    return_text+= str(result.decode("ASCII"))
     
     return HttpResponse(return_text)
 

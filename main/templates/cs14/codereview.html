@@ -11,10 +11,15 @@
 <script>
     var Code = '';
     var Language = 'java';
+    var CustomInput = ""
 
     function doPost(){
+        
+        var CustomInputCB = document.getElementById("customInputCB").checked;
+        CustomInput = document.getElementById("inputArea").value;
+      
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code);
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:testCode' %}", true);
@@ -104,9 +109,9 @@ Code Review
     <div class="codeIo">
         <div class="codeInput">
             <div class="editorTopBar">
-                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" value="USE CUSTOM INPUT"></div>
+                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" id="customInputCB" value="USE CUSTOM INPUT"></div>
             </div>
-            <textarea class="inputArea" name="inputArea" rows="20" cols="140"></textarea>
+            <textarea class="inputArea" id="inputArea" name="inputArea" rows="20" cols="140"></textarea>
         </div>
         <div class="codeOutput">
             <div class="editorTopBar">
