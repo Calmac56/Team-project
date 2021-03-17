@@ -18,6 +18,8 @@ import json
 import datetime
 import os
 import shutil
+import threading
+
 
 def index(request):
     print(settings.MEDIA_DIR)
@@ -125,7 +127,7 @@ def sendCode(request):
                 del request.session['language']
                 del request.session['code']
                 # ----------------------READ----------------------------------------------
-                # still need to properly add complexity, passpercentage, time taken (timer), code
+                # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
                 testTask = Task.objects.get(taskID=1)
 
@@ -160,12 +162,17 @@ def testCode(request):
     results = []
     if(request.method == 'POST'):
         if request.user.is_authenticated:
+            foldername = str(request.user.username)
             USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
             if Reviewer.objects.filter(user=request.user):
                 username = request.session['scandidate']
+                
             else:
+                
                 username = request.user.username
             language = request.POST.get('language').lower()
+
+            
             
             
             filename = 'main'
@@ -177,16 +184,16 @@ def testCode(request):
             
             filepath = os.path.join(USER_DIR, username, testname)
             try:
-                os.makedirs(os.path.join(filepath, 'temp'))
+                os.makedirs(os.path.join(filepath, foldername, 'temp'))
             except FileExistsError:
                 pass
-            with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
+            with open(os.path.join(filepath, foldername, 'temp', filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
             
             customInputCB = request.POST.get('customInputCB')
             if customInputCB != 'true':
                 
-                results,passes,fails = reviewtest(testname, username, language)
+                results,passes,fails = reviewtest(testname, username, language,foldername)
             
             if customInputCB == 'true':
                 customInputText = request.POST.get('inputArea')
@@ -195,7 +202,7 @@ def testCode(request):
                     with open(tempInputFile, 'w') as f:
                         f.write(customInputText)
                     #run the test from compile.py
-                    results = reviewtest(testname, username, language, tempInputFile)
+                    results = reviewtest(testname, username, language, foldername, tempInputFile)
                 except FileExistsError:
                     pass
            
@@ -204,7 +211,11 @@ def testCode(request):
             return None
         return_text = ""
 
-        shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+        try:
+            shutil.rmtree(os.path.join(USER_DIR, username, testname,foldername, 'temp'))
+        except FileNotFoundError:
+            pass
+        
         if customInputCB == 'true':
             return_text = "Custom output: \n" + results[1].decode('utf-8')
         

@@ -121,8 +121,8 @@ If custom input is selected returns just the output
 
 
 """
-def reviewtest(testname, username, language, input=None):   
-    filename = os.path.join(USER_DIR, username, testname, 'temp',  add_language_extension('main', language))
+def reviewtest(testname, candusername, language,username , input=None):   
+    filename = os.path.join(USER_DIR, candusername, testname,username, 'temp',  add_language_extension('main', language))
   
     testfolder = os.path.join(TEST_DIR, testname)
     passes = 0
