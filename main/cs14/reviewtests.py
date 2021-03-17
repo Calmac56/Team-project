@@ -120,7 +120,7 @@ class reviewTest(TestCase):
         self.assertEqual(['print("Hello world from calum")'], code)
         print("Intial review page ok")
 
-    def test_custom_input(self):
+    def test_custom_input(self):  #Tests if custom input for executing code works on review page
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
         theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"], 'inputArea':123, 'customInputCB':'true'})
         theresp = theresp.content.decode('ascii')

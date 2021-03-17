@@ -35,7 +35,8 @@ def run_container(filename, input_file):
         output, error = runCont.communicate()
         exitstatus = subprocess.Popen(["docker", "inspect", containerID, "--format='{{.State.ExitCode}}'"], stdout=subprocess.PIPE)
         exitcode = exitstatus.communicate()[0]
-     
+
+        #Returns to the user that the container was timed out or that output was too long. Both security measures to prevent malicious code from crashing the server.
         if exitcode.decode().strip() == "'124'":
             output = "Time limit exceeded".encode()
 
@@ -109,11 +110,24 @@ def test(testname, username, language, input=None):
         #add error handling
         return ["Custom testing", output[1]]
 
-def test2(testname, username, language, input=None):
+"""  
+Function to test the code run on the code review page
+
+Takes in the name of the test, username of code being tested, testing language and input for use if custom input is selected
+
+Returns test output, test passes and fails
+
+If custom input is selected returns just the output
+
+
+"""
+def reviewtest(testname, username, language, input=None):   
     filename = os.path.join(USER_DIR, username, testname, 'temp',  add_language_extension('main', language))
   
     testfolder = os.path.join(TEST_DIR, testname)
-    
+    passes = 0
+    fails = 0
+    result = 0
     
     test_cases = os.listdir(os.path.join(testfolder, 'input'))
 
@@ -134,11 +148,16 @@ def test2(testname, username, language, input=None):
             else:
                 with open(os.path.join(testfolder, 'output', test_case.strip()), 'r') as f:
                     data = f.read()
+                    result = data.strip() == output[1].strip().decode("ASCII")
                     out_str += str(data.strip() == output[1].strip().decode("ASCII")) +"\n"
                     out_str += output[1].strip().decode("ASCII") + "\n"
         
             outputs.append(out_str + "\n")
-        return outputs
+            if result != 0:
+                passes += 1
+            else:
+                fails +=1
+        return outputs, passes, fails
 
     else:
         output = run_container(filename, testingInput)

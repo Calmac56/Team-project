@@ -148,7 +148,15 @@ def sendCode(request):
   
     return HttpResponse(return_text)
 
-def testCode(request):
+    """ 
+    This is a function to test code on the review page. Returns test output back to the page.
+
+    Everything is wrriten to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
+
+    
+    """
+
+def testCode(request):  
     results = []
     if(request.method == 'POST'):
         if request.user.is_authenticated:
@@ -178,7 +186,7 @@ def testCode(request):
             customInputCB = request.POST.get('customInputCB')
             if customInputCB != 'true':
                 
-                results = test2(testname, username, language)
+                results,passes,fails = reviewtest(testname, username, language)
             
             if customInputCB == 'true':
                 customInputText = request.POST.get('inputArea')
@@ -187,7 +195,7 @@ def testCode(request):
                     with open(tempInputFile, 'w') as f:
                         f.write(customInputText)
                     #run the test from compile.py
-                    results = test2(testname, username, language, tempInputFile)
+                    results = reviewtest(testname, username, language, tempInputFile)
                 except FileExistsError:
                     pass
            
@@ -209,10 +217,15 @@ def testCode(request):
                     return_text+= str(result)
                 else:
                     return_text+= str(result.decode("ASCII"))
+            
+            return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
+    
+    else:
+        return redirect("cs14:index")
     
     return HttpResponse(return_text)
 
-
+@login_required
 def register(request):
     try:
         if request.user.is_authenticated:
@@ -296,6 +309,7 @@ def getresultsession(request):
 
     return HttpResponse(request.session['scandidate'])
 
+@login_required
 def results(request):
 
     result = None
@@ -350,6 +364,7 @@ def results(request):
 
     return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted, 'candidates':allcandiates})
 
+@login_required
 def cresults(request):
     result = None
     
@@ -384,7 +399,7 @@ def cresults(request):
     
     return render(request, 'cs14/cresults.html', {'results':result})
 
-
+@login_required
 def creview(request,id):
 
 
@@ -429,7 +444,7 @@ def creview(request,id):
 
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout, 'slideval':timelinelength, 'taskID':id})
 
-
+@login_required
 def rhistory(request):
     lines = []
    
@@ -452,7 +467,7 @@ def rhistory(request):
                 return HttpResponse(codeline)
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
 
-
+@login_required
 def profile(request):
     name = request.user.get_username  # change this to full name
 
