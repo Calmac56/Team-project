@@ -97,21 +97,10 @@ class reviewTest(TestCase):
             
         self.c = Client()
         self.user= self.c.login(username='testuser', password='testpassword')
-        
+        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
       
   
         
-      
-    
-    def test_inital_page(self):  #Tests if the inital code review page shows the correct code for test candidate
-        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
-        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
-        
-        response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
-        code = response.context["code"]
-        self.assertEqual(['print("Hello world from calum")'], code)
-        print("Intial review page ok")
-
     def test_run(self):   #Tests if we can run code on our code review page and that it gives correct output
       
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
@@ -121,6 +110,17 @@ class reviewTest(TestCase):
     
         self.assertTrue(contains)
         print("Code execution on review page ok")
+    
+    def test_inital_page(self):  #Tests if the inital code review page shows the correct code for test candidate
+        
+        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
+        
+        response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
+        code = response.context["code"]
+        self.assertEqual(['print("Hello world from calum")'], code)
+        print("Intial review page ok")
+
+   
 
     def test_timeline(self):  #Tests if the timeline woprks and gives the correct output   
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
