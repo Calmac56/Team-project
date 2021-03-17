@@ -81,6 +81,9 @@ class reviewTest(TestCase):
 
     @classmethod
     def setUpTestData(self):
+        self.c = Client()
+        self.user= self.c.login(username='testuser', password='testpassword')
+        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
         test_user = User.objects.create_user(username='testuser')
         test_user.set_password('testpassword')
         test_user.save()
@@ -95,11 +98,9 @@ class reviewTest(TestCase):
         candidate = Candidate.objects.get(user=test_user)
         Results.objects.create(userID=candidate, passpercentage =80, taskID=testTask, tests_passed=4, tests_failed=1, timetaken=1, complexity="test", language="java")
             
-        self.c = Client()
-        self.user= self.c.login(username='testuser', password='testpassword')
-        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
+        
         self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
-        time.sleep(1)
+      
   
         
       
