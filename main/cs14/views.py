@@ -168,7 +168,10 @@ def testCode(request):
                 filename+= '.java'
             
             filepath = os.path.join(USER_DIR, username, testname)
-            os.makedirs(os.path.join(filepath, 'temp'))
+            try:
+                os.makedirs(os.path.join(filepath, 'temp'))
+            except FileExistsError:
+                pass
             with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
             
