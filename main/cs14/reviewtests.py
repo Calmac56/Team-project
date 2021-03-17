@@ -123,8 +123,8 @@ class reviewTest(TestCase):
    
 
     def test_timeline(self):  #Tests if the timeline woprks and gives the correct output   
-        response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
-        theresp = self.c.post('/cs14/rhistory', {'number':0, 'taskID': 1})
+        
+        theresp = self.c.post('/cs14/rhistory', {'number':'0', 'taskID': '1'})
         test = theresp.content.decode('ascii')
         self.assertEqual('print("Hello world")', test)
         print("Timeline ok")
