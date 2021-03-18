@@ -18,11 +18,10 @@ import json
 import datetime
 import os
 import shutil
-import threading
+
 
 
 def index(request):
-    print(settings.MEDIA_DIR)
     return render(request, 'cs14/index.html')
 
 def getCookie(request, cookie, default_val=None):
@@ -236,6 +235,13 @@ def testCode(request):
     
     return HttpResponse(return_text)
 
+
+""" 
+This is a view that renders the generate user page. Checks if the user is an Admin and allows them to fill in a form to create an account.
+Then uses the gmail api to send the new user an email with their accoutn detail. Including a 2 week sign in link and a randomly generated password.
+
+"""
+
 @login_required
 def register(request):
     try:
@@ -291,6 +297,11 @@ def register(request):
     context = {'form': form}
     return render(request, 'cs14/register.html', context)
 
+
+""" 
+This is a view to render the login page. Renders a simple login form and allows the user to login.
+Returns an error meesage to the page if an incorrect username or password is used.
+"""
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('cs14:index')
@@ -305,7 +316,7 @@ def loginPage(request):
                 login(request, user)
                 return redirect('cs14:index')
             else:
-                messages.info(request, 'Username or password is incorrect')
+                messages.error(request, 'Username or password is incorrect')
 
     context = {}
     return render(request, 'cs14/login.html')
@@ -313,6 +324,11 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('cs14:login')
+
+
+""" 
+Stores a session variable for use on the results page dropdown menu
+"""
 
 def getresultsession(request):
     if not request.is_ajax():
