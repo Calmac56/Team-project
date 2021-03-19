@@ -93,7 +93,8 @@ def sendCode(request):
             customInputCB = request.POST.get('customInputCB')
             if customInputCB == 'true':
                 customInputText = request.POST.get('inputArea')
-                print("input text: ", customInputText)
+           
+
                 try:
                     tempInputFile = os.path.join(USER_DIR, username, 'tempInput.txt')
                     with open(tempInputFile, 'w') as f:
@@ -288,7 +289,7 @@ def register(request):
                 return redirect('cs14:register')
             
             else:
-                 messages.add_message(request, messages.ERROR, 'Username already in use')
+                 messages.add_message(request, messages.ERROR, 'Account already generated for this email')
 
     else:
         return redirect('cs14:login')
@@ -300,7 +301,7 @@ def register(request):
 
 """ 
 This is a view to render the login page. Renders a simple login form and allows the user to login.
-Returns an error meesage to the page if an incorrect username or password is used.
+Returns an error meesage to the page if an incorrect username or password is used. 
 """
 def loginPage(request):
     if request.user.is_authenticated:
@@ -391,6 +392,10 @@ def results(request):
 
     return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted, 'candidates':allcandiates})
 
+""" 
+View that returns the results that a candidate got back to them. These results are read from the database.
+
+"""
 @login_required
 def cresults(request):
     result = None
@@ -426,6 +431,11 @@ def cresults(request):
     
     return render(request, 'cs14/cresults.html', {'results':result})
 
+
+""" 
+View that renders the code review page. Takes in the task id from the URL. Reads code from backend files.
+Creates timeline length by getting amount of history files.
+"""
 @login_required
 def creview(request,id):
 
@@ -471,6 +481,10 @@ def creview(request,id):
 
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout, 'slideval':timelinelength, 'taskID':id})
 
+
+""" 
+View that fetches the required file data for the timeline using post requests. 
+"""
 @login_required
 def rhistory(request):
     lines = []
@@ -492,7 +506,8 @@ def rhistory(request):
                 codeline = gethistory(username,id, value)
 
                 return HttpResponse(codeline)
-    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
+    else:
+        return redirect('cs14:index')
 
 @login_required
 def profile(request):

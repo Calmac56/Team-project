@@ -130,7 +130,7 @@ class reviewTest(TestCase):
 
    
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(self): #Cleans up backend testing files
         USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
         shutil.rmtree(os.path.join(USER_DIR, 'testuser'))
     
