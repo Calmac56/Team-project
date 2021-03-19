@@ -98,20 +98,9 @@ class reviewTest(TestCase):
         self.c = Client()
         self.user= self.c.login(username='testuser', password='testpassword')
         self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
-        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
-        time.sleep(1)
+      
   
         
-      
-    
-    def test_inital_page(self):  #Tests if the inital code review page shows the correct code for test candidate
-        
-        
-        response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
-        code = response.context["code"]
-        self.assertEqual(['print("Hello world from calum")'], code)
-        print("Intial review page ok")
-
     def test_run(self):   #Tests if we can run code on our code review page and that it gives correct output
       
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
@@ -121,16 +110,27 @@ class reviewTest(TestCase):
     
         self.assertTrue(contains)
         print("Code execution on review page ok")
-
-    def test_timeline(self):  #Tests if the timeline woprks and gives the correct output   
+    
+    def test_inital_page(self):  #Tests if the inital code review page shows the correct code for test candidate
+        
+        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
+        
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
-        theresp = self.c.post('/cs14/rhistory', {'number':0, 'taskID': 1})
-        test = theresp.content.decode('ascii')
-        self.assertEqual('print("Hello world")', test)
-        print("Timeline ok")
+        code = response.context["code"]
+        self.assertEqual(['print("Hello world from calum")'], code)
+        print("Intial review page ok")
 
+    def test_custom_input(self):  #Tests if custom input for executing code works on review page
+        response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
+        theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"], 'inputArea':123, 'customInputCB':'true'})
+        theresp = theresp.content.decode('ascii')
+        contains = 'Custom output:' in theresp
+        self.assertTrue(contains)
+        print("Custom input works ok")
+
+   
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(self): #Cleans up backend testing files
         USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
         shutil.rmtree(os.path.join(USER_DIR, 'testuser'))
     

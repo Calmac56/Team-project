@@ -16,8 +16,7 @@ class CreateUserForm(UserCreationForm):
         self.fields['last_name'].required = True
 
     def clean_email(self):
-        if User.objects.filter(email=self.cleaned_data['email']).exists():
-            print("exists")
+        if User.objects.filter(email=self.cleaned_data['email']).exists() or User.objects.filter(username=self.cleaned_data['email']).exists():
             raise forms.ValidationError("Email already in use")
 
         return self.cleaned_data['email']
