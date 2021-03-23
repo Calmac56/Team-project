@@ -19,8 +19,9 @@ import datetime
 import os
 import shutil
 
+
+
 def index(request):
-    print(settings.MEDIA_DIR)
     return render(request, 'cs14/index.html')
 
 def getCookie(request, cookie, default_val=None):
@@ -67,8 +68,7 @@ def sendCode(request):
             username = request.user.get_username()
             language = request.POST.get('language').lower()
             submission = request.POST.get('submission')
-            print(submission)
-            print(language)
+        
             filename = 'main'
             testname = 'test1'
 
@@ -76,7 +76,7 @@ def sendCode(request):
                 filename += '.py'
             elif language == 'java':
                 filename+= '.java'
-            print(request.POST.get('codeArea'))
+            
 
             filepath = os.path.join(USER_DIR, username, testname)
 
@@ -93,7 +93,8 @@ def sendCode(request):
             customInputCB = request.POST.get('customInputCB')
             if customInputCB == 'true':
                 customInputText = request.POST.get('inputArea')
-                print("input text: ", customInputText)
+           
+
                 try:
                     tempInputFile = os.path.join(USER_DIR, username, 'tempInput.txt')
                     with open(tempInputFile, 'w') as f:
@@ -110,7 +111,7 @@ def sendCode(request):
             return None
     
         return_text = ""
-        print(results_output)
+       
         
         #Store test results in DB
         if customInputCB == 'true':
@@ -126,7 +127,7 @@ def sendCode(request):
                 del request.session['language']
                 del request.session['code']
                 # ----------------------READ----------------------------------------------
-                # still need to properly add complexity, passpercentage, time taken (timer), code
+                # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
                 testTask = Task.objects.get(taskID=1)
 
@@ -146,19 +147,32 @@ def sendCode(request):
                 else:
                     return_text+= str(result.decode("ASCII"))
             return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
-    print(request.GET.get('codeArea'))
+  
     return HttpResponse(return_text)
 
-def testCode(request):
+    """ 
+    This is a function to test code on the review page. Returns test output back to the page.
+
+    Everything is wrriten to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
+
+    
+    """
+
+def testCode(request):  
     results = []
     if(request.method == 'POST'):
         if request.user.is_authenticated:
+            foldername = str(request.user.username)
             USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
             if Reviewer.objects.filter(user=request.user):
                 username = request.session['scandidate']
+                
             else:
+                
                 username = request.user.username
             language = request.POST.get('language').lower()
+
+            
             
             
             filename = 'main'
@@ -169,26 +183,67 @@ def testCode(request):
                 filename+= '.java'
             
             filepath = os.path.join(USER_DIR, username, testname)
-            os.makedirs(os.path.join(filepath, 'temp'))
-            with open(os.path.join(filepath, 'temp', filename), 'w+') as f:
+            try:
+                os.makedirs(os.path.join(filepath, foldername, 'temp'))
+            except FileExistsError:
+                pass
+            with open(os.path.join(filepath, foldername, 'temp', filename), 'w+') as f:
                 f.write(request.POST.get('codeArea').strip().replace(chr(160), " "))
-            results = test2(testname, username, language)
-            shutil.rmtree(os.path.join(USER_DIR, username, testname, 'temp'))
+            
+            customInputCB = request.POST.get('customInputCB')
+            if customInputCB != 'true':
+                
+                results,passes,fails = reviewtest(testname, username, language,foldername)
+            
+            if customInputCB == 'true':
+                customInputText = request.POST.get('inputArea')
+                try:
+                    tempInputFile = os.path.join(USER_DIR, username, 'tempInput.txt')
+                    with open(tempInputFile, 'w') as f:
+                        f.write(customInputText)
+                    #run the test from compile.py
+                    results = reviewtest(testname, username, language, foldername, tempInputFile)
+                except FileExistsError:
+                    pass
+           
+            
         else:
             return None
         return_text = ""
-        print(results)
-        for result in results:
-            if type(result) == type(True):
-                return_text+= str(result)
-            elif type(result) == type("abc"):
-                return_text+= str(result)
-            else:
-                return_text+= str(result.decode("ASCII"))
-    print(request.GET.get('codeArea'))
+
+        try:
+            shutil.rmtree(os.path.join(USER_DIR, username, testname,foldername, 'temp'))
+        except FileNotFoundError:
+            pass
+        
+        if customInputCB == 'true':
+            return_text = "Custom output: \n" + results[1].decode('utf-8')
+        
+        else:
+      
+            for result in results:
+                if type(result) == type(True):
+                    return_text+= str(result)
+                elif type(result) == type("abc"):
+                    return_text+= str(result)
+                else:
+                    return_text+= str(result.decode("ASCII"))
+            
+            return_text += "Tests passed: " + str(passes) + "\n" + "Tests failed: " + str(fails) + "\n"
+    
+    else:
+        return redirect("cs14:index")
+    
     return HttpResponse(return_text)
 
 
+""" 
+This is a view that renders the generate user page. Checks if the user is an Admin and allows them to fill in a form to create an account.
+Then uses the gmail api to send the new user an email with their accoutn detail. Including a 2 week sign in link and a randomly generated password.
+
+"""
+
+@login_required
 def register(request):
     try:
         if request.user.is_authenticated:
@@ -226,8 +281,16 @@ def register(request):
                     fail_silently=False,
 
                 )
+
+                message = "User account created for " + str(username)
+
+                messages.add_message(request, messages.SUCCESS, message)
                 
                 return redirect('cs14:register')
+            
+            else:
+                 messages.add_message(request, messages.ERROR, 'Account already generated for this email')
+
     else:
         return redirect('cs14:login')
 
@@ -235,6 +298,11 @@ def register(request):
     context = {'form': form}
     return render(request, 'cs14/register.html', context)
 
+
+""" 
+This is a view to render the login page. Renders a simple login form and allows the user to login.
+Returns an error meesage to the page if an incorrect username or password is used. 
+"""
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('cs14:index')
@@ -249,7 +317,7 @@ def loginPage(request):
                 login(request, user)
                 return redirect('cs14:index')
             else:
-                messages.info(request, 'Username or password is incorrect')
+                messages.error(request, 'Username or password is incorrect')
 
     context = {}
     return render(request, 'cs14/login.html')
@@ -258,10 +326,23 @@ def logoutUser(request):
     logout(request)
     return redirect('cs14:login')
 
+
+""" 
+Stores a session variable for use on the results page dropdown menu
+"""
+
+def getresultsession(request):
+    if not request.is_ajax():
+        return redirect('cs14:index')
+
+    return HttpResponse(request.session['scandidate'])
+
+@login_required
 def results(request):
 
     result = None
     searchcompleted = False
+    allcandiates = Candidate.objects.all()
 
     try:
         if request.user.is_authenticated:
@@ -273,15 +354,29 @@ def results(request):
 
     if auser == None:
         return redirect('cs14:login')
+    
 
-    if 'search' in request.GET:
-        searched  = request.GET['search']
-        searchcompleted = True
+   
+    if request.session.get('scandidate'):
+        theuser =  User.objects.get(username = request.session.get('scandidate'))
+        candidate = Candidate.objects.get(user = theuser)
+        result = Results.objects.filter(userID = candidate)
+        
+        if not result:
+            result = None
+    
+    
+    
+
+    if 'state' in request.GET:
+        searched  = request.GET['state']
+        
+        
         try:
             theuser =  User.objects.get(username = searched)
             try:
                 candidate = Candidate.objects.get(user = theuser)
-                request.session['scandidate'] = request.GET['search']
+                request.session['scandidate'] = request.GET['state']
                 result = Results.objects.filter(userID = candidate)
                 if not result:
                     result = None
@@ -295,8 +390,13 @@ def results(request):
 
 
 
-    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted})
+    return render(request, 'cs14/results.html', {'results':result, 'searched':searchcompleted, 'candidates':allcandiates})
 
+""" 
+View that returns the results that a candidate got back to them. These results are read from the database.
+
+"""
+@login_required
 def cresults(request):
     result = None
     
@@ -332,6 +432,11 @@ def cresults(request):
     return render(request, 'cs14/cresults.html', {'results':result})
 
 
+""" 
+View that renders the code review page. Takes in the task id from the URL. Reads code from backend files.
+Creates timeline length by getting amount of history files.
+"""
+@login_required
 def creview(request,id):
 
 
@@ -377,6 +482,10 @@ def creview(request,id):
     return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout, 'slideval':timelinelength, 'taskID':id})
 
 
+""" 
+View that fetches the required file data for the timeline using post requests. 
+"""
+@login_required
 def rhistory(request):
     lines = []
    
@@ -397,9 +506,10 @@ def rhistory(request):
                 codeline = gethistory(username,id, value)
 
                 return HttpResponse(codeline)
-    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout})
+    else:
+        return redirect('cs14:index')
 
-
+@login_required
 def profile(request):
     name = request.user.get_username  # change this to full name
 

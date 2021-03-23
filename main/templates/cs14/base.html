@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&family=Roboto&family=Source+Sans+Pro:wght@200;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {% block head_block %}
     {% endblock %}
 
@@ -52,9 +54,6 @@
         </div>
         <div class="navSplitter"></div>
         {% if user.is_authenticated %}
-          <div class="navElement">
-            <a class="navLink" href="{% url 'cs14:profile'%}" >Profile</a>
-          </div>
           <div class="navSplitter"></div>
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
@@ -74,6 +73,9 @@
 
         {% endif %}
         {% if isCandidate %}
+        <div class="navElement">
+          <a class="navLink" href="{% url 'cs14:profile'%}" >Profile</a>
+        </div>
         <div class="navSplitter"></div>
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:cresults'%}" >My Results</a>
