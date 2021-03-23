@@ -36,6 +36,7 @@ def codingPage(request, id):
     context = {}
     try:
         task = Task.objects.filter(taskID=id)
+  
         taskDec = task[0].description
         taskout = task[0].expectedout
     except:
@@ -46,6 +47,14 @@ def codingPage(request, id):
     context['code'] = getCookie(request, 'code', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
+    
+    if context['code'] == '':
+        TEMPLATE_PATH = os.path.join(settings.MEDIA_DIR, 'templates', context['language']+'.txt')
+        with open(TEMPLATE_PATH, 'r') as f:
+            template_code = f.read()
+        context['code'] = template_code
+
+
 
     return render(request, 'cs14/codingPage.html', context=context)
 

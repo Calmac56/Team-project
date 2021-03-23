@@ -1,0 +1,4 @@
+import sys
+
+for elt in sys.argv:
+    print(elt)
