@@ -62,18 +62,28 @@ def codingPage(request, id):
     context['input'] = getCookie(request, 'input', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
+    
+    #code to deal with auto templating code for users
+    context['taskID'] = id
+    if context['code'] == '':
+        TEMPLATE_PATH = os.path.join(settings.MEDIA_DIR, 'templates', context['language']+'.txt')
+        with open(TEMPLATE_PATH, 'r') as f:
+            template_code = f.read()
+        context['code'] = template_code
+        
+    #code to initialize timer
     time_now = datetime.datetime.now(datetime.timezone.utc)
     time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)
     time_since_started = int((time_now - time_started).total_seconds())
     context['time'] = task.time - time_since_started
     context['time_total'] = task.time
-
     print(task.time - time_since_started)
 
     if task.time - time_since_started < 0:
         context['submit'] = 'true'
     else:
         context['submit'] = 'false'
+
 
     return render(request, 'cs14/codingPage.html', context=context)
 
@@ -99,7 +109,7 @@ def sendCode(request):
             submission = request.POST.get('submission')
         
             filename = 'main'
-            testname = 'test1'
+            testname = 'test' + str(request.POST.get('taskID'))
 
             if language == 'python':
                 filename += '.py'
@@ -152,6 +162,15 @@ def sendCode(request):
             print("Tests failed: ", fails)
 
             if submission == 'true':
+
+                
+                del request.session['language']
+                del request.session['code']
+                # ----------------------READ----------------------------------------------
+                # still need to properly add complexity, time taken (timer), code
+                # current values are for test purposes
+                testTask = Task.objects.get(taskID=int(request.POST.get('taskID')))
+
                 # reset session variables
                 request.session['language'] = ""
                 request.session['code'] = ""
@@ -171,6 +190,7 @@ def sendCode(request):
                 
                 testTask = Task.objects.get(taskID=1)
                 result = Results.objects.filter(userID=candidate, taskID=testTask)[0]
+
 
                 time_now = datetime.datetime.now(datetime.timezone.utc)
                 time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)

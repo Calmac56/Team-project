@@ -8,6 +8,7 @@
 <script>
     var Code = `{{ code }}`;
     var Language = '{{ language }}';
+    var taskID = '{{ taskID }}';
     var CustomInput = `{{ input }}`;
     
 
@@ -16,7 +17,7 @@
         var CustomInputCB = document.getElementById("customInputCB").checked;
 
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission;
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission + "&taskID=" + taskID;
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
