@@ -48,8 +48,8 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-def create_profile(sender, **kwargs):
-    if kwargs['created']:
-        user_profile = Profile.objects.create(user=kwargs['instance'])
+    def create_profile(sender, **kwargs):
+        if kwargs['created']:
+            user_profile = Profile.objects.create(user=kwargs['instance'])
 
-post_save.connect(create_profile, sender=User)
+    post_save.connect(create_profile, sender=User)

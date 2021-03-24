@@ -9,8 +9,6 @@ class test_template_used(TestCase):
     def test_example(self):
         self.assertTemplateUsed(self.response, 'cs14/index.html')
 
-
-
 # class exampleTestCase(TestCase):
 #     def setUp(self):
 #         SETUP CODE GOES HERE

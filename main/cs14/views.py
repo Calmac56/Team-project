@@ -137,8 +137,9 @@ def sendCode(request):
                 # ----------------------READ----------------------------------------------
                 # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
+                
                 testTask = Task.objects.get(taskID=1)
-
+                
                 if Results.objects.filter(userID=candidate, taskID=testTask):
                     pass
                 else:
