@@ -16,7 +16,7 @@ class resultsTest(TestCase):   #Results page testing class
         test_user = User.objects.create_user(username='testuser')
         test_user.set_password('testpassword')
         test_user.save()
-        document.getElementById('inputArea') test_user2 = User.objects.create_user(username='testuser2')
+        test_user2 = User.objects.create_user(username='testuser2')
         test_user2.set_password('testpassword')
         test_user2.save()
         test_admin = User.objects.create_user(username='testAdmin')
