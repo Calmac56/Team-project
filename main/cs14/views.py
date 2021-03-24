@@ -34,24 +34,53 @@ def getCookie(request, cookie, default_val=None):
 @login_required
 def codingPage(request, id):
     context = {}
+    result = None
+
     try:
-        task = Task.objects.filter(taskID=id)
-        taskDec = task[0].description
-        taskout = task[0].expectedout
+        task = Task.objects.filter(taskID=id)[0]
+        taskDec = task.description
+        taskout = task.expectedout
+        
+        userObj = User.objects.get(username=request.user)
+        candidate = Candidate.objects.get(user=userObj)
+
+        if Results.objects.filter(userID=candidate, taskID=task).exists():
+            print()
+            if Results.objects.filter(userID=candidate, taskID=task)[0].completed:
+                redirect('cs14:profile')
+        else:
+            Results.objects.create(userID=candidate, passpercentage =0, taskID=task, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
+        
+        result = Results.objects.filter(userID=candidate, taskID=task)[0]
+
     except:
         taskDec = "Could not get task description"
         taskout = "Could not get expected output"
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
+    context['input'] = getCookie(request, 'input', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
+    time_now = datetime.datetime.now(datetime.timezone.utc)
+    time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)
+    time_since_started = int((time_now - time_started).total_seconds())
+    context['time'] = task.time - time_since_started
+    context['time_total'] = task.time
+
+    print(task.time - time_since_started)
+
+    if task.time - time_since_started < 0:
+        context['submit'] = 'true'
+    else:
+        context['submit'] = 'false'
 
     return render(request, 'cs14/codingPage.html', context=context)
 
 def codingPageCookie(request):
     request.session['language'] = request.POST.get('language').lower()
     request.session['code'] = request.POST.get('code')
+    request.session['input'] = request.POST.get('input')
 
     return HttpResponse('saved')
 
@@ -123,30 +152,35 @@ def sendCode(request):
             print("Tests failed: ", fails)
 
             if submission == 'true':
+                # reset session variables
+                request.session['language'] = ""
+                request.session['code'] = ""
+                request.session['input'] = ""
 
-                #remove container
+                # remove container
                 containerID = getattr(candidate, "containerID")
                 if len(containerID) != 0:
                     remove_container(containerID)
                 
-                #set candidate's assigned container to blank
+                # set candidate's assigned container to blank
                 Candidate.objects.filter(user=candidate.user).update(containerID='')
 
-                del request.session['language']
-                del request.session['code']
                 # ----------------------READ----------------------------------------------
                 # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
                 
                 testTask = Task.objects.get(taskID=1)
+                result = Results.objects.filter(userID=candidate, taskID=testTask)[0]
+
+                time_now = datetime.datetime.now(datetime.timezone.utc)
+                time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)
+                time_taken = int((time_now - time_started).total_seconds())
                 
-                if Results.objects.filter(userID=candidate, taskID=testTask):
-                    pass
-                else:
-                    Results.objects.create(userID=candidate, passpercentage =0, taskID=testTask, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
+                Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=time_taken, complexity="test", language=language, completed=True)
                 
-                Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
-                
+                print("yes")
+                UserTask.objects.filter(userID=candidate, taskID=testTask).delete()
+
 
             for result in results_output:
                 if type(result) == type(True):
@@ -159,13 +193,12 @@ def sendCode(request):
   
     return HttpResponse(return_text)
 
-    """ 
-    This is a function to test code on the review page. Returns test output back to the page.
+"""  
+This is a function to test code on the review page. Returns test output back to the page.
 
-    Everything is wrriten to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
-
+Everything is writen to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
+"""
     
-    """
 
 def testCode(request):  
     results = []

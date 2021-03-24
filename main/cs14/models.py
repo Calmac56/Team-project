@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from datetime import datetime, timezone
 
 # Create your models here.
 class Admin (models.Model):
@@ -37,9 +38,11 @@ class Results(models.Model):
     tests_passed = models.IntegerField()
     tests_failed = models.IntegerField()
     passpercentage = models.IntegerField() #have made this int, but should be calculated
+    timestarted = models.DateTimeField(default=datetime.now)
     timetaken = models.IntegerField()
     complexity = models.CharField(max_length = 31)
     language = models.CharField(max_length = 255)
+    completed = models.BooleanField(default=False)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
