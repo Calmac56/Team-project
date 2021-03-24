@@ -42,7 +42,15 @@ Run the following terminal command <br>
 python manage.py createsuperuser
 ``
 
-**Step 6** <br>
+**Step 6**<br>
+Setup the docker image.<br>
+Run the following terminal command <br>
+``
+python setup.py
+``<br>
+Note: The docker image may take a few minutes to compile
+
+**Step 7** <br>
 Run the site. <br>
 Run the following terminal command <br>
 ``
