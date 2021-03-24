@@ -1,6 +1,7 @@
 **Prerequisites**
 - A linux distro or WSL2
 - An up to date install of Docker. Docker can be found here: https://www.docker.com/products/docker-desktop
+- A version of python installed that is between 3.5 and 3.9
 
 **Step 1** <br>
 Clone the repo using: <br>
@@ -20,6 +21,9 @@ Create the database. <br>
 CD into the "main" directory and run the following commands.<br>
 ``
 python manage.py makemigrations `` <br>
+``
+python manage.py makemigrations cs14 `` <br>
+
 ``
 python manage.py migrate
 ``
