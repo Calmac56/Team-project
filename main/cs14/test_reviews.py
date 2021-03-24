@@ -46,7 +46,6 @@ class resultsTest(TestCase):   #Results page testing class
         user= c.login(username='testuser', password='testpassword')
         candidate = Candidate.objects.get(user=user)
         response = c.get(reverse('cs14:cresults'))
-        
       
         self.assertEquals(list(response.context['results'].values_list()), list(Results.objects.filter(userID=candidate).values_list()))
         print("Candidate result ok")

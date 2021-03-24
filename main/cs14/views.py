@@ -34,31 +34,63 @@ def getCookie(request, cookie, default_val=None):
 @login_required
 def codingPage(request, id):
     context = {}
+    result = None
+
     try:
-        task = Task.objects.filter(taskID=id)
-  
-        taskDec = task[0].description
-        taskout = task[0].expectedout
+        task = Task.objects.filter(taskID=id)[0]
+        taskDec = task.description
+        taskout = task.expectedout
+        
+        userObj = User.objects.get(username=request.user)
+        candidate = Candidate.objects.get(user=userObj)
+
+        if Results.objects.filter(userID=candidate, taskID=task).exists():
+            print()
+            if Results.objects.filter(userID=candidate, taskID=task)[0].completed:
+                redirect('cs14:profile')
+        else:
+            Results.objects.create(userID=candidate, passpercentage =0, taskID=task, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
+        
+        result = Results.objects.filter(userID=candidate, taskID=task)[0]
+
     except:
         taskDec = "Could not get task description"
         taskout = "Could not get expected output"
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
+    context['input'] = getCookie(request, 'input', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
+    
+    #code to deal with auto templating code for users
     context['taskID'] = id
     if context['code'] == '':
         TEMPLATE_PATH = os.path.join(settings.MEDIA_DIR, 'templates', context['language']+'.txt')
         with open(TEMPLATE_PATH, 'r') as f:
             template_code = f.read()
         context['code'] = template_code
+        
+    #code to initialize timer
+    time_now = datetime.datetime.now(datetime.timezone.utc)
+    time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)
+    time_since_started = int((time_now - time_started).total_seconds())
+    context['time'] = task.time - time_since_started
+    context['time_total'] = task.time
+    print(task.time - time_since_started)
+
+    if task.time - time_since_started < 0:
+        context['submit'] = 'true'
+    else:
+        context['submit'] = 'false'
+
 
     return render(request, 'cs14/codingPage.html', context=context)
 
 def codingPageCookie(request):
     request.session['language'] = request.POST.get('language').lower()
     request.session['code'] = request.POST.get('code')
+    request.session['input'] = request.POST.get('input')
 
     return HttpResponse('saved')
 
@@ -107,11 +139,11 @@ def sendCode(request):
                     with open(tempInputFile, 'w') as f:
                         f.write(customInputText)
                     #run the test from compile.py
-                    results_output = test(testname, username, language, tempInputFile)
+                    results_output = test(candidate, testname, username, language, tempInputFile)
                 except FileExistsError:
                     pass
             else:
-                results_output, passes, fails = test(testname, username, language)
+                results_output, passes, fails = test(candidate, testname, username, language)
             
 
         else:
@@ -129,9 +161,9 @@ def sendCode(request):
             print("Tests passed: ", passes)
             print("Tests failed: ", fails)
 
-
             if submission == 'true':
-                print("dsgahjkgadshjkgsdajhklagsdhjklagdsjhklgdsajkhlsagdjklhgasdjkhlsdag")
+
+                
                 del request.session['language']
                 del request.session['code']
                 # ----------------------READ----------------------------------------------
@@ -139,13 +171,36 @@ def sendCode(request):
                 # current values are for test purposes
                 testTask = Task.objects.get(taskID=int(request.POST.get('taskID')))
 
-                if Results.objects.filter(userID=candidate, taskID=testTask):
-                    pass
-                else:
-                    Results.objects.create(userID=candidate, passpercentage =0, taskID=testTask, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
+                # reset session variables
+                request.session['language'] = ""
+                request.session['code'] = ""
+                request.session['input'] = ""
+
+                # remove container
+                containerID = getattr(candidate, "containerID")
+                if len(containerID) != 0:
+                    remove_container(containerID)
                 
-                Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=1, complexity="test", language=language)
+                # set candidate's assigned container to blank
+                Candidate.objects.filter(user=candidate.user).update(containerID='')
+
+                # ----------------------READ----------------------------------------------
+                # still need to properly add complexity, time taken (timer), code
+                # current values are for test purposes
                 
+                testTask = Task.objects.get(taskID=1)
+                result = Results.objects.filter(userID=candidate, taskID=testTask)[0]
+
+
+                time_now = datetime.datetime.now(datetime.timezone.utc)
+                time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)
+                time_taken = int((time_now - time_started).total_seconds())
+                
+                Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=time_taken, complexity="test", language=language, completed=True)
+                
+                print("yes")
+                UserTask.objects.filter(userID=candidate, taskID=testTask).delete()
+
 
             for result in results_output:
                 if type(result) == type(True):
@@ -158,13 +213,12 @@ def sendCode(request):
   
     return HttpResponse(return_text)
 
-    """ 
-    This is a function to test code on the review page. Returns test output back to the page.
+"""  
+This is a function to test code on the review page. Returns test output back to the page.
 
-    Everything is wrriten to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
-
+Everything is writen to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
+"""
     
-    """
 
 def testCode(request):  
     results = []
@@ -522,7 +576,7 @@ def profile(request):
     name = request.user.get_username  # change this to full name
 
     tasks = []
-    
+    results = []
     try:
         if request.user.is_authenticated:
             auser = Candidate.objects.get(user=request.user)
@@ -542,6 +596,13 @@ def profile(request):
             candidate = Candidate.objects.get(user = theuser)
             
             taskobjs = UserTask.objects.filter(userID = candidate)
+
+            try:
+                resultsobjs = Results.objects.filter(userID=candidate)
+                for result in resultsobjs:
+                    results.append(result.taskID.taskID)
+            except Results.DoesNotExist:
+                results = None
 
             for task in taskobjs:
                 tasks.append(task.taskID)
@@ -565,4 +626,4 @@ def profile(request):
     else:
         form = CreateUserForm()
 
-    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks, 'form':form})
+    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks, 'form':form, 'results':results})

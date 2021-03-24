@@ -8,8 +8,9 @@
 <script>
     var Code = `{{ code }}`;
     var Language = '{{ language }}';
-    var CustomInput = ""
-    var taskID = '{{ taskID }}'
+    var taskID = '{{ taskID }}';
+    var CustomInput = `{{ input }}`;
+    
 
 
     function doPost(Submission){
@@ -23,18 +24,20 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send(data);
         xhr.onreadystatechange = function() {
+            if (Submission == 'true'){
+            window.location.replace("{% url 'cs14:cresults' %}");
+        }
             if (xhr.readyState === 4) {
                 document.getElementById('output').value = xhr.responseText;
             }
+            
         }
-        if (Submission == 'true'){
-            window.location.replace("{% url 'cs14:cresults' %}");
-        }
+       
     };
 
     function updateCookies(){
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&code=" + encodeURIComponent(Code);
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&code=" + encodeURIComponent(Code) + "&input=" + encodeURIComponent(CustomInput);
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:codingPageCookie' %}", true);
@@ -112,17 +115,26 @@ CODEEEEE
 
 <script src="{% static 'js/timer.js'%}"></script>
 <script src="{% static 'js/codeLanguageUpdate.js'%}"></script>
-<script src="{% static 'js/submitCode.js'%}"></script>
+
 
 <script>
     editor.getSession().setValue(Code);
     editor.getSession().setMode("ace/mode/" + Language.toLowerCase());
-    
+    document.getElementById('inputArea').value = CustomInput;
+
     window.onload = function () {
-        var tasktime = 100; // replace this with time in seconds from context dictionary
+        var tasktime = {{ time }};
+        var tasktimefull = {{ time_total }};
+        var time_submit = '{{ submit }}';
+        
+        if (time_submit == "true") 
+        {
+            doPost('true');
+        }
+
         display = document.querySelector('#time');
         displayFull = document.querySelector('#timeFull');
-        startTimer(tasktime, display, displayFull);
-    };  
+        startTimer(tasktime, tasktimefull, display, displayFull);
+    };
 </script>
 {% endblock %}

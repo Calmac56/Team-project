@@ -19,6 +19,7 @@ input_path = os.path.join(os.getcwd(), "input")
 input_file = os.path.join(input_path, os.listdir(input_path)[0])
 with open (input_file, 'r') as f:
     input_data += f.read().strip()
+subprocess.run(["rm", os.path.join(input_path, input_file)])
 
 #filetype checking
 if file[-2:] == "py":
@@ -28,3 +29,5 @@ elif file[-5:] == "class":
     #java
     classname = file[:-6]
     proc = subprocess.run(["java", "-cp", path, classname, input_data])
+
+subprocess.run(["rm", os.path.join(path, file)])
