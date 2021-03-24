@@ -45,8 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
     'cs14',
 ]
+
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
 
 EMAIL_BACKEND = 'gmailapi_backend.mail.GmailBackend'
 

@@ -47,14 +47,12 @@ def codingPage(request, id):
     context['code'] = getCookie(request, 'code', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
-    
+    context['taskID'] = id
     if context['code'] == '':
         TEMPLATE_PATH = os.path.join(settings.MEDIA_DIR, 'templates', context['language']+'.txt')
         with open(TEMPLATE_PATH, 'r') as f:
             template_code = f.read()
         context['code'] = template_code
-
-
 
     return render(request, 'cs14/codingPage.html', context=context)
 
@@ -79,7 +77,7 @@ def sendCode(request):
             submission = request.POST.get('submission')
         
             filename = 'main'
-            testname = 'test1'
+            testname = 'test' + str(request.POST.get('taskID'))
 
             if language == 'python':
                 filename += '.py'
@@ -133,12 +131,13 @@ def sendCode(request):
 
 
             if submission == 'true':
+                print("dsgahjkgadshjkgsdajhklagsdhjklagdsjhklgdsajkhlsagdjklhgasdjkhlsdag")
                 del request.session['language']
                 del request.session['code']
                 # ----------------------READ----------------------------------------------
                 # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
-                testTask = Task.objects.get(taskID=1)
+                testTask = Task.objects.get(taskID=int(request.POST.get('taskID')))
 
                 if Results.objects.filter(userID=candidate, taskID=testTask):
                     pass
