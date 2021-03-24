@@ -48,9 +48,6 @@ INSTALLED_APPS = [
     'cs14',
 ]
 
-#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-
 
 EMAIL_BACKEND = 'gmailapi_backend.mail.GmailBackend'
 
