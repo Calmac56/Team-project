@@ -16,7 +16,7 @@ class resultsTest(TestCase):   #Results page testing class
         test_user = User.objects.create_user(username='testuser')
         test_user.set_password('testpassword')
         test_user.save()
-        test_user2 = User.objects.create_user(username='testuser2')
+        document.getElementById('inputArea') test_user2 = User.objects.create_user(username='testuser2')
         test_user2.set_password('testpassword')
         test_user2.save()
         test_admin = User.objects.create_user(username='testAdmin')
@@ -46,7 +46,6 @@ class resultsTest(TestCase):   #Results page testing class
         user= c.login(username='testuser', password='testpassword')
         candidate = Candidate.objects.get(user=user)
         response = c.get(reverse('cs14:cresults'))
-        
       
         self.assertEquals(list(response.context['results'].values_list()), list(Results.objects.filter(userID=candidate).values_list()))
         print("Candidate result ok")
