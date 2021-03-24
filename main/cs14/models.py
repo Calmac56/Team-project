@@ -10,6 +10,7 @@ class Admin (models.Model):
 
 class Candidate (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    containerID = models.CharField(max_length=12, blank=True)
     def __str__(self):
         return self.user.username
 
