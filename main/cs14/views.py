@@ -514,7 +514,7 @@ def profile(request):
     name = request.user.get_username  # change this to full name
 
     tasks = []
-    
+    results = []
     try:
         if request.user.is_authenticated:
             auser = Candidate.objects.get(user=request.user)
@@ -534,6 +534,13 @@ def profile(request):
             candidate = Candidate.objects.get(user = theuser)
             
             taskobjs = UserTask.objects.filter(userID = candidate)
+
+            try:
+                resultsobjs = Results.objects.filter(userID=candidate)
+                for result in resultsobjs:
+                    results.append(result.taskID.taskID)
+            except Results.DoesNotExist:
+                results = None
 
             for task in taskobjs:
                 tasks.append(task.taskID)
@@ -557,4 +564,4 @@ def profile(request):
     else:
         form = CreateUserForm()
 
-    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks, 'form':form})
+    return render(request, 'cs14/profile.html', {'name':name, 'tasks':tasks, 'form':form, 'results':results})

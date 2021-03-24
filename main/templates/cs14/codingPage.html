@@ -23,13 +23,15 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send(data);
         xhr.onreadystatechange = function() {
+            if (Submission == 'true'){
+            window.location.replace("{% url 'cs14:cresults' %}");
+        }
             if (xhr.readyState === 4) {
                 document.getElementById('output').value = xhr.responseText;
             }
+            
         }
-        if (Submission == 'true'){
-            window.location.replace("{% url 'cs14:cresults' %}");
-        }
+       
     };
 
     function updateCookies(){
@@ -112,7 +114,7 @@ CODEEEEE
 
 <script src="{% static 'js/timer.js'%}"></script>
 <script src="{% static 'js/codeLanguageUpdate.js'%}"></script>
-<script src="{% static 'js/submitCode.js'%}"></script>
+
 
 <script>
     editor.getSession().setValue(Code);
