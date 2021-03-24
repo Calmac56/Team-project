@@ -129,11 +129,11 @@ def sendCode(request):
                     with open(tempInputFile, 'w') as f:
                         f.write(customInputText)
                     #run the test from compile.py
-                    results_output = test(testname, username, language, tempInputFile)
+                    results_output = test(candidate, testname, username, language, tempInputFile)
                 except FileExistsError:
                     pass
             else:
-                results_output, passes, fails = test(testname, username, language)
+                results_output, passes, fails = test(candidate, testname, username, language)
             
 
         else:
@@ -151,14 +151,24 @@ def sendCode(request):
             print("Tests passed: ", passes)
             print("Tests failed: ", fails)
 
-
             if submission == 'true':
+                # reset session variables
                 request.session['language'] = ""
                 request.session['code'] = ""
                 request.session['input'] = ""
+
+                # remove container
+                containerID = getattr(candidate, "containerID")
+                if len(containerID) != 0:
+                    remove_container(containerID)
+                
+                # set candidate's assigned container to blank
+                Candidate.objects.filter(user=candidate.user).update(containerID='')
+
                 # ----------------------READ----------------------------------------------
                 # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
+                
                 testTask = Task.objects.get(taskID=1)
                 result = Results.objects.filter(userID=candidate, taskID=testTask)[0]
 
