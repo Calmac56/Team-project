@@ -10,27 +10,31 @@
     var Language = '{{ language }}';
     var taskID = '{{ taskID }}';
     var CustomInput = `{{ input }}`;
-    
+
+
 
 
     function doPost(Submission){
         var CustomInputCB = document.getElementById("customInputCB").checked;
-
         var CSRFtoken = '{{ csrf_token }}';
         var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission + "&taskID=" + taskID;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send(data);
-        xhr.onreadystatechange = function() {
-            if (Submission == 'true'){
-            window.location.replace("{% url 'cs14:cresults' %}");
+        if (CustomInputCB && Submission == 'true'){
+            alert("Cannot submit with custom input.");
         }
-            if (xhr.readyState === 4) {
-                document.getElementById('output').value = xhr.responseText;
+        else{
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            xhr.send(data);
+            xhr.onreadystatechange = function() {
+                if (Submission == 'true'){
+                window.location.replace("{% url 'cs14:cresults' %}");
             }
-            
+                if (xhr.readyState === 4) {
+                    document.getElementById('output').value = xhr.responseText;
+                }
+                
+            }
         }
        
     };
