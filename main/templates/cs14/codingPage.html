@@ -12,7 +12,15 @@
     
 
 
-    function doPost(Submission){
+    function doPost(Submission, force=false){
+        if (force == false && Submission == 'true')
+        {
+            if (window.confirm("Are you sure you want to submit? Once you do, you cannot access the task again.") == false) 
+            {
+                return;
+            }
+        }
+        
         var CustomInputCB = document.getElementById("customInputCB").checked;
 
         var CSRFtoken = '{{ csrf_token }}';
@@ -27,9 +35,10 @@
                 document.getElementById('output').value = xhr.responseText;
             }
         }
-        if (Submission == 'true'){
+        if (Submission == 'true')
+        {
             window.location.replace("{% url 'cs14:cresults' %}");
-        }
+        } 
     };
 
     function updateCookies(){
@@ -126,7 +135,7 @@ CODEEEEE
         
         if (time_submit == "true") 
         {
-            doPost('true');
+            doPost('true', force=true);
         }
 
         display = document.querySelector('#time');
