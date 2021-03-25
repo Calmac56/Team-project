@@ -39,6 +39,8 @@ body {
             flex-direction: row;
             min-height: 100px;
             padding-bottom: 5px;
+            margin-left: 16px;
+            margin-right: 10px;
         }
 
             .logo {
@@ -94,6 +96,7 @@ body {
 
             .navLink:hover {
                 color: var(--text-alt-color);
+                text-decoration: none;
             }
 
         .content {

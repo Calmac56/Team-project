@@ -18,6 +18,7 @@ import json
 import datetime
 import os
 import shutil
+from html import unescape
 
 
 
@@ -44,6 +45,7 @@ def codingPage(request, id):
             task = Task.objects.filter(taskID=id)[0]
         taskDec = task.description
         taskout = task.expectedout
+        taskName = task.name
         
         userObj = User.objects.get(username=request.user)
         candidate = Candidate.objects.get(user=userObj)
@@ -71,9 +73,11 @@ def codingPage(request, id):
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
+    print(context['code'])
     context['input'] = getCookie(request, 'input', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
+    context['taskname'] = taskName
     
     #code to deal with auto templating code for users
     context['taskID'] = id
@@ -101,7 +105,7 @@ def codingPage(request, id):
 
 def codingPageCookie(request):
     request.session['language'] = request.POST.get('language').lower()
-    request.session['code'] = request.POST.get('code')
+    request.session['code'] = unescape(request.POST.get('code'))
     request.session['input'] = request.POST.get('input')
 
     return HttpResponse('saved')
