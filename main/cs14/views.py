@@ -37,7 +37,11 @@ def codingPage(request, id):
     result = None
 
     try:
-        task = Task.objects.filter(taskID=id)[0]
+        task = Task.objects.filter(taskID=id)
+        if len(task) == 0:
+            raise Task.DoesNotExist
+        else:
+            task = Task.objects.filter(taskID=id)[0]
         taskDec = task.description
         taskout = task.expectedout
         
@@ -45,17 +49,16 @@ def codingPage(request, id):
         candidate = Candidate.objects.get(user=userObj)
 
         if Results.objects.filter(userID=candidate, taskID=task).exists():
-            print()
+           
             if Results.objects.filter(userID=candidate, taskID=task)[0].completed:
-                redirect('cs14:profile')
+                return redirect('cs14:profile')
         else:
             Results.objects.create(userID=candidate, passpercentage =0, taskID=task, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
         
         result = Results.objects.filter(userID=candidate, taskID=task)[0]
 
-    except:
-        taskDec = "Could not get task description"
-        taskout = "Could not get expected output"
+    except Task.DoesNotExist:
+        return redirect('cs14:profile')
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
@@ -188,7 +191,7 @@ def sendCode(request):
                 # still need to properly add complexity, time taken (timer), code
                 # current values are for test purposes
                 
-                testTask = Task.objects.get(taskID=1)
+                testTask = Task.objects.get(taskID=int(request.POST.get('taskID')))
                 result = Results.objects.filter(userID=candidate, taskID=testTask)[0]
 
 
@@ -197,9 +200,6 @@ def sendCode(request):
                 time_taken = int((time_now - time_started).total_seconds())
                 
                 Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=time_taken, complexity="test", language=language, completed=True)
-                
-                print("yes")
-                UserTask.objects.filter(userID=candidate, taskID=testTask).delete()
 
 
             for result in results_output:
@@ -238,7 +238,7 @@ def testCode(request):
             
             
             filename = 'main'
-            testname = 'test1'
+            testname = 'test' + str(request.POST.get('taskID'))
             if language == 'python':
                 filename += '.py'
             elif language == 'java':
@@ -600,7 +600,8 @@ def profile(request):
             try:
                 resultsobjs = Results.objects.filter(userID=candidate)
                 for result in resultsobjs:
-                    results.append(result.taskID.taskID)
+                    if result.completed == True:
+                        results.append(result.taskID.taskID)
             except Results.DoesNotExist:
                 results = None
 
