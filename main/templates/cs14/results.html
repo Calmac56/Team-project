@@ -96,8 +96,8 @@ Candidate results
         <th class="tg-0lax"> Tests Passed</th>
         <th class="tg-0lax">Tests Failed</th>
         <th class="tg-0lax">Pass Percentage</th>
-        <th class="tg-0lax">Time taken</th>
-        <th class="tg-0lax"> Complexity </th>
+        <th class="tg-0lax">Time taken (Seconds)</th>
+        <!-- <th class="tg-0lax"> Complexity </th> -->
       
         <th class="tg-0lax">Description</th>
         <th class="tg-0lax">Code</th>
@@ -110,7 +110,7 @@ Candidate results
         <td class="tg-0lax">{{result.tests_failed}}</td>
         <td class="tg-0lax">{{result.passpercentage}}</td>
         <td class="tg-0lax">{{result.timetaken}}</td>
-        <td class="tg-0lax">{{result.complexity}}</td>
+        <!-- <td class="tg-0lax">{{result.complexity}}</td>  Commented out as complexity calculator not implemented -->
         <td class="tg-0lax">{{result.taskID.description}}</td>
         <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
       </tr>

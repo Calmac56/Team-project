@@ -53,6 +53,15 @@ def codingPage(request, id):
             if Results.objects.filter(userID=candidate, taskID=task)[0].completed:
                 return redirect('cs14:profile')
         else:
+            try:
+                USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
+                username = request.user.get_username()
+                testname = 'test' + str(id)
+                filepath = os.path.join(USER_DIR, username, testname)
+                shutil.rmtree(filepath)
+            except FileNotFoundError:
+                pass
+            
             Results.objects.create(userID=candidate, passpercentage =0, taskID=task, tests_passed=0, tests_failed=0, timetaken=1, complexity="test", language="test")
         
         result = Results.objects.filter(userID=candidate, taskID=task)[0]
@@ -274,7 +283,7 @@ def testCode(request):
         return_text = ""
 
         try:
-            shutil.rmtree(os.path.join(USER_DIR, username, testname,foldername, 'temp'))
+            shutil.rmtree(os.path.join(USER_DIR, username, testname,foldername))
         except FileNotFoundError:
             pass
         
@@ -504,11 +513,17 @@ def creview(request,id):
 
     try:
         task = Task.objects.filter(taskID=id)
+        if len(task) == 0:
+            raise Task.DoesNotExist
         taskDec = task[0].description
         taskout = task[0].expectedout
-    except:
-        taskDec = "Could not get task description"
-        taskout = "Could not get expected output"
+    except Task.DoesNotExist:
+        if Candidate.objects.filter(user=request.user).exists():
+            return redirect('cs14:cresults')
+        elif Reviewer.objects.filter(user=request.user).exists():
+            return redirect('cs14:results')
+        else:
+            return redirect('cs14:index')
 
 
     
@@ -575,7 +590,7 @@ def rhistory(request):
 def profile(request):
     name = request.user.get_username  # change this to full name
 
-    tasks = []
+    tasks = {}
     results = []
     try:
         if request.user.is_authenticated:
@@ -606,7 +621,7 @@ def profile(request):
                 results = None
 
             for task in taskobjs:
-                tasks.append(task.taskID)
+                tasks[task] = task.taskID.time / 60
 
             if not tasks:
                 tasks = None
