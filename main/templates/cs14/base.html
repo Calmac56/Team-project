@@ -31,10 +31,6 @@
   elements of the website-->
   <div class="bodyContainer">
     <div class="header">
-      <!--logo holder; needs updated to contain real logo-->
-      <div class="logo">
-
-      </div>
       <!--page title holder; should containt block as so title
       is give for each page-->
       <div class="title">
@@ -52,19 +48,13 @@
         <div class="navElement">
             <a class="navLink" href="{% url 'cs14:index'%}" >Home</a>
         </div>
-        <div class="navSplitter"></div>
         {% if user.is_authenticated %}
-          <div class="navSplitter"></div>
-          <div class="navElement">
-            <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
-          </div>
           {% if isAdmin %}
           <div class="navSplitter"></div>
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:register'%}" >Generate User</a>
           </div>
           {% endif %}
-
           {% if isReviewer %}
           <div class="navSplitter"></div>
           <div class="navElement">
@@ -73,6 +63,7 @@
 
         {% endif %}
         {% if isCandidate %}
+        <div class="navSplitter"></div>
         <div class="navElement">
           <a class="navLink" href="{% url 'cs14:profile'%}" >Profile</a>
         </div>
@@ -82,6 +73,10 @@
           </div>
 
         {% endif %}
+        <div class="navSplitter"></div>
+          <div class="navElement">
+            <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
+          </div>
         {% else %}
           
           <div class="navElement">
@@ -93,9 +88,6 @@
     <div class="content">
         {% block body_block %}
         {% endblock %}
-    </div>
-    <div class="footer">
-
     </div>
   </div>
 

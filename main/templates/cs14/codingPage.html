@@ -34,7 +34,7 @@
         xhr.onreadystatechange = function() {
             if (Submission == 'true'){
             window.location.replace("{% url 'cs14:cresults' %}");
-        }
+            }
             if (xhr.readyState === 4) {
                 document.getElementById('output').value = xhr.responseText;
             }
@@ -57,15 +57,22 @@
 
 
 {% block title_block %}
-CODEEEEE
+{{ taskname }}
+{% endblock %}
+
+{% block title2_block %}
+{{ taskname }}
 {% endblock %}
 
 {% block body_block %}
 <div class="description">
-    <h2>Task Description</h2>
-    <p>{{taskDec}}
-        <br>
-        Expected Out: {{taskout}}
+    <p>
+        <div class="descriptionText">
+            <strong>Task</strong><br>  {{taskDec}}
+        </div>
+        <div class="expectedText">
+            <strong>Expected Out</strong><br>  {{taskout}}
+        </div>       
     </p>
     </br>
 </div>
@@ -103,15 +110,15 @@ CODEEEEE
     <div class="codeIo">
         <div class="codeInput">
             <div class="editorTopBar">
-                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" id="customInputCB" value="USE CUSTOM INPUT"></div>
+                <div class="editorTitle">CUSTOM INPUT<input class="cInputCheck" type="checkbox" id="customInputCB" value="USE CUSTOM INPUT"></div>
             </div>
-            <textarea class="inputArea" id="inputArea" name="inputArea" rows="20" cols="140"></textarea>
+            <textarea class="inputArea" id="inputArea" name="inputArea" rows="20" cols="140" spellcheck="false"></textarea>
         </div>
         <div class="codeOutput">
             <div class="editorTopBar">
                 <div class="editorTitle">OUTPUT</div>
             </div>
-            <textarea readonly class="outputArea" name="outputArea" id="output" rows="20" cols="140"></textarea>
+            <textarea readonly class="outputArea" name="outputArea" id="output" rows="20" cols="140" spellcheck="false"></textarea>
         </div>
     </div>
 </div>

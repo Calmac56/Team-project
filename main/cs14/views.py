@@ -40,6 +40,7 @@ def codingPage(request, id):
         task = Task.objects.filter(taskID=id)[0]
         taskDec = task.description
         taskout = task.expectedout
+        taskName = task.name
         
         userObj = User.objects.get(username=request.user)
         candidate = Candidate.objects.get(user=userObj)
@@ -56,12 +57,14 @@ def codingPage(request, id):
     except:
         taskDec = "Could not get task description"
         taskout = "Could not get expected output"
+        taskName = "Error"
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
     context['input'] = getCookie(request, 'input', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
+    context['taskname'] = taskName
     
     #code to deal with auto templating code for users
     context['taskID'] = id

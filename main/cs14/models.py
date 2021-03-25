@@ -22,6 +22,7 @@ class Reviewer (models.Model):
 
 class Task(models.Model):
     taskID = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length = 256, default="task")
     description = models.CharField(max_length = 4095)
     testcases = models.CharField(max_length = 255)
     expectedout = models.CharField(max_length = 255)
