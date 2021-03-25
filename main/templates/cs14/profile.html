@@ -46,13 +46,16 @@ Welcome {{ user }}
 			</div>
 			<hr>
 			{% if tasks != None %}
-				{% for task in tasks %}
+				{% for key, values in tasks.items %}
 					<div class="taskContainer" style="text-align: center">
-						<p>{{task.description}}</p>
-						{% if task.taskID in results %}
-						Task completed
+						<p style="color: black !important; font-weight: bold !important;">{{key.taskID.description}}</p>
+						<p style="color: black !important; font-weight: bold !important;">Time to complete task - {{values}} Minutes</p>
+						
+
+						{% if key.taskID.taskID in results %}
+						<p style="font-weight: bolder !important; color: darkgreen !important;">Task completed</p>
 						{% else %}
-						<a class="navLink" href="{% url 'cs14:code' task.taskID %}">Go to Task</a>
+							<a class="navLink" href="{% url 'cs14:code' key.taskID.taskID %}">Go to Task</a>
 						{% endif %}
         			</div>
 					<hr>

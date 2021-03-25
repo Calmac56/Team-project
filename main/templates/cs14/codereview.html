@@ -11,7 +11,8 @@
 <script>
     var Code = '';
     var Language = 'java';
-    var CustomInput = ""
+    var CustomInput = "";
+    var id = '{{taskID}}';
 
     function doPost(){
         
@@ -19,7 +20,7 @@
         CustomInput = document.getElementById("inputArea").value;
       
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + '&taskID=' + id
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:testCode' %}", true);
