@@ -5,13 +5,12 @@
 {% block head_block %}
 <link rel="stylesheet" href="{% static 'css/codingPage.css'%}" type="text/css">
 
+<script src="{% static 'js/htmlDecoder.js'%}"></script>
 <script>
-    var Code = `{{ code }}`;
+    var Code = htmlDecode(`{{ code }}`);
     var Language = '{{ language }}';
     var taskID = '{{ taskID }}';
     var CustomInput = `{{ input }}`;
-    
-
 
     function doPost(Submission, force=false){
         if (force == false && Submission == 'true')
@@ -23,9 +22,13 @@
         }
         
         var CustomInputCB = document.getElementById("customInputCB").checked;
-
+        
         var CSRFtoken = '{{ csrf_token }}';
         var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission + "&taskID=" + taskID;
+        
+        if (CustomInputCB && Submission == 'true'){
+            data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + false + "&submission=" + Submission + "&taskID=" + taskID;
+        }
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
@@ -34,7 +37,7 @@
         xhr.onreadystatechange = function() {
             if (Submission == 'true'){
             window.location.replace("{% url 'cs14:cresults' %}");
-            }
+        }
             if (xhr.readyState === 4) {
                 document.getElementById('output').value = xhr.responseText;
             }

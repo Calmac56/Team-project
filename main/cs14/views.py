@@ -18,6 +18,7 @@ import json
 import datetime
 import os
 import shutil
+from html import unescape
 
 
 
@@ -61,6 +62,7 @@ def codingPage(request, id):
 
     context['language'] = getCookie(request, 'language', default_val='java')
     context['code'] = getCookie(request, 'code', default_val='')
+    print(context['code'])
     context['input'] = getCookie(request, 'input', default_val='')
     context['taskDec'] = taskDec
     context['taskout'] = taskout
@@ -92,7 +94,7 @@ def codingPage(request, id):
 
 def codingPageCookie(request):
     request.session['language'] = request.POST.get('language').lower()
-    request.session['code'] = request.POST.get('code')
+    request.session['code'] = unescape(request.POST.get('code'))
     request.session['input'] = request.POST.get('input')
 
     return HttpResponse('saved')
