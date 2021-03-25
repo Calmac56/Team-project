@@ -49,9 +49,14 @@ Welcome {{ user }}
 				{% for task in tasks %}
 					<div class="taskContainer" style="text-align: center">
 						<p>{{task.description}}</p>
+						{% if task.taskID in results %}
+						Task completed
+						{% else %}
 						<a class="navLink" href="{% url 'cs14:code' task.taskID %}">Go to Task</a>
+						{% endif %}
         			</div>
 					<hr>
+					
 				{% endfor %}
 			{% else %}
 				<h2>You have no coding tasks to complete.</h2>

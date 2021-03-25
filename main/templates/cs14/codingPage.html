@@ -8,6 +8,7 @@
 <script>
     var Code = `{{ code }}`;
     var Language = '{{ language }}';
+    var taskID = '{{ taskID }}';
     var CustomInput = `{{ input }}`;
     
 
@@ -24,21 +25,21 @@
         var CustomInputCB = document.getElementById("customInputCB").checked;
 
         var CSRFtoken = '{{ csrf_token }}';
-        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission;
+        var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&codeArea=" + encodeURIComponent(Code) + "&inputArea=" + encodeURIComponent(CustomInput) + "&customInputCB=" + CustomInputCB + "&submission=" + Submission + "&taskID=" + taskID;
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "{% url 'cs14:sendCode' %}", true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.send(data);
         xhr.onreadystatechange = function() {
+            if (Submission == 'true'){
+            window.location.replace("{% url 'cs14:cresults' %}");
+        }
             if (xhr.readyState === 4) {
                 document.getElementById('output').value = xhr.responseText;
             }
+            
         }
-        if (Submission == 'true')
-        {
-            window.location.replace("{% url 'cs14:cresults' %}");
-        } 
     };
 
     function updateCookies(){
@@ -121,7 +122,7 @@ CODEEEEE
 
 <script src="{% static 'js/timer.js'%}"></script>
 <script src="{% static 'js/codeLanguageUpdate.js'%}"></script>
-<script src="{% static 'js/submitCode.js'%}"></script>
+
 
 <script>
     editor.getSession().setValue(Code);

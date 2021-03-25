@@ -96,14 +96,14 @@ class reviewTest(TestCase):
             
         self.c = Client()
         self.user= self.c.login(username='testuser', password='testpassword')
-        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")'})
+        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world")', 'taskID':'1'})
       
   
         
     def test_run(self):   #Tests if we can run code on our code review page and that it gives correct output
       
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
-        theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"]})
+        theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"], 'taskID':'1'})
         theresp = theresp.content.decode('ascii')
         contains = 'Test Case 1:' in theresp
     
@@ -112,7 +112,7 @@ class reviewTest(TestCase):
     
     def test_inital_page(self):  #Tests if the inital code review page shows the correct code for test candidate
         
-        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")'})
+        self.c.post('/cs14/sendCode', {'language':'python', 'codeArea':'print("Hello world from calum")', 'taskID':'1'})
         
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
         code = response.context["code"]
@@ -121,7 +121,7 @@ class reviewTest(TestCase):
 
     def test_custom_input(self):  #Tests if custom input for executing code works on review page
         response = self.c.get(reverse('cs14:creview', kwargs={'id':1}))
-        theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"], 'inputArea':123, 'customInputCB':'true'})
+        theresp = self.c.post('/cs14/testCode',{'language':'python', 'codeArea':response.context["code"], 'inputArea':123, 'customInputCB':'true', 'taskID':'1'})
         theresp = theresp.content.decode('ascii')
         contains = 'Custom output:' in theresp
         self.assertTrue(contains)
@@ -132,8 +132,3 @@ class reviewTest(TestCase):
     def tearDownClass(self): #Cleans up backend testing files
         USER_DIR = os.path.join(settings.MEDIA_DIR, 'users')
         shutil.rmtree(os.path.join(USER_DIR, 'testuser'))
-    
-
-
-
-        

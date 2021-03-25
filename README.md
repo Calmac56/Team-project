@@ -1,6 +1,7 @@
 **Prerequisites**
 - A linux distro or WSL2
 - An up to date install of Docker. Docker can be found here: https://www.docker.com/products/docker-desktop
+- A version of python installed that is between 3.5 and 3.9
 
 **Step 1** <br>
 Clone the repo using: <br>
@@ -21,6 +22,9 @@ CD into the "main" directory and run the following commands.<br>
 ``
 python manage.py makemigrations `` <br>
 ``
+python manage.py makemigrations cs14 `` <br>
+
+``
 python manage.py migrate
 ``
 
@@ -38,7 +42,15 @@ Run the following terminal command <br>
 python manage.py createsuperuser
 ``
 
-**Step 6** <br>
+**Step 6**<br>
+Setup the docker image.<br>
+Run the following terminal command <br>
+``
+python setup.py
+``<br>
+Note: The docker image may take a few minutes to compile
+
+**Step 7** <br>
 Run the site. <br>
 Run the following terminal command <br>
 ``
