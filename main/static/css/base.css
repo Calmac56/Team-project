@@ -11,8 +11,8 @@ global tag styling like h1 and p are done at the bottom.
     --highlight-color2: rgb(103, 110, 141);
     --alt-color: rgb(44,44,44);
     --alt-color2: rgb(46, 78, 39);
-    --text-color: rgb(126, 126, 126);
-    --text-alt-color: rgb(44, 43, 43);
+    --text-color: rgb(114, 114, 114);
+    --text-alt-color: rgb(155, 152, 152);
     --timer: 0%;
 }
   
@@ -107,7 +107,7 @@ body {
             min-height:300px;
             background-color: var(--div-color);
             color: var(--text-color);
-            box-shadow: 0px 0px 10px 1px rgba(43, 43, 43, 0.801);
+            /* box-shadow: 0px 0px 10px 1px rgba(43, 43, 43, 0.801); */
             
         }
 
@@ -144,4 +144,10 @@ p {
     margin: 0px !important;
     color: var(--text-color) !important;
     font-size: calc(100% + 0.05vw) !important;
+}
+
+hr 
+{
+    border: 1px solid rgb(243, 243, 243);
+    display: inline-block;
 }
