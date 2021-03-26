@@ -6,12 +6,12 @@ global tag styling like h1 and p are done at the bottom.
 */
 :root {
     --div-color: rgb(29,31,33);
-    --background-color: rgb(49, 49, 49);
+    --background-color: rgb(42, 43, 44);
     --highlight-color: rgb(148, 183, 212);
     --highlight-color2: rgb(103, 110, 141);
     --alt-color: rgb(44,44,44);
     --alt-color2: rgb(46, 78, 39);
-    --text-color: rgb(10, 10, 10);
+    --text-color: rgb(126, 126, 126);
     --text-alt-color: rgb(44, 43, 43);
     --timer: 0%;
 }
@@ -100,14 +100,14 @@ body {
             }
 
         .content {
-            border-radius: 10px;
+            border-radius: 3px;
             display: flex;
             flex-direction: column;
             width: 100%;
             min-height:600px;
             background-color: var(--div-color);
             color: var(--text-color);
-            box-shadow: 0px 0px 10px 1px rgba(163, 160, 160, 0.801);
+            box-shadow: 0px 0px 10px 1px rgba(43, 43, 43, 0.801);
             
         }
 

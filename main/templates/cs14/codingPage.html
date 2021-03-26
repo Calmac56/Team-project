@@ -79,11 +79,11 @@
         </div>
         {% if taskinput|length != 0 %}
         <div class="standardInput">
-            <strong>Standard input</strong><br>  <div id="standardIn"></div>
+            <strong>Standard input</strong><br>  <div id="standardInputText"></div>
         </div>
         {% endif %}
-        <div class="expectedText" id>
-            <strong>Expected Out</strong><br>  <div id="expectedOut"></div>
+        <div class="expectedText">
+            <strong>Expected Out</strong><br>  <div id="expectedOutText"></div>
         </div>       
     </p>
     </br>
@@ -148,8 +148,8 @@
     editor.getSession().setMode("ace/mode/" + Language.toLowerCase());
     document.getElementById('inputArea').value = CustomInput;
     document.getElementById('descriptionText').innerHTML = taskDescription;
-    document.getElementById('taskInput').innerHTML = taskInput;
-    document.getElementById('expectedOut').innerHTML = taskOutput;
+    document.getElementById('standardInputText').innerHTML = taskInput;
+    document.getElementById('expectedOutText').innerHTML = taskOutput;
    
     window.onload = function () {
         var tasktime = {{ time }};
