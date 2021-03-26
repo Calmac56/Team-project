@@ -1,4 +1,9 @@
 import sys
+#Split the input array and convert to integers
+input_data = [int(x.strip()) for x in sys.argv[1].split('\n')]
 
-for elt in sys.argv:
-    print(elt)
+
+for elt in input_data:
+    #YOUR CODE HERE
+    
+    #END YOUR CODE

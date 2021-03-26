@@ -226,13 +226,22 @@ def sendCode(request):
   
     return HttpResponse(return_text)
 
+
+
+def updateTemplate(request):
+    if request.method == 'POST':
+        language = request.POST.get('language').lower()
+        #code to deal with auto templating code for users
+        TEMPLATE_PATH = os.path.join(settings.MEDIA_DIR, 'templates', language+'.txt')
+        with open(TEMPLATE_PATH, 'r') as f:
+            template_code = f.read()
+        return HttpResponse(template_code)
+
 """  
 This is a function to test code on the review page. Returns test output back to the page.
 
 Everything is writen to temporary files to execute then deleted as we dont want reviewers or users to modify submitted code permanently. 
 """
-    
-
 def testCode(request):  
     results = []
     if(request.method == 'POST'):

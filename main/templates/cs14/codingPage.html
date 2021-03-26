@@ -45,6 +45,24 @@
         }
     };
 
+
+    function reloadTemplate(){
+        var CSRFtoken = '{{ csrf_token }}';
+        var langauge = document.getElementById("languageSelector").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'cs14:updateTemplate' %}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send('csrfmiddlewaretoken=' + CSRFtoken + '&language=' + langauge);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                editor.getSession().setValue(xhr.responseText);
+            }
+            
+        }
+    }
+
     function updateCookies(){
         var CSRFtoken = '{{ csrf_token }}';
         var data = 'csrfmiddlewaretoken=' + CSRFtoken + "&language=" + Language + "&code=" + encodeURIComponent(Code) + "&input=" + encodeURIComponent(CustomInput);
@@ -97,12 +115,16 @@
     <div class="codeEditor">
         <div class="editorTopBar">
             <div class="editorTitle">CODE</div>
+
+            <button style="width: 230px !important;" id='reloadTemplateButton' type="button" onclick="reloadTemplate()" class="editorTopBarForm">RELOAD TEMPLATE</button>
+
             <select id='languageSelector' class="editorTopBarForm">
                 <option value="java">JAVA</option>
                 <option value="python">PYTHON</option>
                 <option value="c">C</option>
                 <option value="c#">C#</option>
             </select>
+            
             <button id='runButton' type="button" onclick="doPost('false')" class="editorTopBarForm">RUN</button>
             <button id='submitButton' type="button" onclick="doPost('true')" class="editorTopBarForm">SUBMIT</button>
         </div>

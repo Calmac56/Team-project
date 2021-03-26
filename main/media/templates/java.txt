@@ -1,5 +1,18 @@
-public static void main(String[] args) {
-    for(String arg: args) {
-     System.out.println(arg);
+public class main{
+
+    public static void main(String[] args) {
+        
+        //This converts the input to an int array and itterates over it
+        String[] strArr = args[0].split("\\s+");
+        int[] intArr = new int[strArr.length];
+        for (int i=0; i < strArr.length; i++){
+            intArr[i] = Integer.parseInt(strArr[i]);
+            
+        }
+        for (int i : intArr){
+            // YOUR CODE HERE
+            
+            //END YOUR CODE
+        }
     }
 }

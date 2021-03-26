@@ -19,5 +19,6 @@ urlpatterns = [
 	path('testCode', views.testCode, name='testCode'),
 	path('rhistory', views.rhistory, name='rhistory'),
 	path('getresultsession', views.getresultsession, name='getresultsession'),
+	path('updateTemplate', views.updateTemplate, name='updateTemplate')
 ]
 

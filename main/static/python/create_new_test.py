@@ -19,4 +19,4 @@ def create_new_test(name):
     except:
         print('Cant Create New Test')
 
-create_new_test('test1')
+create_new_test('test4')
