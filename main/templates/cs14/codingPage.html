@@ -11,9 +11,6 @@
     var Language = '{{ language }}';
     var taskID = '{{ taskID }}';
     var CustomInput = `{{ input }}`;
-    var taskDescription = `{{ taskDec }}`;
-    var taskInput = '{{ taskinput }}';
-    var taskOutput = '{{ taskout }}';
 
     function doPost(Submission, force){
         if (force == false && Submission == 'true')
@@ -75,7 +72,7 @@
     <p>
         
         <div class="descriptionText">
-            <strong>Task</strong><br> <div id="descriptionText">{{ taskDec }}</div>
+            <strong>Task</strong><br> {{ taskDec }}
         </div>
         {% if taskinput|length != 0 %}
         <div class="standardInput">
@@ -147,9 +144,6 @@
     editor.getSession().setValue(Code);
     editor.getSession().setMode("ace/mode/" + Language.toLowerCase());
     document.getElementById('inputArea').value = CustomInput;
-    document.getElementById('descriptionText').innerHTML = taskDescription;
-    document.getElementById('standardInputText').innerHTML = taskInput;
-    document.getElementById('expectedOutText').innerHTML = taskOutput;
    
     window.onload = function () {
         var tasktime = {{ time }};
