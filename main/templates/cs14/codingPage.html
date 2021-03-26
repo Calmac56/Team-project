@@ -75,15 +75,15 @@
     <p>
         
         <div class="descriptionText">
-            <strong>Task</strong><br> <div id="descriptionText"></div>
+            <strong>Task</strong><br> <div id="descriptionText">{{ taskDec }}</div>
         </div>
         {% if taskinput|length != 0 %}
         <div class="standardInput">
-            <strong>Standard input</strong><br>  <div id="standardInputText"></div>
+            <strong>Standard input</strong><br>  {{ taskinput }}
         </div>
         {% endif %}
         <div class="expectedText">
-            <strong>Expected Out</strong><br>  <div id="expectedOutText"></div>
+            <strong>Expected Out</strong><br>  {{taskout}}
         </div>       
     </p>
     </br>
