@@ -88,7 +88,7 @@ class reviewTest(TestCase):
         test_user.save()
         Admin.objects.create(user=test_admin)
         theadmin = Admin.objects.get(user=test_admin)
-        Task.objects.create(taskID=1, description="testTask", testcases="0123", expectedout="0123",creator=theadmin, time=1000)
+        Task.objects.create(taskID=1, description="testTask", expectedout="0123",creator=theadmin, time=1000)
         testTask = Task.objects.get(taskID=1)
         Candidate.objects.create(user=test_user)
         candidate = Candidate.objects.get(user=test_user)
