@@ -46,7 +46,7 @@ def codingPage(request, id):
         taskDec = task.description
         taskout = task.expectedout
         taskName = task.name
-        
+        taskInput = task.standardinput
         userObj = User.objects.get(username=request.user)
         candidate = Candidate.objects.get(user=userObj)
 
@@ -78,6 +78,7 @@ def codingPage(request, id):
     context['taskDec'] = taskDec
     context['taskout'] = taskout
     context['taskname'] = taskName
+    context['taskinput'] = taskInput
     
     #code to deal with auto templating code for users
     context['taskID'] = id
@@ -211,6 +212,8 @@ def sendCode(request):
                 time_now = datetime.datetime.now(datetime.timezone.utc)
                 time_started = result.timestarted.replace(tzinfo=datetime.timezone.utc)
                 time_taken = int((time_now - time_started).total_seconds())
+                if time_taken > testTask.time:
+                    time_taken = testTask.time
                 
                 Results.objects.filter(userID=candidate, taskID=testTask).update(passpercentage = int(passes/(passes+fails)*100), tests_passed=passes, tests_failed=fails, timetaken=time_taken, complexity="test", language=language, completed=True)
 
@@ -435,7 +438,7 @@ def results(request):
     if request.session.get('scandidate'):
         theuser =  User.objects.get(username = request.session.get('scandidate'))
         candidate = Candidate.objects.get(user = theuser)
-        result = Results.objects.filter(userID = candidate)
+        result = Results.objects.filter(userID = candidate).order_by('taskID')
         
         if not result:
             result = None
@@ -452,7 +455,7 @@ def results(request):
             try:
                 candidate = Candidate.objects.get(user = theuser)
                 request.session['scandidate'] = request.GET['state']
-                result = Results.objects.filter(userID = candidate)
+                result = Results.objects.filter(userID = candidate).order_by('taskID')
                 if not result:
                     result = None
 
@@ -493,7 +496,7 @@ def cresults(request):
         try:
             candidate = Candidate.objects.get(user = theuser)
             
-            result = Results.objects.filter(userID = candidate)
+            result = Results.objects.filter(userID = candidate).order_by('taskID')
             if not result:
                 result = None
 
@@ -521,6 +524,8 @@ def creview(request,id):
             raise Task.DoesNotExist
         taskDec = task[0].description
         taskout = task[0].expectedout
+        taskinput = task[0].standardinput
+        taskName = task[0].name
     except Task.DoesNotExist:
         if Candidate.objects.filter(user=request.user).exists():
             return redirect('cs14:cresults')
@@ -560,7 +565,7 @@ def creview(request,id):
                 
 
 
-    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout, 'slideval':timelinelength, 'taskID':id})
+    return render(request, 'cs14/codereview.html', {'code':lines, 'language': language , 'taskDec':taskDec, 'taskout':taskout, 'slideval':timelinelength, 'taskID':id, 'standardin':taskinput, 'taskname':taskName})
 
 
 """ 
@@ -614,7 +619,7 @@ def profile(request):
         try:
             candidate = Candidate.objects.get(user = theuser)
             
-            taskobjs = UserTask.objects.filter(userID = candidate)
+            taskobjs = UserTask.objects.filter(userID = candidate).order_by('taskID')
 
             try:
                 resultsobjs = Results.objects.filter(userID=candidate)

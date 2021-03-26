@@ -60,7 +60,7 @@ Candidate results
 <br>
 {% if results != None %}
 {% for result in results %}
-<p>Test {{result.taskID.taskID}} &nbsp;
+<p>Test {{result.taskID.taskID}} - {{result.taskID.name}} </p>
 <script>
 
 
@@ -86,7 +86,7 @@ Candidate results
 }
 
 </script>
-<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" id="myBtn{{result.taskID.taskID}}">View results</button> </p>
+<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" style="width: 40%; margin-left: 30%;" id="myBtn{{result.taskID.taskID}}">View results</button> 
 <span id="more{{result.taskID.taskID}}" style="display: None;"> 
 
     <table class="tg">
@@ -96,8 +96,8 @@ Candidate results
         <th class="tg-0lax"> Tests Passed</th>
         <th class="tg-0lax">Tests Failed</th>
         <th class="tg-0lax">Pass Percentage</th>
-        <th class="tg-0lax">Time taken (Seconds)</th>
-        <!-- <th class="tg-0lax"> Complexity </th> -->
+        <th class="tg-0lax">Time taken</th>
+        <th class="tg-0lax"> Complexity </th>
       
         <th class="tg-0lax">Description</th>
         <th class="tg-0lax">Code</th>
@@ -110,7 +110,7 @@ Candidate results
         <td class="tg-0lax">{{result.tests_failed}}</td>
         <td class="tg-0lax">{{result.passpercentage}}</td>
         <td class="tg-0lax">{{result.timetaken}}</td>
-        <!-- <td class="tg-0lax">{{result.complexity}}</td>  Commented out as complexity calculator not implemented -->
+        <td class="tg-0lax">{{result.complexity}}</td>
         <td class="tg-0lax">{{result.taskID.description}}</td>
         <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
       </tr>
