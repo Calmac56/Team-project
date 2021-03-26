@@ -1,24 +1,25 @@
-
 # **SETUP**
 
 **Prerequisites**
-- A Linux distro
-- An up to date install of Docker. More information here: https://docs.docker.com/engine/install/
-> You will need to run docker without having to use sudo.To do this run the following:<br>
-``sudo groupadd docker``<br>
+1. A Linux distro - we have been using Ubuntu.
+2. An up-to-date installation of Docker. More information here: https://docs.docker.com/engine/install/
+> You will need to run docker without having to use sudo. To do this, run the following in the terminal:<br>
+<br>``sudo groupadd docker``<br>
 ``sudo usermod -aG docker $USER``<br>
-You will need to log out and log back in so your user membership is reevaluated.
+<br>You will likely need to log out and log back in so your user membership is reevaluated.
 
-- A version of python installed that is between 3.5 and 3.9
+3. A version of Python that is between 3.5 and 3.9.
+
+<br>
 
 * **Step 1** <br>
 Clone the repo using: <br>
 ``
-git clone link
+git clone <link>
 ``
 
 * **Step 2** <br>
-Run the setup script in the cs14-main folder: <br>
+Run the setup script in the cs14-main/ directory: <br>
 ``
 python setup.py
 ``
@@ -27,14 +28,14 @@ Alternatively, or if this script fails, do the following steps.<br>
 
 * **Step 3** <br>
 Install the requirements. <br>
-CD into the cloned directory and use the following command: <br>
+In the cs14-main/ directory, run: <br>
 ``
 pip install -r requirements.txt
 ``
 
 * **Step 4** <br>
 Create the database. <br>
-CD into the "main" directory and run the following commands.<br>
+In the cs14-main/main/ directory, run the following commands: <br>
 ``
 python manage.py makemigrations `` <br>
 ``
@@ -51,64 +52,73 @@ python manage.py loaddata db.json
 ``
 
 * **Step 6** <br>
-Create a django admin user to manage site. <br>
-Run the following terminal command <br>
+If you used one of the database dumps from **step 5**, a superuser should already be created, with the credentials:<br>
+``user: admin``<br>
+``password: avaloq1``<br>
+If you are not using one of the database dumps, you can create a superuser with the following command:<br>
 ``
 python manage.py createsuperuser
 ``
 
 * **Step 7**<br>
-Setup the docker image.<br>
-Run the following terminal command <br>
+Build the docker image.<br>
+In the directory cs14-main/main/static/python/, run the following command:<br>
 ``
 docker build -t coding-image .
 ``<br>
-> Note: The docker image may take a few minutes to build.
+> Note: The docker image may take a few minutes to build, and may not work on the first try.
 
 * **Step 8** <br>
-Run the site. <br>
-Run the following terminal command <br>
+You can now run the site locally using the following command in the cs14-main/main/ directory:<br>
 ``
 python manage.py runserver
 ``
 
-Thats it, the local version of the site should now be up and running. You can add administrator users and reviews from the django admin panel. Administrators can then generate user accounts for candidates.
 
-# **ADMIN**
-Stuff about adding users. Will update this section once we have the two database dumps.
+# **ADMIN** (adding users and other objects to the database)
+* Firstly, you will need to add a superuser. You should have already done this in the setup, either by using one of the provided database dumps, or by running:<br>
+``python manage.py createsuperuser``<br>
+
+* You can now log into the Django admin interface using this user. You will need to run the server first:<br>
+``python manage.py runserver``<br>
+Open the link that appears in the terminal, and navigate to http://127.0.0.1:8000/admin.<br>
+
+* From here, sign in as the created superuser. You can now add values to the database.
+> Note: The site admins are different to the superusers. You will have to give a superuser admin privileges so they can generate user accounts.<br>
+Alternatively, you can create a new admin user. This can be done via the Django admin interface.
 
 # **ADDING CODING TASKS**
-Custom tasks can be added to the website, follow the steps below outline the process:
- 1. Navigate to cs14-main/main/media/tests/
- 2. create a new folder, it should be named task{ID} e.g. task3
- 3. inside the new folder create two folder input and output
- 4. inside input create a text file (name doesn't matter) inside this file put the input data
- 5. inside the output folder create a text file (same name as input text file) and put the output for your test case
-6. Register new task in the admin panel by clicking the plus next to tasks and filling out the form with the relevant data
+Coding task objects are added via the Django admin interface. However, the expected output and sample input need to be added manually. To do so:
 
-Notes:
+* Create a directory in cs14-main/main/media/tests/ with the name test followed by the the task id. 
+For example, if the task id is 1, the folder should be named "test1", thus creating the directory cs14-main/main/media/tests/test1.
 
- - input file needs to exist, but doesnt have to contain any data
- - multiple pairs of input and output files can exist for different test cases. They must have the same name
+* Within this new directory, create two directories: input and output.
 
-Example:
+* In the "input" directory, create a file containing the input to the code. If no input is required, create an empty file, as **this is required for the compilation to work.**
 
-When creating a task that requires users to square each input value the input and output files would look like this:
-Input: 
+* In the "output" directory, create a file containing the expected output of the code, which will be used for the testing.
+
+**An example of sample input and output would be the following:**<br>
+
+> Task description: "Write some code which takes input values from the command line and outputs their squares."<br>
+<br>The input and output files should contain the following:<br>
+<br>Input: 
 	  `1`
 	  `2`
 	  `3`
 	  `4`
-Output: 
+<br>Output:
 	  `1`
 	  `4`
 	  `9`
 	  `16`
 
+
  
 
 # **ADDING MORE LANGUAGES**
-If you want to add more languages, you will need to:
+If you would like to add more languages, you will need to:
 * Add installation instructions for the compiler/language in the Dockerfile, which can be found in cs14-main/main/static/python/
 * Add code for compilation and/or running in runcontainer.py, found in cs14-main/main/static/python/
 * Rebuild the Docker image
