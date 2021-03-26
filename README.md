@@ -46,9 +46,9 @@ python manage.py migrate
 
 * **Step 5** (optional)<br>
 Populate the database. <br>
-Run the following populate command <br>
+We have provided a database dump with a superuser which has admin privileges on the site. You can populate the database running:<br>
 ``
-python manage.py loaddata db.json
+python manage.py loaddata admindb.json
 ``
 
 * **Step 6** <br>
@@ -66,7 +66,7 @@ In the directory cs14-main/main/static/python/, run the following command:<br>
 ``
 docker build -t coding-image .
 ``<br>
-> Note: The docker image may take a few minutes to build, and may not work on the first try.
+> Note: The docker image may take a few minutes to build, and the building process may not succeed on the first try.
 
 * **Step 8** <br>
 You can now run the site locally using the following command in the cs14-main/main/ directory:<br>
@@ -103,16 +103,16 @@ For example, if the task id is 1, the folder should be named "test1", thus creat
 
 > Task description: "Write some code which takes input values from the command line and outputs their squares."<br>
 <br>The input and output files should contain the following:<br>
-<br>Input: 
-	  `1`
-	  `2`
-	  `3`
-	  `4`
-<br>Output:
-	  `1`
-	  `4`
-	  `9`
-	  `16`
+<br>Input:<br> 
+	  `1`<br>
+	  `2`<br>
+	  `3`<br>
+	  `4`<br>
+<br>Output:<br>
+	  `1`<br>
+	  `4`<br>
+	  `9`<br>
+	  `16`<br>
 
 
  
@@ -123,3 +123,4 @@ If you would like to add more languages, you will need to:
 * Add code for compilation and/or running in runcontainer.py, found in cs14-main/main/static/python/
 * Rebuild the Docker image
 * Add the necessary file extension in the add_language_extension function found in compile.py (cs14-main/main/static/python)
+* You will also need to add the required buttons in the selection menu of the coding page.
