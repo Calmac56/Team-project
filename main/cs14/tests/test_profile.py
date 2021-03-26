@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import *
+from cs14.models import *
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 class test_ProfilePage(TestCase):

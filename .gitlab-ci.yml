@@ -44,7 +44,7 @@ build:
    
   script:
       - cd main
-      - python manage.py test
-      - coverage run --source='.' manage.py test
+      - python manage.py test cs14/tests
+      - coverage run --source='.' manage.py test cs14/tests
       - coverage report
 
