@@ -1,3 +1,4 @@
+
 # **SETUP**
 
 **Prerequisites**
@@ -77,11 +78,34 @@ Thats it, the local version of the site should now be up and running. You can ad
 Stuff about adding users. Will update this section once we have the two database dumps.
 
 # **ADDING CODING TASKS**
-Tasks can be added via the Django admin interface, however, the expected output and sample input need to be added manually. To do so:
-* Create a directory in cs14-main/main/media/tests/ with the name test followed by the the task id. For example, if the task id is 1, the folder should be named "test1".
-* Within this new directory, create two directories: input and output.
-* In the input folder, create a file containing the input to the code. If no input is required, create an empty file, input.txt.
-* In the output folder, create a file containing the expected output of the code.
+Custom tasks can be added to the website, follow the steps below outline the process:
+ 1. Navigate to cs14-main/main/media/tests/
+ 2. create a new folder, it should be named task{ID} e.g. task3
+ 3. inside the new folder create two folder input and output
+ 4. inside input create a text file (name doesn't matter) inside this file put the input data
+ 5. inside the output folder create a text file (same name as input text file) and put the output for your test case
+6. Register new task in the admin panel by clicking the plus next to tasks and filling out the form with the relevant data
+
+Notes:
+
+ - input file needs to exist, but doesnt have to contain any data
+ - multiple pairs of input and output files can exist for different test cases. They must have the same name
+
+Example:
+
+When creating a task that requires users to square each input value the input and output files would look like this:
+Input: 
+	  `1`
+	  `2`
+	  `3`
+	  `4`
+Output: 
+	  `1`
+	  `4`
+	  `9`
+	  `16`
+
+ 
 
 # **ADDING MORE LANGUAGES**
 If you want to add more languages, you will need to:
