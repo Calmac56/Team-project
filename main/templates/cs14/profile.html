@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block title2_block %}
-<h4>Welcome {{ user }} </h4>
+Welcome {{ user.first_name }} 
 {% endblock %}
 
 {% block body_block %}
@@ -48,7 +48,7 @@
 			{% if tasks != None %}
 				{% for key, values in tasks.items %}
 					<div class="taskContainer" style="text-align: center">
-						<p style="color: black !important; font-weight: bold !important;">{{key.taskID.description}}</p>
+						<p style="color: black !important; font-weight: bold !important;">{{key.taskID.name}}</p>
 						<p style="color: black !important; font-weight: bold !important;">Time to complete task - {{values}} Minutes</p>
 						
 

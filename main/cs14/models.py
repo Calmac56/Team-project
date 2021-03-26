@@ -24,7 +24,7 @@ class Task(models.Model):
     taskID = models.IntegerField(primary_key=True)
     name = models.CharField(max_length = 256, default="task")
     description = models.CharField(max_length = 4095)
-    testcases = models.CharField(max_length = 255)
+    standardinput = models.CharField(max_length = 255, blank=True)
     expectedout = models.CharField(max_length = 255)
     creator = models.ForeignKey(Admin, on_delete=models.CASCADE)
     time = models.IntegerField(default=300) #time in seconds
