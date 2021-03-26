@@ -4,10 +4,6 @@
 <link rel="stylesheet" href="{% static 'css/index.css'%}" type="text/css">
 {% endblock %}
 
-{% block title2_block %}
-Avaloq
-{% endblock %}
-
 {% block body_block %}
 
 {% if user.is_authenticated %}
@@ -25,42 +21,35 @@ your own test cases to test against your solution. The problems that are assigne
 <h2> Tutorial on using the site </h2>
 <br>
 <h2> Profile page</h2>
-<p> This is the page where you will go to acsess the specific taks that are assigned to you and where you can view results from previous tasks that you have completed. An example of this page is shown below:
+<p> This is the page where you will go to acsess the specific taks that are assigned to you and where you can view results from previous tasks that you have completed. An example of this page is shown below:</p>
     <br> 
     <img src="{% static "images/profile.png"%}" style="width: 50%; height: auto;" class=images>
     <br>
-    The page shows a list of the tasks that you need to complete and will tell you the amount of time you have been given for each task.<br>
-    Clicking on start task will take you to the coding page for the task which looks like the example below. <br>
-    <h3> Coding page</h3>
+    <p> The page shows a list of the tasks that you need to complete and will tell you the amount of time you have been given for each task.<br>
+    Clicking on start task will take you to the coding page for the task which looks like the example below. <br></p> 
+    <h2> Coding page</h2>
     <br>
     <img src="{% static "images/codepage.png"%}" class=images style="width: 90%; height: auto;">
     <br>
-
-    The green timer at the top will show you how much time you have left to do this challenge before it is auto submitted. <br>
+    <p> The green timer at the top will show you how much time you have left to do this challenge before it is auto submitted. <br>
     The selector can be used to change the language the code is written in. Currently the site supports Java and Python.<br>
-    The run button will run the code and give output in the "output" box. <br>
-    Putting data into the custom input box and ticking the select box for custom input will allow you code to take in custom input and test with that with results again showing in the output box. <br>
-    The submit button is used to submit the final version of your code. <br>
+    The run button will run the code and give output in the "output" box. </p> <br>
+    <p> Putting data into the custom input box and ticking the select box for custom input will allow you code to take in custom input and test with that with results again showing in the output box. <br>
+    The submit button is used to submit the final version of your code.</p> <br>
     <br>
     <br>
-    Once the code is submitted you will be taken to the results page which will look similar to below.
-    <h3> Results page</h3>
+    <p> Once the code is submitted you will be taken to the results page which will look similar to below.</p> 
+    <h2> Results page</h2>
     <br>
     <br>
     <img src="{% static "images/resultspage.png"%}" style="width: 80%; height: auto;" class=images>
     <br>
 
-    This will show all the different coding tests you have completed. In a list. Cicking the view results button will show that submissions results in a table as seen below. <br>
+    <p> This will show all the different coding tests you have completed. In a list. Cicking the view results button will show that submissions results in a table as seen below.</p>  <br>
     <img src="{% static "images/result.png"%}" style="width: 80%; height: auto;" class=images>
     <br>
-    This table shows details about the results for the test. Including the tests passed, tests failed, time taken to complete the tests. The complexity of the code and the description of the task.<br>
-    There is also a button to view the code submitted which will take you to a page like this.
+    <p> This table shows details about the results for the test. Including the tests passed, tests failed, time taken to complete the tests. The complexity of the code and the description of the task.<br>
+    There is also a button to view the code submitted which will take you to a page like this.</p> 
     <br>
     <br>
-    
-
-
-
-
-</p>
 {% endblock %}

@@ -6,7 +6,7 @@ global tag styling like h1 and p are done at the bottom.
 */
 :root {
     --div-color: rgba(255, 255, 255, 0.767);
-    --background-color: rgb(255, 255, 255);
+    --background-color: rgb(49, 49, 49);
     --highlight-color: rgb(148, 183, 212);
     --highlight-color2: rgb(103, 110, 141);
     --alt-color: rgb(44,44,44);
@@ -21,10 +21,6 @@ body {
     margin: 0 !important;
     font-family: 'Source Sans Pro', sans-serif !important;
     background-color: var(--background-color) !important;
-    background-image: url('../images/background2.jpg')!important;
-
-    background-repeat: no-repeat;
-    background-size: cover;
 
 }
 
@@ -43,7 +39,7 @@ body {
             display: flex;
             flex-direction: row;
             min-height: 150px;
-            padding-bottom: 100px;
+            padding-bottom: 20px;
         }
 
             .logo {
@@ -92,7 +88,7 @@ body {
             .navLink {
                 color:  rgba(255, 255, 255, 0.767);
                 font-size: 20px;
-                font-size: calc(100% + 0.3vw);
+                font-size: calc(100% + 0.5vw);
                 font-weight: 300;
                 text-transform: lowercase;
                 text-decoration: none;
@@ -104,6 +100,7 @@ body {
             }
 
         .content {
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -142,9 +139,19 @@ h3{
     color: rgb(0, 0, 0) !important;
 }
 
+h4{
+    margin: 0px !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 100px !important;
+    font-weight: 600 !important;
+    font-size: calc(100% + 1.8vw) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
 p {
     font-weight: 300 !important;
     margin: 0px !important;
     color: var(--text-color) !important;
-    font-size: calc(100% + 0.vw) !important;
+    font-size: calc(100% + 0.5vw) !important;
 }
+
