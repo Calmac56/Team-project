@@ -1,17 +1,11 @@
 public class main{
-
     public static void main(String[] args) {
-        
-        //This converts the input to an int array and itterates over it
+        //This converts the input to an array and itterates over it
+        //You may be required to cast the inputs to other datatypes e.g. int
         String[] strArr = args[0].split("\\s+");
-        int[] intArr = new int[strArr.length];
-        for (int i=0; i < strArr.length; i++){
-            intArr[i] = Integer.parseInt(strArr[i]);
-            
-        }
-        for (int i : intArr){
+        for (String s : strArr){
             // YOUR CODE HERE
-            
+
             //END YOUR CODE
         }
     }
