@@ -18,7 +18,7 @@ Your results
 <br>
 {% if results != None %}
 {% for result in results %}
-<p>Test {{result.taskID.taskID}} &nbsp;
+<p>Test {{result.taskID.taskID}} - {{result.taskID.name}} </p>
 <script>
     function viewMore(id) {
 
@@ -42,7 +42,9 @@ Your results
 }
 
 </script>
-<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" id="myBtn{{result.taskID.taskID}}">View results</button> </p>
+
+<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" style="width: 40%; margin-left: 30%;" id="myBtn{{result.taskID.taskID}}">View results</button> 
+
 <span id="more{{result.taskID.taskID}}" style="display: None;"> 
 
     <table class="tg">

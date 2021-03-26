@@ -5,14 +5,14 @@ within the last element indented 1 less than itself.
 global tag styling like h1 and p are done at the bottom.
 */
 :root {
-    --div-color: rgb(29,31,33);
-    --background-color: rgb(70, 70, 70);
+    --div-color: rgba(255, 255, 255, 0.767);
+    --background-color: rgb(49, 49, 49);
     --highlight-color: rgb(148, 183, 212);
     --highlight-color2: rgb(103, 110, 141);
     --alt-color: rgb(44,44,44);
     --alt-color2: rgb(46, 78, 39);
-    --text-color: rgb(163, 162, 162);
-    --text-alt-color: rgb(219, 219, 219);
+    --text-color: rgb(10, 10, 10);
+    --text-alt-color: rgb(44, 43, 43);
     --timer: 0%;
 }
   
@@ -21,6 +21,7 @@ body {
     margin: 0 !important;
     font-family: 'Source Sans Pro', sans-serif !important;
     background-color: var(--background-color) !important;
+
 }
 
     .bodyContainer {
@@ -37,10 +38,8 @@ body {
         .header {
             display: flex;
             flex-direction: row;
-            min-height: 100px;
-            padding-bottom: 5px;
-            margin-left: 16px;
-            margin-right: 10px;
+            min-height: 150px;
+            padding-bottom: 20px;
         }
 
             .logo {
@@ -59,6 +58,7 @@ body {
                 display: flex;
                 width: 50%;
                 align-items: flex-end;
+                color: azure;
             }
 
             .navBar {
@@ -86,9 +86,9 @@ body {
 
 
             .navLink {
-                color: var(--text-color);
+                color:  rgba(255, 255, 255, 0.767);
                 font-size: 20px;
-                font-size: calc(100% + 0.3vw);
+                font-size: calc(100% + 0.5vw);
                 font-weight: 300;
                 text-transform: lowercase;
                 text-decoration: none;
@@ -100,13 +100,14 @@ body {
             }
 
         .content {
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             width: 100%;
-            min-height:300px;
+            min-height:600px;
             background-color: var(--div-color);
             color: var(--text-color);
-            box-shadow: 0px 0px 10px 1px rgba(39, 39, 39, 0.3);
+            box-shadow: 0px 0px 10px 1px rgba(163, 160, 160, 0.801);
             
         }
 
@@ -119,7 +120,7 @@ body {
 h1 {
     margin: 0px !important;
     font-family: 'Roboto', sans-serif !important;
-    font-size: 50px !important;
+    font-size: 100px !important;
     font-weight: 600 !important;
     font-size: calc(100% + 1.8vw) !important;
     color: var(--text-color) !important;
@@ -129,7 +130,7 @@ h2 {
     margin: 0px !important;
     font-family: 'Roboto', sans-serif !important;
     font-weight: 800 !important;
-    font-size: 25px !important;
+    font-size: 100px !important;
     font-size: calc(100% + 0.7vw) !important;
     color: var(--text-color) !important;
 }
@@ -138,9 +139,19 @@ h3{
     color: rgb(0, 0, 0) !important;
 }
 
+h4{
+    margin: 0px !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 100px !important;
+    font-weight: 600 !important;
+    font-size: calc(100% + 1.8vw) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
 p {
     font-weight: 300 !important;
     margin: 0px !important;
     color: var(--text-color) !important;
-    font-size: calc(100% + 0.05vw) !important;
+    font-size: calc(100% + 0.5vw) !important;
 }
+

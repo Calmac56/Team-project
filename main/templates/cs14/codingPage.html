@@ -12,7 +12,7 @@
     var taskID = '{{ taskID }}';
     var CustomInput = `{{ input }}`;
 
-    function doPost(Submission, force=false){
+    function doPost(Submission, force){
         if (force == false && Submission == 'true')
         {
             if (window.confirm("Are you sure you want to submit? Once you do, you cannot access the task again.") == false) 
@@ -70,9 +70,15 @@
 {% block body_block %}
 <div class="description">
     <p>
+        
         <div class="descriptionText">
             <strong>Task</strong><br>  {{taskDec}}
         </div>
+        {% if taskinput|length != 0 %}
+        <div class="standardInput">
+            <strong>Standard input</strong><br>  {{taskinput}}
+        </div>
+        {% endif %}
         <div class="expectedText">
             <strong>Expected Out</strong><br>  {{taskout}}
         </div>       
@@ -104,7 +110,7 @@
                 <option value="c#">C#</option>
             </select>
             <button id='runButton' type="button" onclick="doPost('false')" class="editorTopBarForm">RUN</button>
-            <button id='submitButton' type="button" onclick="doPost('true')" class="editorTopBarForm">SUBMIT</button>
+            <button id='submitButton' type="button" onclick="doPost('true', false)" class="editorTopBarForm">SUBMIT</button>
         </div>
         <div class="typerContainer">
             <div class="codeTyper" id="codeArea" name="codeArea"></div>
@@ -146,7 +152,7 @@
         
         if (time_submit == "true") 
         {
-            doPost('true', force=true);
+            doPost('true', true);
         }
 
         display = document.querySelector('#time');

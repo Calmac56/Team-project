@@ -61,7 +61,11 @@
 
 
 {% block title_block %}
-Code Review
+Review - {{ taskname }}
+{% endblock %}
+
+{% block title2_block %}
+{{ taskname }}
 {% endblock %}
 
 {% block body_block %}
@@ -74,11 +78,22 @@ Code Review
     updateInputBox()
 </script>
 
+
+
 <div class="description">
-    <h2>Task Description</h2>
-    <p>{{taskDec}}
-        <br>
-        EXPECTED OUTPUT: {{taskout}}
+    <p>
+        
+        <div class="descriptionText">
+            <strong>Task</strong><br>  {{taskDec}}
+        </div>
+        {% if standardin|length != 0 %}
+        <div class="standardInput">
+            <strong>Standard input</strong><br>  {{standardin}}
+        </div>
+        {% endif %}
+        <div class="expectedText">
+            <strong>Expected Out</strong><br>  {{taskout}}
+        </div>       
     </p>
     </br>
 </div>

@@ -34,7 +34,7 @@ class ModelTests(TestCase):
     def test_task(self):
         user = User.objects.create_user('testAdmin', self.email, self.password)
         creator, success = Admin.objects.get_or_create(user = user)
-        task, success = Task.objects.get_or_create(taskID = 1, description = 'This is a test task', testcases = 'Testcases', expectedout = 'Expectedout', creator=creator)
+        task, success = Task.objects.get_or_create(taskID = 1, description = 'This is a test task', expectedout = 'Expectedout', creator=creator)
         self.assertEquals([task.taskID], [1], "Task not created properly.")
         print("Task created OK")
         return task

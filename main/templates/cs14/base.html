@@ -26,11 +26,16 @@
     {% endblock %}
   </title>
 </head>
+
 <body>
   <!--body_container is the main middle column holding all
   elements of the website-->
   <div class="bodyContainer">
     <div class="header">
+      <!--logo holder; needs updated to contain real logo-->
+      <div>
+        <img src="{% static "images/Avaloq_logo.png"%}" style="width: 175px; height: 200px;" class=logo>
+      </div>
       <!--page title holder; should containt block as so title
       is give for each page-->
       <div class="title">
@@ -78,7 +83,7 @@
             <a class="navLink" href="{% url 'cs14:logout'%}" >Logout</a>
           </div>
         {% else %}
-          
+        <div class="navSplitter"></div>
           <div class="navElement">
             <a class="navLink" href="{% url 'cs14:login'%}" >Login</a>
           </div>
