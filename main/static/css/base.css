@@ -100,7 +100,7 @@ body {
             }
 
         .content {
-            border-radius: 3px;
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
             width: 100%;

@@ -7,6 +7,26 @@
 
 .content {
     padding: 16px;
-    
-   
+}
+
+h1 {
+    font-weight: 100 !important;
+    margin-top: 16px !important;
+    font-size: 40px !important;
+}
+
+h2 {
+    font-weight: 500 !important;
+    margin-top: 16px !important;
+    font-size: 36px !important;
+}
+
+h3 {
+    margin-top: 16px !important;
+    margin-bottom: 0px !important;
+}
+
+p {
+    margin-bottom: 16px !important;
+    margin-top: 16px !important;
 }

@@ -13,6 +13,7 @@ Candidate results
 {% endblock %}
 
 {% block body_block %}
+<h3 style="text-align: center">Candidate Results</h3>
 <script>
   $.get('/cs14/getresultsession', function(data) {
     var options = document.getElementById('selectbox')
@@ -60,64 +61,73 @@ Candidate results
 <br>
 {% if results != None %}
 {% for result in results %}
-<p>Test {{result.taskID.taskID}} - {{result.taskID.name}} </p>
-<script>
-
-
-    function viewMore(id) {
-
-
- 
-  var btnText = document.getElementById(id);
-  var text = id.toString();
+<div class="taskContainer" style="text-align: center">
+  <script>
+      function viewMore(id) {
   
-  const slug = text.substring(text.indexOf('n') + 1);
-  var moreText = document.getElementById("more" + slug);
-
-
-  if (moreText.style.display === "none") {
-    btnText.innerHTML = "Hide results";
-    moreText.style.display = "inline";
-  } else {
-
-    btnText.innerHTML = "View results";
-    moreText.style.display = "none";
+  
+   
+    var btnText = document.getElementById(id);
+    var text = id.toString();
+    
+    const slug = text.substring(text.indexOf('n') + 1);
+    var moreText = document.getElementById("more" + slug);
+  
+  
+    if (moreText.style.display === "none") {
+      btnText.innerHTML = "Hide results";
+      moreText.style.display = "inline";
+    } else {
+  
+      btnText.innerHTML = "View results";
+      moreText.style.display = "none";
+    }
   }
-}
-
-</script>
-<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" style="width: 40%; margin-left: 30%;" id="myBtn{{result.taskID.taskID}}">View results</button> 
-<span id="more{{result.taskID.taskID}}" style="display: None;"> 
-
-    <table class="tg">
-    <thead>
-      <tr>
-        <th class="tg-0lax">Task ID</th>
-        <th class="tg-0lax"> Tests Passed</th>
-        <th class="tg-0lax">Tests Failed</th>
-        <th class="tg-0lax">Pass Percentage</th>
-        <th class="tg-0lax">Time taken</th>
-        <th class="tg-0lax"> Complexity </th>
-      
-        <th class="tg-0lax">Description</th>
-        <th class="tg-0lax">Code</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="tg-0lax">{{result.taskID.taskID}}</td>
-        <td class="tg-0lax">{{result.tests_passed}}</td>
-        <td class="tg-0lax">{{result.tests_failed}}</td>
-        <td class="tg-0lax">{{result.passpercentage}}</td>
-        <td class="tg-0lax">{{result.timetaken}}</td>
-        <td class="tg-0lax">{{result.complexity}}</td>
-        <td class="tg-0lax">{{result.taskID.description}}</td>
-        <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
-      </tr>
-    </tbody>
-    </table>
-    </span>
-<br>
+  
+  </script>
+  <div class="top">
+    <div class="taskName">
+      <h2>Test {{result.taskID.taskID}} - {{result.taskID.name}} </h2>
+    </div>
+    
+    <div class="taskTime">
+      <button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" style="width: 40%; margin-left: 30%;" id="myBtn{{result.taskID.taskID}}">View results</button> 
+    </div>
+  </div>
+  
+  <span id="more{{result.taskID.taskID}}" style="display: None;"> 
+  
+      <table class="tg">
+      <thead>
+        <tr>
+          <th class="tg-0lax">Task ID</th>
+          <th class="tg-0lax"> Tests Passed</th>
+          <th class="tg-0lax">Tests Failed</th>
+          <th class="tg-0lax">Pass Percentage</th>
+          <th class="tg-0lax">Time taken (Seconds)</th>
+          <!-- <th class="tg-0lax"> Complexity </th> -->
+          <th class="tg-0lax">Description</th>
+          <th class="tg-0lax">Code</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-0lax">{{result.taskID.taskID}}</td>
+          <td class="tg-0lax">{{result.tests_passed}}</td>
+          <td class="tg-0lax">{{result.tests_failed}}</td>
+          <td class="tg-0lax">{{result.passpercentage}}</td>
+          <td class="tg-0lax">{{result.timetaken}}</td>
+          <!-- <td class="tg-0lax">{{result.complexity}}</td>  Commented out as complexity calculator not implemented -->
+          
+          <td class="tg-0lax">{{result.taskID.description}}</td>
+          <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
+        </tr>
+      </tbody>
+      </table>
+      </span>
+    </div>
+  </div>
 {% endfor %}
 {% else %}
 <p> This candidate has not completed any coding tests</p>
