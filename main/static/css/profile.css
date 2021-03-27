@@ -1,43 +1,19 @@
-#searchform{
-    margin: auto;
-    padding-top: 10px;
-}
-
 .content {
     padding: 16px;
 }
-
-
-p{
+.center {
     text-align: center;
 }
-
-.tg  {border-collapse:collapse;border-spacing:0; margin: auto;width: 90%;margin-top: 32px;}
-    .tg td{border-color:rgb(99, 99, 99);border-style:solid;border-width:1px; font-size:14px;
-      overflow:hidden;padding:10px 5px;word-break:normal; color: rgb(163, 163, 163);
-      background-color: rgba(255, 255, 255, 0)
-    }
-
-
-.tg th{border-color:rgb(99, 99, 99);border-style:solid;border-width:1px;font-size:14px;
-      font-weight:bold;overflow:hidden;padding:10px 5px;word-break:normal; color: rgb(163, 163, 163);
-      background-color: rgba(0, 0, 0, 0.521);
-    }
-.tg .tg-0lax{text-align:left;vertical-align:top}
 
 .taskContainer {
     border-radius: 4px;
     padding: 24px 32px 24px 32px;
     background-color: rgba(83, 83, 90, 0.342);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 36px;
 }
 
-.top {
-    display: flex;
-    flex-direction: row;
-}
 
 .taskContainer:hover {
     background-color: rgba(106, 106, 112, 0.342);
@@ -68,4 +44,8 @@ p{
         margin-left: 32px;
         padding: 8px;
         color: rgb(143, 143, 143);
+    }
+
+    .startButton:hover {
+        color: rgb(207, 207, 207);
     }

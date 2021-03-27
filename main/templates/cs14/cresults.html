@@ -15,10 +15,10 @@ Your results
 {% block body_block %}
 
 
-<br>
+<h3 style="text-align: center">Results</h3>
 {% if results != None %}
 {% for result in results %}
-<p>Test {{result.taskID.taskID}} - {{result.taskID.name}} </p>
+<div class="taskContainer" style="text-align: center">
 <script>
     function viewMore(id) {
 
@@ -42,8 +42,15 @@ Your results
 }
 
 </script>
-
-<button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" style="width: 40%; margin-left: 30%;" id="myBtn{{result.taskID.taskID}}">View results</button> 
+<div class="top">
+  <div class="taskName">
+    <h2>Test {{result.taskID.taskID}} - {{result.taskID.name}} </h2>
+  </div>
+  
+  <div class="taskTime">
+    <button  class="btn btn-outline-success my-2 my-sm-0" onclick="viewMore(this.id)" style="width: 40%; margin-left: 30%;" id="myBtn{{result.taskID.taskID}}">View results</button> 
+  </div>
+</div>
 
 <span id="more{{result.taskID.taskID}}" style="display: None;"> 
 
@@ -76,7 +83,8 @@ Your results
     </tbody>
     </table>
     </span>
-<br>
+  </div>
+</div>
 {% endfor %}
 {% else %}
 <p> You have not yet completed any coding tests, no results to display.</p>

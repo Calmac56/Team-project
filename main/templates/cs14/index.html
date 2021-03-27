@@ -7,9 +7,9 @@
 {% block body_block %}
 
 {% if user.is_authenticated %}
-<h2>Welcome to Avaloq coding tests, {{user.first_name}}</h2>
+<h1>Welcome to Avaloq Coding Tests, {{user.first_name}}</h1>
 {% else %}
-<h2>Welcome to Avaloq coding tests</h2>
+<h1>Welcome to Avaloq Coding Tests</h1>
 {% endif %}
 
 <p> This is a site designed to test your programming knowledge for jobs related to Avaloq. This will be done via a variety of small programming problems of varying difficulty.
@@ -17,55 +17,45 @@ Each problem will have test cases that can be run against it that will test how 
 your own test cases to test against your solution. The problems that are assigned to you can be viewed on your profile page which is <a href="{% url 'cs14:profile'%}">here</a>
 </p>
 
-<br>
-<br>
-
-<h2> Tutorial on using the site </h2>
-<br>
+<h2> Tutorial on Using the Site </h2>
 <h3> Profile page</h3>
 <p> This is the page where you will go to acsess the specific taks that are assigned to you and where you can view results from previous tasks that you have completed. An example of this page is shown below:</p>
-    <br> 
     <img src="{% static "images/profile.png"%}" style="width: 50%; height: auto;" class=images>
-    <br>
+
     <p> The page shows a list of the tasks that you need to complete and will tell you the amount of time you have been given for each task.<br>
     Clicking on start task will take you to the coding page for the task which looks like the example below. <br></p> 
-    <h3> Coding page</h3>
-    <br>
+    <h3> Coding Page</h3>
+
     <img src="{% static "images/codepage.png"%}" class=images style="width: 90%; height: auto;">
-    <br>
+
     <p> The green timer at the top will show you how much time you have left to do this challenge before it is auto submitted. <br>
     The selector can be used to change the language the code is written in. Currently the site supports Java and Python.<br>
     The run button will run the code and give output in the "output" box. </p> <br>
     <p> Putting data into the custom input box and ticking the select box for custom input will allow you code to take in custom input and test with that with results again showing in the output box. <br>
     The submit button is used to submit the final version of your code.</p> <br>
-    <br>
-    <br>
+
     <p> Once the code is submitted you will be taken to the results page which will look similar to below.</p> 
-    <h3> Results page</h3>
-    <br>
-    <br>
+    <h3> Results Page</h3>
+
     <img src="{% static "images/resultspage.png"%}" style="width: 80%; height: auto;" class=images>
-    <br>
+
 
     <p> This will show all the different coding tests you have completed. In a list. Cicking the view results button will show that submissions results in a table as seen below.</p>  <br>
     <img src="{% static "images/result.png"%}" style="width: 80%; height: auto;" class=images>
-    <br>
+
     <p> This table shows details about the results for the test. Including the tests passed, tests failed, time taken to complete the tests. The complexity of the code and the description of the task.<br>
     There is also a button to view the code submitted which will take you to a page like this.</p> 
-    <br>
-    <br>
-    <h3> Results page</h3>
-    <br>
-    <br>
+
+    <h3> Review Page</h3>
+
     <img src="{% static "images/reviewpage.png"%}" style="width: 80%; height: auto;" class=images>
-    <br>
-    <br>
+
     <p>This page works almost exactly the same as the coding page. You will be able to review your past code. The green bar at the top is a timeline.<br> 
        Moving the bar to the right will show later versions of the code and moving it to the left will show earlier versions of the code. (A copy of the code is saved each time it is run) <br>
        This code can be modified for example to test it with syntax fixes. None of these changes will be saved though.
 
     </p>
-    <br>
+
 
 
 {% endblock %}

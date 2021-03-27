@@ -70,10 +70,6 @@ Review - {{ taskname }}
 
 {% block body_block %}
 
-<div class="slidecontainer">
-    <input type="range" min="0" max="{{slideval}}" value="{{slideval}}" class="slider" id="myRange" onchange="updateInputBox()">
-  </div>
-
 <script>
     updateInputBox()
 </script>
@@ -98,12 +94,9 @@ Review - {{ taskname }}
     </br>
 </div>
 <div class="timerContainer">
-    <div class="timeTop">
-        <div class="timeL">
-            <p id="time"></p>
-        </div>
-        
-    </div>
+    <div class="slidecontainer">
+        <input type="range" min="0" max="{{slideval}}" value="{{slideval}}" class="slider" id="myRange" onchange="updateInputBox()">
+      </div>
     
 </div>
 <div class="codeContainer">
@@ -123,7 +116,7 @@ Review - {{ taskname }}
     <div class="codeIo">
         <div class="codeInput">
             <div class="editorTopBar">
-                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" id="customInputCB" value="USE CUSTOM INPUT"></div>
+                <div class="editorTitle">CUSTOM INPUT<input type="checkbox" id="customInputCB" class="cInputCheck" value="USE CUSTOM INPUT"></div>
             </div>
             <textarea class="inputArea" id="inputArea" name="inputArea" rows="20" cols="140"></textarea>
         </div>
@@ -138,13 +131,9 @@ Review - {{ taskname }}
 
 <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
 <script src="https://pagecdn.io/lib/ace/1.4.12/theme-tomorrow_night.js"></script>
+<script src="{% static 'js/editorSettings.js'%}"></script>
 <script>
-  var editor = ace.edit("codeArea");
-  editor.setTheme("ace/theme/tomorrow_night");
-  editor.getSession().setMode("ace/mode/java");
-  onLoadFunction = editor => {
-    editor.renderer.setPadding(8)
-  }
+
 
   editor.getSession().on('change', function () {
        Code = editor.getSession().getValue();
