@@ -80,16 +80,19 @@ Review - {{ taskname }}
     <p>
         
         <div class="topText">
-            <h3><strong>Description</strong></h3><br> {{ taskDec }}
+            <h3>Description</h3>
+            <p>{{ taskDec }}</p>
         </div>
         {% if taskinput|length != 0 %}
         <div class="topText">
-            <h3><strong>Standard Input</strong></h3><br>  {{ taskinput }}
+            <h3>Standard Input</h3>
+            <p>{{ taskinput }}</p>
         </div>
         {% endif %}
         <div class="topText">
-            <h3><strong>Expected Ouput</strong></h3><br>  {{taskout}}
-        </div>  
+            <h3>Expected Ouput</h3> 
+            <p>{{taskout}}</p>
+        </div> 
     </p>
     </br>
 </div>

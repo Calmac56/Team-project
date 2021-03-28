@@ -3,7 +3,7 @@
 
 {% block head_block %}
 <link rel="stylesheet" href="{% static "css/results.css"%}" type="text/css">
-
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% endblock %}
 
@@ -83,8 +83,30 @@ Candidate results
       moreText.style.display = "none";
     }
   }
-  
   </script>
+  
+  <script type="text/javascript">
+    // Load google charts
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+  
+    // Draw the chart and set the chart values
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+      ['Tests', 'Amount'],
+      ['Passed', {{result.tests_passed}}],
+      ['Failed', {{result.tests_failed}}],
+    ]);
+  
+    var options = {'width':250, 'height':150, 'backgroundColor':"rgb(29,31,33)", 'legend':{'position':'none'}, 'chartArea': {'width': '90%', 'height': '90%'}, colors: ['#006400', '#8b0000',]};
+  
+    // Display the chart inside the <div> element with id="piechart"
+    var chart = new google.visualization.PieChart(document.getElementById('piechart{{result.taskID.taskID}}'));
+    chart.draw(data, options);
+  
+    }
+  </script>
+  
   <div class="top">
     <div class="taskName">
       <h2>Test {{result.taskID.taskID}} - {{result.taskID.name}} </h2>
@@ -95,37 +117,37 @@ Candidate results
     </div>
   </div>
   
-  <span id="more{{result.taskID.taskID}}" style="display: None;"> 
+    <span id="more{{result.taskID.taskID}}" style="display: None;">
+      <br>
+      <div class="bottom">
+      <div class="resultLeft">
+        <h3>Description</h3>
+        <div class="description">
+          <p>{{result.taskID.description}}</p>
+        </div>
+        <a class="navLink" href="{% url 'cs14:creview'  result.taskID.taskID %}"><div class="startButton">View Code</div></a>
+      </div>
   
-      <table class="tg">
-      <thead>
-        <tr>
-          <th class="tg-0lax">Task ID</th>
-          <th class="tg-0lax"> Tests Passed</th>
-          <th class="tg-0lax">Tests Failed</th>
-          <th class="tg-0lax">Pass Percentage</th>
-          <th class="tg-0lax">Time taken (Seconds)</th>
-          <!-- <th class="tg-0lax"> Complexity </th> -->
-          <th class="tg-0lax">Description</th>
-          <th class="tg-0lax">Code</th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="tg-0lax">{{result.taskID.taskID}}</td>
-          <td class="tg-0lax">{{result.tests_passed}}</td>
-          <td class="tg-0lax">{{result.tests_failed}}</td>
-          <td class="tg-0lax">{{result.passpercentage}}</td>
-          <td class="tg-0lax">{{result.timetaken}}</td>
-          <!-- <td class="tg-0lax">{{result.complexity}}</td>  Commented out as complexity calculator not implemented -->
-          
-          <td class="tg-0lax">{{result.taskID.description}}</td>
-          <td class="tg-0lax"> <a href="{% url 'cs14:creview'  result.taskID.taskID %}">View code</a></td>
-        </tr>
-      </tbody>
-      </table>
+      <div class="resultRight">
+        <div class="stats">
+          <h3>Stats</h3>
+          <p><b>Tasks Passed: </b><span style="color: #006400;">{{result.tests_passed}}</span></p>
+          <p><b>Tasks Failed: </b><span style="color: #8b0000;">{{result.tests_failed}}</span></p>
+          <br>
+          <p><b>Pass Percentage: </b>{{result.passpercentage}}</p>
+          <br>
+          <p><b>Task Time: </b>{{result.taskID.time}} seconds</p>
+          <p><b>Time Taken: </b>{{result.timetaken}} seconds</p>
+        </div>
+        <div class="graph">
+          <br>
+          <div id="piechart{{result.taskID.taskID}}"></div>
+        </div>
+      </div>
+    </div>
       </span>
+  
+  
     </div>
   </div>
 {% endfor %}

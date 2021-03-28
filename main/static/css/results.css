@@ -3,6 +3,8 @@
     padding-top: 10px;
 }
 
+
+
 .content {
     padding: 16px;
 }
@@ -39,6 +41,48 @@ p{
     flex-direction: row;
 }
 
+.bottom {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 242px;
+    background-color: var(--div-color);
+    padding: 16px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+    .resultLeft {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        padding-right: 16px;
+    }
+
+        .description {
+            text-align: left;
+            margin-bottom: 16px;
+            height: 100%;
+            overflow: scroll;
+        }
+
+    .resultRight {
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+    }
+
+        .stats {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .graph {
+            width: 100%;
+
+        }
+
 .taskContainer:hover {
     background-color: rgba(106, 106, 112, 0.342);
 }
@@ -63,9 +107,17 @@ p{
         background-color: var(--alt-color2);
         margin-top: auto;
         margin-bottom: auto;
-        width:150px;
+        width:100%;
         height:100%;
-        margin-left: 32px;
         padding: 8px;
         color: rgb(143, 143, 143);
     }
+
+    .startButton:hover {
+        color: rgb(207, 207, 207);
+        border: 1px solid rgba(207, 207, 207, 0.185);
+    }
+
+p {
+    text-align: left;
+}
