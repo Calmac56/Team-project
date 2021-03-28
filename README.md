@@ -46,15 +46,24 @@ python manage.py migrate
 
 * **Step 5** (optional)<br>
 Populate the database. <br>
-We have provided a database dump with a superuser which has admin privileges on the site. You can populate the database running:<br>
+We have provided two database dumps, admindb.json and exampledb. The first one simply contains a superuser, which does not yet have any site privileges assigned, they simply have access to the Django admin interface.<br>
+The second contains a superuser with site admin and reviewer privileges (can generate users, tasks and review tasks), a candidate and two tasks, both assigned to the candidate. <br>
+You can populate the database by running:<br>
 ``
-python manage.py loaddata admindb.json
+python manage.py loaddata <selected json file>
 ``
+<br>The password for all users is ``PASSWORD!!!`` and the usernames are ``admin`` and ``user1``.
+> NOTE: If using the database with the example tasks, we have written a script, populate_tests.py in the cs14-main/main directory, which will create (and remove) the necessary folders for the tasks to work.<br>
+To create the necessary directories and files, run:<br>
+``python populate_tests.py create_tests``<br>
+To remove these, run:<br>
+``python populate_tests.py remove_tests``<br>
+
 
 * **Step 6** <br>
 If you used one of the database dumps from **step 5**, a superuser should already be created, with the credentials:<br>
 ``user: admin``<br>
-``password: avaloq1``<br>
+``password: PASSWORD!!!``<br>
 If you are not using one of the database dumps, you can create a superuser with the following command:<br>
 ``
 python manage.py createsuperuser
