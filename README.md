@@ -46,7 +46,7 @@ python manage.py migrate
 
 * **Step 5** (optional)<br>
 Populate the database. <br>
-We have provided two database dumps, admindb.json and exampledb. The first one simply contains a superuser, which does not yet have any site privileges assigned, they simply have access to the Django admin interface.<br>
+We have provided two database dumps, admindb.json and exampledb.json in the cs14-main/main directory. The first one simply contains a superuser, which does not yet have any site privileges assigned, they simply have access to the Django admin interface.<br>
 The second contains a superuser with site admin and reviewer privileges (can generate users, tasks and review tasks), a candidate and two tasks, both assigned to the candidate. <br>
 You can populate the database by running:<br>
 ``
