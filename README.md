@@ -13,7 +13,7 @@
 <br>
 
 * **Step 1** <br>
-Clone the repo using: <br>
+Clone the repo using: https://github.com/Calmac56/Team-project.git <br>
 ``
 git clone <link>
 ``
