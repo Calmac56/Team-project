@@ -13,9 +13,9 @@
 <br>
 
 * **Step 1** <br>
-Clone the repo using: https://github.com/Calmac56/Team-project.git <br>
+Clone the repo using: <br>
 ``
-git clone <link>
+git clone https://github.com/Calmac56/Team-project.git
 ``
 
 * **Step 2** <br>
